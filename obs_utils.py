@@ -1,4 +1,11 @@
 import typing
+from enum import Enum
+
+class EventMode(Enum):
+    StartList = 1
+    Event = 2
+    Rankings = 3
+    Undefined = 4
 
 if typing.TYPE_CHECKING:
     import _obspython as obs  # full symbol set for IDE
@@ -24,7 +31,7 @@ def find_scene_item(scene, source_name):
 def set_sceneitem_visible(scene, source_name, visible):
     if scene is None:
         return False
-    
+
     item = find_scene_item(scene, source_name)
     if item:
         obs.obs_sceneitem_set_visible(item, visible)
@@ -98,7 +105,7 @@ def set_color_source_alpha(source_name, alpha):
     """
     Sets only the alpha channel of a color source's ABGR color.
     Alpha: 0–255
-    This is used as hack to hide/show sources inside source groups. 
+    This is used as hack to hide/show sources inside source groups.
     Python OBS API does not work in setting source visibility directly inside groups.
     """
     source = obs.obs_get_source_by_name(source_name)

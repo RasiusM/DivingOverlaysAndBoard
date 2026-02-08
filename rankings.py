@@ -7,19 +7,23 @@ else:
 
 from typing import List
 from datatypes import DiveListRecord, DiveMessage
-from obs_utils import set_source_string, set_sceneitem_visible, get_scene
+from obs_utils import set_source_string, set_sceneitem_visible, get_scene, set_source_visibility, EventMode
 
 #TODO: support for multiple events (not simultaneous)
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # --------- Rankings handling
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+RANKINGS_MAX_LINES = 8  # max number of lines supported in the scene
+
 rankings_scene_name = ""
 rankings_no_lines_per_page = 8
 rankings_page_display_duration = 10  # seconds per page
 
+
 # Source naming conventions
-RNK_GRADIENT_PREFIX = "Rnk_Gradient "
+RNK_LINE_PREFIX = "ListLine "
+RNK_BRD_LINE_PREFIX = "BoardListLine "
 RNK_NAME_PREFIX = "Rnk_Name "
 RNK_RANK_PREFIX = "Rnk_Rank "
 RNK_TEAM_PREFIX = "Rnk_Team "
@@ -28,10 +32,10 @@ RNK_SCORE_PREFIX = "Rnk_Score "
 RNK_HEADER_MEET = "Rnk_MeetTitle"
 RNK_HEADER_EVENT = "Rnk_EventTitle"
 
-RNK_GROUP_PREFIXES = [RNK_GRADIENT_PREFIX, RNK_NAME_PREFIX, RNK_RANK_PREFIX, RNK_TEAM_PREFIX, RNK_SCORE_PREFIX]
-
 ranking_rec_working_copy: List[DiveListRecord] = []
 rankings_event_rec_working_copy: DiveMessage
+
+mode: EventMode = EventMode.Undefined  # Initialize with default mode
 
 debug = False
 
@@ -45,56 +49,100 @@ _timer_active = False
 _hotkey_start_id = None
 _hotkey_stop_id = None
 
-def rankings_set_debug(on: bool):
-    global debug
-    debug = on
+def dvov_rank_set_mode(eventMode: EventMode):
+    global mode
+    mode = eventMode
 
-def rankings_set_divers(records: List[DiveListRecord], event_record: DiveMessage):
+    # Reset pagination on any mode (usefull for resseting)
+    stop_pagination()
+
+    if (EventMode.StartList == mode) or (EventMode.Rankings == mode):
+        start_pagination()
+
+
+def dvov_rank_set_divers(records: List[DiveListRecord], event_record: DiveMessage):
     global ranking_rec_working_copy, rankings_event_rec_working_copy
 
     ranking_rec_working_copy = records.copy()
     rankings_event_rec_working_copy = event_record
 
-    # Determine if startlist or rankings based on all ranks being 1
-    is_startlist = all(rec.rank == "1" for rec in ranking_rec_working_copy) or len(ranking_rec_working_copy) == 0
+    obs.script_log(obs.LOG_INFO, f"Set Divers event.")
 
-    # Sort appropriately
-    if is_startlist:
-        ranking_rec_working_copy.sort(key=lambda r: r.start_position)  # sort by position number for startlist
-    else:
-        ranking_rec_working_copy.sort(key=lambda r: int(r.rank))  # sort by rank for rankings
+    # Reset pagination on any data update
+    stop_pagination()
+
+    obs.script_log(obs.LOG_INFO, f"Set Divers event: Stopped pagination.")
+
+    if (EventMode.StartList == mode) or (EventMode.Rankings == mode):
+        obs.script_log(obs.LOG_INFO, f"Set Divers event: Starting pagination.")
+        start_pagination()
+
+    if debug:
+        obs.script_log(obs.LOG_INFO, f"Set Divers event: Got ranking records for {len(ranking_rec_working_copy)} divers.")
+
 
 # ---------------------------
 # Pagination (show each page)
 # ---------------------------
 def show_page(ranking_rec: List[DiveListRecord], rankings_event_rec: DiveMessage, page_index):
-    #TODO: set header values!
-    scene, src = get_scene(rankings_scene_name)
-    if scene is None:
-        obs.script_log(obs.LOG_ERROR, f"Scene not found: {rankings_scene_name}")
-        return
+    set_source_string(RNK_HEADER_MEET, rankings_event_rec.meet_title)
+    set_source_string(RNK_HEADER_EVENT, rankings_event_rec.long_event_name)
+
+    # Sort according to mode
+    if EventMode.Rankings == mode:
+        ranking_rec_working_copy.sort(key=lambda r: r.rank)  # sort by rank
+    else:
+        ranking_rec_working_copy.sort(key=lambda r: r.start_position)  # sort by position number for startlist
 
     start = page_index * rankings_no_lines_per_page
     chunk = ranking_rec[start:start + rankings_no_lines_per_page]
 
+    # only hide lines if more than 1 page (it looks annoying on single page, flickering)
+    if _total_pages > 1:
+        for i in range(RANKINGS_MAX_LINES):
+            set_source_visibility(f"{RNK_LINE_PREFIX}{i + 1}", False)
+            set_source_visibility(f"{RNK_BRD_LINE_PREFIX}{i + 1}", False)
+
     for i in range(rankings_no_lines_per_page):
-        disp_no = i + 1
-        if i < len(chunk):
-            diver = chunk[i]
+        if i < rankings_no_lines_per_page:
+            disp_no = i + 1
+            if i < len(chunk):
+                diver = chunk[i]
 
-            set_source_string(f"{RNK_RANK_PREFIX}{disp_no}", diver.rank)
-            set_source_string(f"{RNK_NAME_PREFIX}{disp_no}", diver.diver)
-            set_source_string(f"{RNK_TEAM_PREFIX}{disp_no}", diver.club_code)
-            set_source_string(f"{RNK_SCORE_PREFIX}{disp_no}", diver.points)
+                # use rank or start position based on mode
+                if EventMode.Rankings == mode:
+                    set_source_string(f"{RNK_RANK_PREFIX}{disp_no}", str(diver.rank) if int(diver.rank) > 0 else "G")
+                else:
+                    set_source_string(f"{RNK_RANK_PREFIX}{disp_no}", str(diver.start_position))
 
-            for prefix in RNK_GROUP_PREFIXES:
-                set_sceneitem_visible(scene, f"{prefix}{disp_no}", True)
-        else:
-            for prefix in RNK_GROUP_PREFIXES:
-                set_sceneitem_visible(scene, f"{prefix}{disp_no}", False)
+                set_source_string(f"{RNK_NAME_PREFIX}{disp_no}", diver.diver)
+                set_source_string(f"{RNK_TEAM_PREFIX}{disp_no}", diver.club_code)
 
-    # SAFE release: only release the source
-    obs.obs_source_release(src)
+                if EventMode.Rankings == mode:
+                    set_source_string(f"{RNK_SCORE_PREFIX}{disp_no}", diver.points)
+                else:
+                    set_source_string(f"{RNK_SCORE_PREFIX}{disp_no}", " ")
+
+                set_source_visibility(f"{RNK_LINE_PREFIX}{disp_no}", True)
+                set_source_visibility(f"{RNK_BRD_LINE_PREFIX}{disp_no}", True)
+
+
+def clear_data():
+    obs.script_log(obs.LOG_INFO, "clear_data: start.")
+
+    set_source_string(RNK_HEADER_MEET, " ")
+    set_source_string(RNK_HEADER_EVENT, " ")
+
+    for i in range(RANKINGS_MAX_LINES):
+        set_source_visibility(f"{RNK_LINE_PREFIX}{i+1}", False)
+        set_source_visibility(f"{RNK_BRD_LINE_PREFIX}{i+1}", False)
+
+        set_source_string(f"{RNK_RANK_PREFIX}{i+1}", " ")
+        set_source_string(f"{RNK_NAME_PREFIX}{i+1}", " ")
+        set_source_string(f"{RNK_TEAM_PREFIX}{i+1}", " ")
+        set_source_string(f"{RNK_SCORE_PREFIX}{i+1}", " ")
+
+    obs.script_log(obs.LOG_INFO, "clear_data: end.")
 
 
 # ---------------------------
@@ -103,11 +151,15 @@ def show_page(ranking_rec: List[DiveListRecord], rankings_event_rec: DiveMessage
 def start_pagination():
     global ranking_rec_working_copy, rankings_event_rec_working_copy, _current_page, _total_pages, _timer_active
 
-    # TODO: hide all lines so that no old data is shown if no records are present
+    clear_data()
+
     if ranking_rec_working_copy == []:
         if debug:
             obs.script_log(obs.LOG_INFO, "No startlist/ranking records")
         return
+
+    if debug:
+        obs.script_log(obs.LOG_INFO, "Starting pagination...")
 
     _current_page = 0
     _total_pages = (len(ranking_rec_working_copy) + rankings_no_lines_per_page - 1) // rankings_no_lines_per_page
@@ -132,7 +184,7 @@ def _advance_page():
     # Next page index
     next_page = (_current_page + 1) % _total_pages
 
-    # If wrapping back to page 0 → reload XML
+    # If wrapping back to page 0 → reload data
     if next_page == 0:
         if debug:
             obs.script_log(obs.LOG_INFO, "Reloading ranking list for next cycle...")
@@ -166,7 +218,6 @@ def on_rankings_hotkey_start(pressed):
         if debug:
             obs.script_log(obs.LOG_INFO, "Rankings start hotkey pressed.")
 
-        #TODO: check if listst are not empty
         start_pagination()
 
 def on_rankings_hotkey_stop(pressed):
@@ -176,23 +227,35 @@ def on_rankings_hotkey_stop(pressed):
 
         stop_pagination()
 
-def rankings_add_properties(props):
+def dvov_rank_add_properties(props):
     obs.obs_properties_add_text(props, "rnk_scene_name", "Rankings: Scene name", obs.OBS_TEXT_DEFAULT)
-    obs.obs_properties_add_int(props, "rnk_num_per_page", "Rankings: Divers per page", 1, 50, 1)
-    obs.obs_properties_add_int(props, "rnk_display_duration", "Rankings: Seconds per page", 1, 3600, 1)
+    obs.obs_properties_add_int(props, "rnk_num_per_page", "Rankings: Divers per page", 1, RANKINGS_MAX_LINES, 1)
+    obs.obs_properties_add_int(props, "rnk_display_duration", "Rankings: Seconds per page", 1, 20, 1)
+
+
+def dvov_rank_script_defaults(settings):
+    obs.obs_data_set_default_string(settings, "rnk_scene_name", "OverlayRankings")
+    obs.obs_data_set_default_int(settings, "rnk_num_per_page", 8)
+    obs.obs_data_set_default_int(settings, "rnk_display_duration", 10)
+
 
 # script_update actions
-def rankings_update_settings(settings):
+def dvov_rank_script_update(settings):
     # Rankings settings
-    global rankings_scene_name, rankings_no_lines_per_page, rankings_page_display_duration
+    global debug, rankings_scene_name, rankings_no_lines_per_page, rankings_page_display_duration
 
+    debug = obs.obs_data_get_bool(settings, "debug")
     rankings_scene_name = obs.obs_data_get_string(settings, "rnk_scene_name")
     rankings_no_lines_per_page = obs.obs_data_get_int(settings, "rnk_num_per_page")
     rankings_page_display_duration = obs.obs_data_get_int(settings, "rnk_display_duration")
 
 
+def dvov_rank_script_load(settings):
+    dvov_rank_script_update(settings)
+
+
 # script_load actions
-def rankings_register_hotkeys(settings):
+def dvov_rank_register_hotkeys(settings):
     # Rankings hotkeys
     global _hotkey_start_id, _hotkey_stop_id
 

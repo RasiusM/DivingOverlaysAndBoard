@@ -11,6 +11,8 @@ Dive Recorder OBS Overlays Script
 
 import typing
 
+from overlay_data import dvov_act_set_event_complete, dvov_act_single_event_referee_update, dvov_act_single_event_referee_update
+
 if typing.TYPE_CHECKING:
     import _obspython as obs  # full symbol set for IDE
 else:
@@ -23,11 +25,9 @@ from typing import List, Union
 
 # local imports
 from datatypes import DiveMessage, DiveListRecord
-from overlay_data import dvov_act_set_data
-from state_controls import dvov_state_settings, dvov_state_on_message, dvov_status_register_hotkeys_force, dvov_state_script_update
-
-from rankings import rankings_set_divers, rankings_set_debug
-from rankings import on_rankings_hotkey_stop, rankings_add_properties, rankings_register_hotkeys, rankings_update_settings
+from state_controls import dvov_state_on_message, dvov_state_set_event_complete
+from rankings import dvov_rank_set_divers
+from overlay_script_common import dvov_script_properties, dvov_script_defaults, dvov_script_update, dvov_script_load
 
 # ---------- Globals
 portClient = 58091  # main port for DR broadcast data
@@ -37,16 +37,19 @@ last_message_text = ""
 udp_polling_enabled = True
 
 # settings (populated via script_update)
-flagLoc = ""
-dinterval = 5000
 debug = False
 
 # internal state
 activeId = 0
 id_ = 0
 
+# Update message hash to detect changes
+update_message_hash = ""
+
 # flag to indicate if rankings retrieval and update is enabled (script setting)
 rankings_enabled = False
+rankings_mode = False
+event_complete = False
 
 # UDP socket and polling
 udp_sock: Union[socket.socket, None] = None
@@ -68,13 +71,17 @@ def parse_dive_message(parts):
 
 tcp_receive_timeout = 1.0  # seconds per recv
 
-# ---- global variable to hold parsed structure ----
+# ---- global variable to hold parsed structures ----
 referee_message: Union[DiveMessage, None] = None
+
 ranking_records: List[DiveListRecord] = []
 rankings_event_record: DiveMessage
 
 # need to ensure thread-safe access to rankings_records
 ranking_records_lock: threading.Lock = threading.Lock()
+
+# Pending rankings update (processed on main thread to avoid OBS crashes)
+pending_rankings_update = False
 
 # ---- parser helper: converts UPDATE message → List[RankingRecord] ----
 def parse_update_message(msg: str):
@@ -85,11 +92,11 @@ def parse_update_message(msg: str):
 
     start_field: int = 74
     rec_size: int = 6
-    
+
     fields = msg.split("|")
 
     # Parse event record from start of message (same as for REFEREE, but only meet/event info is relevant)
-    rankings_event_rec = parse_dive_message(fields) 
+    rankings_event_rec = parse_dive_message(fields)
 
     # Convert to zero-based index
     start_idx = start_field - 1
@@ -148,9 +155,9 @@ def fetch_update_file_async(ip_address: str, message_file_name: str):
 # Initiate TCP connection to fetch file (most likely Update.txt)
 def _fetch_update_file(ip_address: str, message_file_name: str):
     """
-    Connects to DiveRecorder TCP port, requests the given remote file, 
-    and saves it to local disk.
-    
+    Connects to DiveRecorder TCP port, requests given remote file,
+    parses the response, and updates global rankings_records.
+
     ip_address: str - IP from UDP message
     message_file_name: str - file path received in UDP message (e.g., Update.txt)
     """
@@ -164,9 +171,9 @@ def _fetch_update_file(ip_address: str, message_file_name: str):
                     raise Exception("Connection closed early")
                 buf += chunk
             return buf
-        
+
         global tcp_port, rankings_records, rankings_event_record, tcp_receive_timeout
-        
+
         try:
             HOST = ip_address
             PORT = tcp_port
@@ -185,7 +192,8 @@ def _fetch_update_file(ip_address: str, message_file_name: str):
 
                 # interpret length of payload (adjust endianness as needed)
                 payload_len = int.from_bytes(header, 'big')  # or 'little'
-                print(f"Payload length: {payload_len}")
+                if debug:
+                    obs.script_log(obs.LOG_INFO, f"Payload length from header: {payload_len}")
 
                 # Step 2: read the full payload
                 chunks = []
@@ -211,19 +219,35 @@ def _fetch_update_file(ip_address: str, message_file_name: str):
 
             # Step 3: decode UTF-16LE text (skip BOM if needed)
             message_file_contents = data.decode('utf-16le')
-            if debug:    
+            if debug:
                 obs.script_log(obs.LOG_INFO, f"Message File Contents:\n{message_file_contents}")
 
-            rankings_records, rankings_event_record = parse_update_message(message_file_contents)
+            # check if contents have changed and skip parsing/events if same
+            global update_message_hash
 
-            rankings_set_divers(rankings_records, rankings_event_record)
+            obs.script_log(obs.LOG_INFO, "Calculating UPDATE message hash.")
+
+            current_hash = hash(message_file_contents)
+
+            obs.script_log(obs.LOG_INFO, "Got UPDATE hash.")
+
+            if current_hash != update_message_hash:
+                update_message_hash = current_hash
+
+                obs.script_log(obs.LOG_INFO, "NEW UPDATE Message!")
+                rankings_records, rankings_event_record = parse_update_message(message_file_contents)
+
+                # Signal main thread to process (OBS API must be called from main thread)
+                global pending_rankings_update
+                pending_rankings_update = True
+                obs.script_log(obs.LOG_INFO, "Rankings data updated, flagged for main thread processing.")
 
             return True
 
         except Exception as e:
             obs.script_log(obs.LOG_ERROR, f"Failed to fetch update file from {ip_address}:{tcp_port} - {e}")
             return False
-    
+
 # ---------- Process incoming UDP messages ----------
 def process_udp_message(k: str):
     global synchro, eventB, overlays_enabled
@@ -242,56 +266,45 @@ def process_udp_message(k: str):
         parts[-1] = parts[-1][:-1]
     resultK = parts
 
+    if debug and parts:
+        obs.script_log(obs.LOG_INFO, f'UDP message: {parts}')
+
     # --- parse into dataclass ---
     if (parts[0] == "REFEREE"):
         referee_message = parse_dive_message(parts)
 
-        dvov_state_on_message(referee_message)
-    
-        if debug:
-            obs.script_log(obs.LOG_INFO,
-                        f'UDP message: "{parts[0] if parts else ""}" '
-                        f'received, fields: {len(parts)}')
+        synchro = (referee_message.synchro_event == "True" and referee_message.event_ab == "a")
 
-        # ---- 
-        # if simultaneous_events:
-        #     if len(resultK) > 0 and referee_message == "REFEREE":
-        #         synchro = referee_message.synchro_event == "True"
-        #         eventB = referee_message.event_ab == "b"
-        #         if overlays_enabled:
-        #             simultaneous_update(resultK)
-        # else:
-        #     # How this happens??????? Event B selected in DR, but not actually simultaneous?
-        #     if eventB:
-        #         if len(resultK) > 1 and referee_message.packet_id == "REFEREE" and referee_message.event_ab == "b":
-        #             synchro = False
-        #             if overlays_enabled:
-        #                 single_update(referee_message)
-        #     else:
-        #         if len(resultK) > 1 and referee_message.packet_id == "REFEREE" and referee_message.event_ab == "a":
-        #             synchro = referee_message.synchro_event == "True"
-        #             if overlays_enabled:
-        #                 single_update(referee_message)
+        dvov_state_on_message(referee_message)
+        dvov_act_single_event_referee_update(referee_message, synchro)
+
     elif parts[0] == "UPDATE" and rankings_enabled:
         referee_message = None
-        if debug:
-            obs.script_log(obs.LOG_INFO, f"UPDATE packet received: {parts}")
 
         if rankings_enabled:
             # Example: UPDATE|a|DIVING_CONTUPER|1|192.168.1.1|C:\ProgramData\MDT\DiveRecorder\Xfer\Update.txt|^
             if len(parts) >= 6:
                 ip_addr = parts[4]
-                    
+
                 dive_recorder_message_filename = os.path.basename(parts[5])  # just the filename, e.g.
                 if dive_recorder_message_filename == "Update.txt":
                     fetch_update_file_async(ip_addr, dive_recorder_message_filename)
                 else:
                     obs.script_log(obs.LOG_WARNING, f"Received unrecognized remote file reference: {dive_recorder_message_filename}")
 
+    elif parts[0] == "AVIDEO":
+        # AVIDEO|a|EMEA300365|1|ENDOFEVENT|^
+        if len(parts) >= 5:
+            if parts[4] == "ENDOFEVENT":
+                if debug:
+                    obs.script_log(obs.LOG_INFO, "AVIDEO ENDOFEVENT received, marking event complete.")
+                dvov_act_set_event_complete(True)
+                dvov_state_set_event_complete(True)
 
 #---------- UDP polling (called on OBS timer) ----------
 def udp_timer_callback():
     global id_, activeId, udp_sock, last_message_text
+    global pending_rankings_update, rankings_records, rankings_event_record
 
     # If script reloaded, stop old timer
     if id_ < activeId:
@@ -300,6 +313,18 @@ def udp_timer_callback():
         except Exception:
             pass
         return
+
+    # Process pending rankings update on main thread (thread-safe for OBS API)
+    if pending_rankings_update:
+        try:
+            with ranking_records_lock:
+                if debug:
+                    obs.script_log(obs.LOG_INFO, "Processing rankings on main thread...")
+                dvov_rank_set_divers(rankings_records, rankings_event_record)
+                pending_rankings_update = False
+        except Exception as e:
+            obs.script_log(obs.LOG_ERROR, f"Error processing rankings: {e}")
+            pending_rankings_update = False
 
     # Non-blocking socket recv
     try:
@@ -331,7 +356,7 @@ def udp_timer_callback():
 
 # ---------- simultaneous_update ----------
 def simultaneous_update(v):
-    global tv_banner_removed, event_complete, sim_event_a_pos_left, dinterval
+    global tv_banner_removed, event_complete, sim_event_a_pos_left
 
     # if debug:
     #     obs.script_log(obs.LOG_INFO, f"start simultaneous_update(), Message Header: {v[0] if len(v)>0 else ''}")
@@ -342,7 +367,7 @@ def simultaneous_update(v):
     # dvov_act_sim_event_referee_update (v,  (not eventB and sim_event_a_pos_left), synchro, debug)
 
     # # schedule hide timer for simultaneous too
-    # obs.timer_add(lambda: tv_banner_remove_callback(), dinterval)
+    # obs.timer_add(lambda: tv_banner_remove_callback())
 
 
 # ---------- OBS script lifecycle ----------
@@ -350,46 +375,36 @@ def script_description():
     return "<center><h2>Display DiveRecorder Data as a Video Overlay or Overlays</h2></center><p>Display diver and scores from DiveRecorder for single individual or synchro diving event or simultaneous individual events. The appropriate OBS Source (.json) file must be imported into OBS for this overlay to function correctly. You must be connected to the same Class C sub-net as the DR computers.</p><p>Converted from divingoverlaysV4.0.0.lua</p>"
 
 def script_properties():
+    if debug:
+        obs.script_log(obs.LOG_INFO, "------------------------------ script_properties() called")
+
     props = obs.obs_properties_create()
 
-    obs.obs_properties_add_path(props, "flagLoc", "Path to flags folder", obs.OBS_PATH_DIRECTORY, "", None)
-    obs.obs_properties_add_int(props, "dinterval", "TVOverlay display period (ms)", 4000, 15000, 2000)
-    obs.obs_properties_add_bool(props, "debug", "Show debug data in Log file")
-    obs.obs_properties_add_bool(props, "udp_polling_enabled", "Enable UDP Polling")
-    obs.obs_properties_add_bool(props, "rankings_enabled", "Rankings Enabled")
+    # register common properties
+    dvov_script_properties(props)
 
-    rankings_add_properties(props)
+    obs.obs_properties_add_bool(props, "udp_polling_enabled", "Enable UDP Polling")
 
     return props
 
 
 def script_defaults(settings):
-    obs.obs_data_set_default_string(settings, "flagLoc", "C:/Users/<your UserID>/Documents/OBS/flags")
-    obs.obs_data_set_default_int(settings, "dinterval", 5000)
-    obs.obs_data_set_default_bool(settings, "debug", False)
-    obs.obs_data_set_default_bool(settings, "rankings_enabled", False) 
-    
+    if debug:
+        obs.script_log(obs.LOG_INFO, "------------------------------ script_defaults() called")
+
+    obs.obs_data_set_default_bool(settings, "udp_polling_enabled", True)
+
+    dvov_script_defaults(settings)
 
 def script_update(settings):
-    global udp_polling_enabled, flagLoc, dinterval, debug, activeId, rankings_enabled
+    global udp_polling_enabled, debug, activeId, rankings_enabled
+    if debug:
+        obs.script_log(obs.LOG_INFO, "------------------------------ script_update() called")
 
-    flagLoc = obs.obs_data_get_string(settings, "flagLoc")
-    dinterval = obs.obs_data_get_int(settings, "dinterval")
+    dvov_script_update(settings)
+
     debug = obs.obs_data_get_bool(settings, "debug")
     rankings_enabled = obs.obs_data_get_bool(settings, "rankings_enabled")
-
-    # load persisted state values from settings
-    dvov_state_script_update()
-
-    # obs.script_log(obs.LOG_INFO, "OBS defaults updated by script_update()")
-    # obs.script_log(obs.LOG_INFO, f"simultaneous_events: {simultaneous_events}")
-    # obs.script_log(obs.LOG_INFO, f"Synchro selected: {synchro}")
-    # obs.script_log(obs.LOG_INFO, f"B Event selected: {eventB}")
-    # obs.script_log(obs.LOG_INFO, f"Event Complete: {event_complete}")
-    # obs.script_log(obs.LOG_INFO, f"Enable Updates: {overlays_enabled}")
-    # obs.script_log(obs.LOG_INFO, f"File Contents Changed: {file_contents_changed}")
-    # obs.script_log(obs.LOG_INFO, f"TVBanner removed: {tv_banner_removed}")
-    # obs.script_log(obs.LOG_INFO, f"Rankings Enabled: {rankings_enabled}")
 
     # mostly for debugging
     new_state = obs.obs_data_get_bool(settings, "udp_polling_enabled")
@@ -409,24 +424,20 @@ def script_update(settings):
         except Exception:
             pass
         obs.script_log(obs.LOG_INFO, "UDP polling DISABLED")
-    
-    rankings_update_settings(settings)
 
-script_settings = None
 
 def script_load(settings):
-    global udp_polling_enabled, udp_sock, activeId, id_
+    global udp_polling_enabled, udp_sock, activeId, id_, rankings_enabled, debug
+    if debug:
+        obs.script_log(obs.LOG_INFO, "------------------------------ script_update() called")
 
-    global script_settings
-    script_settings = settings
+    dvov_script_load(settings)
 
-    dvov_status_register_hotkeys_force()
-    rankings_register_hotkeys(settings)
+    if debug:
+        obs.script_log(obs.LOG_INFO, "script_load()")
 
-    rankings_set_debug(debug)
-    dvov_state_settings(dinterval, settings, debug)
-
-    dvov_act_set_data(flagLoc, debug)
+    debug = obs.obs_data_get_bool(settings, "debug")
+    rankings_enabled = obs.obs_data_get_bool(settings, "rankings_enabled")
 
     # create and bind UDP socket (non-blocking)
     try:
@@ -449,14 +460,9 @@ def script_load(settings):
     else:
         obs.script_log(obs.LOG_INFO, "UDP polling DISABLED at script load")
 
-    # Really needed here?
-    #remove_tv_banner()
-
 
 def script_unload():
     global udp_sock
-    
-    on_rankings_hotkey_stop(True)
 
     # cleanup
     try:
@@ -479,5 +485,3 @@ def init():
     id_ = activeId
     obs.timer_add(udp_timer_callback, 200)
     obs.script_log(obs.LOG_INFO, f"Listening on UDP ports. Re-start ID: {id_}")
-    # Really needed here?
-    #remove_tv_banner()

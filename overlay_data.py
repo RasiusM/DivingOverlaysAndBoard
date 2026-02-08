@@ -11,6 +11,7 @@ import os
 
 flagLoc = ""
 debug = False
+event_name = ""
 
 # constants (penalty / position lookups)
 positionText = {
@@ -22,38 +23,18 @@ positionText = {
 
 penaltyText = {
     "0": " ",
-    "1": "Failed Dive   ",
-    "2": "Restarted (-2 points)",
-    "3": "Flight or Danger (Max 2 points)",
-    "4": "Arm position (Max 4½ points)"
+    "1": "Failed Dive",
+    "2": "Restarted\n(-2 points)",
+    "3": "Flight or Danger\n(Max 2 points)",
+    "4": "Arm position\n(Max 4½ points)"
 }
 
-
-def dvov_act_set_data (flagLocation: str, debug_flag: bool):
-    global debug, flagLoc
-    debug = debug_flag
-
-    if debug:
-        obs.script_log(obs.LOG_INFO, f"Setting flag location to: {flagLoc}")
-
-    flagLoc = flagLocation
-
 def dvov_act_set_synchro_judge_labels(count_judges):
-    set_source_visibility("SynchroJLabels11", False)
-    set_source_visibility("SynchroJLabels9", False)
-    set_source_visibility("SynchroJLabels7", False)
-    set_source_visibility("SynchroJLabels5", False)
-    set_source_visibility("SynchroJLabelsStatic", True)
-
-    if count_judges == "11":
-        set_source_visibility("SynchroJLabels11", True)
-    elif count_judges == "9":
-        set_source_visibility("SynchroJLabels9", True)
-    elif count_judges == "7":
-        set_source_visibility("SynchroJLabels7", True)
-    elif count_judges == "5":
-        set_source_visibility("SynchroJLabels5", True)
-
+    # overlay synchro judge labels visibility
+    set_source_visibility("SynchroJLabels11", (count_judges == "11"))
+    set_source_visibility("SynchroJLabels9", (count_judges == "9"))
+    set_source_visibility("SynchroJLabels7", (count_judges == "7"))
+    set_source_visibility("SynchroJLabels5", (count_judges == "5"))
 
 # ---------- String insert helper (keeps string length) ----------
 def string_insert(str1, str2, pos):
@@ -65,8 +46,19 @@ def string_insert(str1, str2, pos):
         obs.script_log(obs.LOG_WARNING, f"string_insert length overrun by: {((lenstr2 + pos) - lenstr1)}, str1: {str1}, str2: {str2}")
     return str1[:pos] + str2 + str1[pos + lenstr2:]
 
+def dvov_act_set_event_complete(is_event_complete: bool):
+    if is_event_complete:
+        set_source_string("EventData", f" {event_name} \n Completed")
+        set_source_string("EventDiverNo", " ")
+        set_source_string("EventRoundNo", "Completed")
+    else:
+        set_source_string("EventData", f" {event_name} ")
+        set_source_string("EventDiverNo", " ")
+        set_source_string("EventRoundNo", " ")
 
 def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
+    global event_name
+
     if debug:
         obs.script_log(obs.LOG_INFO, f"start single_update(), Message Type: {msg.packet_id}")
 
@@ -76,27 +68,39 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
     #----------------------------------------------------------
     # Event info
     #----------------------------------------------------------
+    event_name = msg.long_event_name
+
+    diverNo = f"Diver {msg.start_no}/{msg.divers_in_event} "
+    roundNo = f"Round {msg.round}/{msg.rounds_in_event} "
     event_info = (
-        f" {msg.long_event_name} \n"
-        f" Diver {msg.start_no}/{msg.divers_in_event} "
-        f" Round {msg.round}/{msg.rounds_in_event} "
+        f" {event_name} \n "
+        f" {diverNo}"
+        f" {roundNo}"
     )
 
     set_source_string("EventData", event_info)
+    set_source_string("EventTitle", event_name)
+    set_source_string("EventDiverNo", diverNo)
+    set_source_string("EventRoundNo", roundNo)
 
     #----------------------------------------------------------
     # Flag
     #----------------------------------------------------------
     def get_flag_path(team_code):
+        if not team_code or team_code.strip() == "":
+            return ""
+
         flag_file = os.path.join(flagLoc, team_code + ".png")
 
-        print(f"Flag file path: {flag_file}")
+        if debug:
+            obs.script_log(obs.LOG_INFO, f"Flag file path: {flag_file}")
 
         if not os.path.isfile(flag_file):
             folder = os.path.dirname(flag_file)
             flag_file = os.path.join(folder, "Default.png")
 
-        print(f"Flag file path FINAL: {flag_file}")
+        if debug:
+            obs.script_log(obs.LOG_INFO, f"Flag file path FINAL: {flag_file}")
 
         return flag_file
 
@@ -117,6 +121,8 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
         set_source_string("Diver2", f"{msg.d2_first_name} {msg.d2_family_name} - {msg.d2_team_code}")
     else:
         displayName = msg.d1_full_name_team
+        set_source_string("Diver1", displayName)
+        set_source_string("Diver2", " ")
 
     set_source_string("Diver", displayName)
 
@@ -126,13 +132,22 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
     #----------------------------------------------------------
     awards_present = (msg.j1.strip() != "")
 
-    print(f"J1 contents: [{msg.j1}]")
+    if debug:
+        obs.script_log(obs.LOG_INFO, f"J1 contents: [{msg.j1}]")
 
     set_source_string("Penalty", "")
 
+    # always hide synchro labels initially
+    dvov_act_set_synchro_judge_labels(0)
+    set_source_visibility("SynchroJLabelsBoard", False)
+
     if awards_present:
 
-        # ----- Rank 
+        # on awards, hide pre-dive info
+        set_source_visibility("DiveInfo", False)
+        set_source_visibility("DiveInfoBoard", False)
+
+        # ----- Rank
         # Ensure rank is 3 characters wide for display alignment (text source is buggy with alignment)
         rank = msg.rank
         rank = rank.rjust(3)
@@ -141,30 +156,28 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
         # ----- Judge lists -----
         count_j = msg.number_of_judges
 
-        print("I'm here - awards branch!")
-
-        # always hide synchro labels initially
-        dvov_act_set_synchro_judge_labels(0)
-
         if synchro:
             dvov_act_set_synchro_judge_labels(count_j)
+            set_source_visibility("SynchroJLabelsBoard", True)
 
-            # Populate fixed Execution Judge sources JE1..JE6
+            # Fill in board judge values JE1..JE6 and JS1..JS5
+            # Populate Execution Judge sources JE1..JE6
             judge_values = [
                     msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6
                 ]
-            
+
             for i, val in enumerate(judge_values, start=1):
                 set_source_string(f"JE{i}", val)
 
-            # Populate Synchro Judge sources JS1..JS5 based on count_j
+            # Populate Synchro Judge sources JS1..JS5
             judge_values = [
                     msg.j7, msg.j8, msg.j9, msg.j10, msg.j11
                 ]
-            
+
             for i, val in enumerate(judge_values, start=1):
                 set_source_string(f"JS{i}", val)
 
+            # Fill in overlay judge values
             # populate variable judge_values for J1..J11 based on count_j
             if count_j == "11":
                 judge_values = [
@@ -173,43 +186,52 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
                 ]
             elif count_j == "9":
                 judge_values = [
-                    msg.j1, msg.j2, msg.j3, msg.j4, 
-                    msg.j7, msg.j8, msg.j9, msg.j10, msg.j11
+                    msg.j1, msg.j2, msg.j3, msg.j4,
+                    msg.j7, msg.j8, msg.j9, msg.j10, msg.j11,
+                    "  ", "  "
                 ]
             elif count_j == "7":
                 judge_values = [
-                    msg.j1, msg.j2, msg.j3, msg.j4, 
-                    msg.j7, msg.j8, msg.j9
+                    msg.j1, msg.j2, msg.j3, msg.j4,
+                    msg.j7, msg.j8, msg.j9,
+                    "  ", "  ", "  ", "  "
                 ]
             elif count_j == "5":
                 judge_values = [
-                    msg.j1, msg.j2,  
-                    msg.j7, msg.j8, msg.j9
+                    msg.j1, msg.j2,
+                    msg.j7, msg.j8, msg.j9,
+                    "  ", "  ", "  ", "  ", "  "
                 ]
             else:
                 obs.script_log(obs.LOG_WARNING, f"Invalid number of synchro judges: {count_j}")
+
+            for i, val in enumerate(judge_values, start=1):
+                set_source_string(f"J{i}", val.rjust(2) if i <= int(count_j) else "  ")
+
         else:
+            # Fill in board judge values JE1..JE7 and clear JS1..JS5
             judge_values = [
                     msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6, msg.j7
                 ]
-            
+
             for i, val in enumerate(judge_values, start=1):
-                set_source_string(f"JE{i}", val)
+                set_source_string(f"JE{i}", val.rjust(2))
 
             # Clear JS1..JS5
-            clear_values = [" "] * 5
+            clear_values = ["  "] * 5
             for i, val in enumerate(clear_values, start=1):
                 set_source_string(f"JS{i}", val)
 
+            # Fill in overlay judge values
             # mapping of judge values for variable J1..J11
             judge_values = [
                 msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6,
                 msg.j7, msg.j8, msg.j9, msg.j10, msg.j11
             ]
 
-        # Populate J1..J11
-        for i, val in enumerate(judge_values, start=1):
-            set_source_string(f"J{i}", val if i <= int(count_j) else " ")
+            for i, val in enumerate(judge_values, start=1):
+                set_source_string(f"J{i}", val.rjust(2) if i <= int(count_j) else "  ")
+
 
         # Penalty text
         penalty = penaltyText.get(msg.penalty_code, " ")
@@ -218,44 +240,40 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
         set_source_string("Penalty", penalty)
         set_source_string("Total", msg.total)
 
+        # show awards sources
         set_source_visibility("JudgeAwards", True)
-        set_source_visibility("DiveInfo", False)
-
-        # event complete?
-        if msg.start_no == msg.divers_in_event and msg.round == msg.rounds_in_event:
-            event_complete = True
-            set_source_visibility("Event_Complete", True)
-        else:
-            set_source_visibility("Event_Complete", False)
+        set_source_visibility("JudgeAwardsBoard", True)
 
     else:
         #------------------------------------------------------
         # Pre dive info
         #------------------------------------------------------
-        # ----- Start No 
+        set_source_visibility("JudgeAwards", False)
+        set_source_visibility("JudgeAwardsBoard", False)
+        set_source_visibility("SynchroJLabelsBoard", False)
+
+        # ----- Start No
         # Ensure start number is 3 characters wide for display alignment (text source is buggy with alignment)
         start_no = msg.start_no
         start_no = start_no.rjust(3)
 
-        print(f"Start No after rjust: [{start_no}]")
-
         set_source_string("Position_Rank", start_no)
-
-        print("Pre-dive info branch")
+        if debug:
+            obs.script_log(obs.LOG_INFO, "Pre-dive info branch")
         position = positionText.get(msg.pos_code, "")
 
+        # set Total points for the next diver
+        set_source_string("Total", msg.total)
+
+        # Fill in dive info
         set_source_string("Dive_Number", f"{msg.dive_no}{msg.pos_code}")
         set_source_string("Dive_Difficulty", msg.dd)
         set_source_string("Dive_Board", f"{msg.board}m" if msg.board else " ")
         set_source_string("Dive_Description", f"{msg.dive_description}, {position}")
 
-        set_source_visibility("JudgeAwards", False)
         set_source_visibility("DiveInfo", True)
+        set_source_visibility("DiveInfoBoard", True)
 
-    #----------------------------------------------------------
-    # TV Banner
-    #----------------------------------------------------------
-    set_source_visibility("TVBanner", True)
 
 # Not used
 def dvov_act_sim_event_referee_update(v, event_position_left: bool, synchro: bool, debug: bool):
@@ -330,3 +348,26 @@ def dvov_act_sim_event_referee_update(v, event_position_left: bool, synchro: boo
 
     # Fill in source on appropriate EventData side
     set_source_string("EventData_A" if event_position_left else "EventData_B", displayText)
+
+
+def dvov_act_script_properties(props):
+    obs.obs_properties_add_path(props, "flagLoc", "Path to flags folder", obs.OBS_PATH_DIRECTORY, "", None)
+
+
+def dvov_act_script_defaults(settings):
+    # get current folder path and set it as default for flag location
+    path = os.path.dirname(os.path.abspath(__file__))
+    obs.obs_data_set_default_string(settings, "flagLoc", path)
+
+
+# load state values from persisted script settings
+def dvov_act_script_update(settings):
+    global flagLoc, debug
+
+    debug = obs.obs_data_get_bool(settings, "debug")
+    flagLoc = obs.obs_data_get_string(settings, "flagLoc")
+
+
+def dvov_act_script_load(settings):
+    dvov_act_script_update(settings)
+
