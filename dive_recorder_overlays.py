@@ -1,14 +1,8 @@
 '''
-Dive Recorder OBS Overlays Script
+Dive Recorder OBS Overlays/Board Script
+Version 1.0.0
 '''
 # Converted from divingoverlaysV4.0.0.lua (Andy)
-
-
-#TODO: Test with multiple synchro judge numbers
-#TODO: Simultaneous events implementation
-#TODO: Support for reveal in rankings overlays
-
-
 import typing
 
 from overlay_data import dvov_act_set_event_complete, dvov_act_single_event_referee_update, dvov_act_single_event_referee_update
@@ -28,6 +22,7 @@ from datatypes import DiveMessage, DiveListRecord
 from state_controls import dvov_state_on_message, dvov_state_set_event_complete
 from rankings import dvov_rank_set_divers
 from overlay_script_common import dvov_script_properties, dvov_script_defaults, dvov_script_update, dvov_script_load
+from obs_utils import log_info_if_debug
 
 # ---------- Globals
 portClient = 58091  # main port for DR broadcast data
@@ -125,8 +120,7 @@ def parse_update_message(msg: str):
                 club_code=club_code.strip(),
             )
             records.append(record)
-            if debug:
-                obs.script_log(obs.LOG_INFO, f"Parsed Record: {record}")
+            log_info_if_debug(debug, f"Parsed Record: {record}")
 
         except Exception:
             # If any conversion fails, skip this chunk safely
@@ -138,8 +132,7 @@ def parse_update_message(msg: str):
                 obs.script_log(obs.LOG_WARNING, "Multiple parsing errors encountered; further errors will be suppressed.")
                 break
 
-    if debug:
-        obs.script_log(obs.LOG_INFO, f"Finished parsing UPDATE message, total records: {len(records)}")
+    log_info_if_debug(debug, f"Finished parsing UPDATE message, total records: {len(records)}")
 
     return records, rankings_event_rec
 
@@ -162,100 +155,95 @@ def _fetch_update_file(ip_address: str, message_file_name: str):
     message_file_name: str - file path received in UDP message (e.g., Update.txt)
     """
 
-    with ranking_records_lock:
-        def recv_exact(sock, n):
-            buf = b''
-            while len(buf) < n:
-                chunk = sock.recv(n - len(buf))
+    def recv_exact(sock, n):
+        buf = b''
+        while len(buf) < n:
+            chunk = sock.recv(n - len(buf))
+            if not chunk:
+                raise Exception("Connection closed early")
+            buf += chunk
+        return buf
+
+    global tcp_port, rankings_records, rankings_event_record, tcp_receive_timeout
+
+    try:
+        HOST = ip_address
+        PORT = tcp_port
+
+        log_info_if_debug(debug, f"Initiating TCP connection to {ip_address}:{tcp_port} for file {message_file_name}")
+
+        with socket.create_connection((HOST, PORT)) as s:
+            request_text = f"XFER|{message_file_name}\n"
+            s.sendall(request_text.encode('utf-8'))
+
+            s.settimeout(tcp_receive_timeout)
+
+            # Step 1: read the 4-byte header
+            header = recv_exact(s, 4)
+
+            # interpret length of payload (adjust endianness as needed)
+            payload_len = int.from_bytes(header, 'big')  # or 'little'
+            log_info_if_debug(debug, f"Payload length from header: {payload_len}")
+
+            # Step 2: read the full payload
+            chunks = []
+            bytes_read = 0
+            while bytes_read < payload_len:
+                chunk = s.recv(min(4096, payload_len - bytes_read))
                 if not chunk:
-                    raise Exception("Connection closed early")
-                buf += chunk
-            return buf
+                    raise Exception("Connection closed before full message received")
+                chunks.append(chunk)
+                bytes_read += len(chunk)
 
-        global tcp_port, rankings_records, rankings_event_record, tcp_receive_timeout
+            # flush remaining bytes until remote closes
+            try:
+                while True:
+                    if not s.recv(1024):
+                        break
+            except:
+                pass
 
-        try:
-            HOST = ip_address
-            PORT = tcp_port
+            s.settimeout(None)
 
-            if debug:
-                obs.script_log(obs.LOG_INFO, f"Initiating TCP connection to {ip_address}:{tcp_port} for file {message_file_name}")
+        data = b''.join(chunks)
 
-            with socket.create_connection((HOST, PORT)) as s:
-                request_text = f"XFER|{message_file_name}\n"
-                s.sendall(request_text.encode('utf-8'))
+        # Step 3: decode UTF-16LE text (skip BOM if needed)
+        message_file_contents = data.decode('utf-16le')
+        log_info_if_debug(debug, f"Message File Contents:\n{message_file_contents}")
 
-                s.settimeout(tcp_receive_timeout)
+        # check if contents have changed and skip parsing/events if same
+        global update_message_hash
 
-                # Step 1: read the 4-byte header
-                header = recv_exact(s, 4)
+        log_info_if_debug(debug, "Calculating UPDATE message hash.")
 
-                # interpret length of payload (adjust endianness as needed)
-                payload_len = int.from_bytes(header, 'big')  # or 'little'
-                if debug:
-                    obs.script_log(obs.LOG_INFO, f"Payload length from header: {payload_len}")
+        current_hash = hash(message_file_contents)
 
-                # Step 2: read the full payload
-                chunks = []
-                bytes_read = 0
-                while bytes_read < payload_len:
-                    chunk = s.recv(min(4096, payload_len - bytes_read))
-                    if not chunk:
-                        raise Exception("Connection closed before full message received")
-                    chunks.append(chunk)
-                    bytes_read += len(chunk)
+        if current_hash != update_message_hash:
+            update_message_hash = current_hash
 
-                # flush remaining bytes until remote closes
-                try:
-                    while True:
-                        if not s.recv(1024):
-                            break
-                except:
-                    pass
+            log_info_if_debug(debug, "NEW UPDATE Message!")
 
-                s.settimeout(None)
+            parsed_records, parsed_event_record = parse_update_message(message_file_contents)
 
-            data = b''.join(chunks)
-
-            # Step 3: decode UTF-16LE text (skip BOM if needed)
-            message_file_contents = data.decode('utf-16le')
-            if debug:
-                obs.script_log(obs.LOG_INFO, f"Message File Contents:\n{message_file_contents}")
-
-            # check if contents have changed and skip parsing/events if same
-            global update_message_hash
-
-            obs.script_log(obs.LOG_INFO, "Calculating UPDATE message hash.")
-
-            current_hash = hash(message_file_contents)
-
-            obs.script_log(obs.LOG_INFO, "Got UPDATE hash.")
-
-            if current_hash != update_message_hash:
-                update_message_hash = current_hash
-
-                obs.script_log(obs.LOG_INFO, "NEW UPDATE Message!")
-                rankings_records, rankings_event_record = parse_update_message(message_file_contents)
-
-                # Signal main thread to process (OBS API must be called from main thread)
-                global pending_rankings_update
+            # Update shared data with minimal lock time
+            global pending_rankings_update
+            with ranking_records_lock:
+                rankings_records = parsed_records
+                rankings_event_record = parsed_event_record
                 pending_rankings_update = True
-                obs.script_log(obs.LOG_INFO, "Rankings data updated, flagged for main thread processing.")
+            obs.script_log(obs.LOG_INFO, "Rankings data updated, flagged for main thread processing.")
 
-            return True
+        return True
 
-        except Exception as e:
-            obs.script_log(obs.LOG_ERROR, f"Failed to fetch update file from {ip_address}:{tcp_port} - {e}")
-            return False
+    except Exception as e:
+        obs.script_log(obs.LOG_ERROR, f"Failed to fetch update file from {ip_address}:{tcp_port} - {e}")
+        return False
 
 # ---------- Process incoming UDP messages ----------
 def process_udp_message(k: str):
-    global synchro, eventB, overlays_enabled
-    global resultK, file_contents_changed
-    global referee_message, simultaneous_events, debug, rankings_enabled
+    global synchro, resultK, referee_message
 
-    if debug:
-        obs.script_log(obs.LOG_INFO, "process_udp_message()")
+    log_info_if_debug(debug, "process_udp_message()")
 
     if not k:
         return
@@ -266,17 +254,19 @@ def process_udp_message(k: str):
         parts[-1] = parts[-1][:-1]
     resultK = parts
 
-    if debug and parts:
-        obs.script_log(obs.LOG_INFO, f'UDP message: {parts}')
+    if parts:
+        log_info_if_debug(debug, f"UDP message: {parts}")
 
     # --- parse into dataclass ---
     if (parts[0] == "REFEREE"):
         referee_message = parse_dive_message(parts)
-
         synchro = (referee_message.synchro_event == "True" and referee_message.event_ab == "a")
 
         dvov_state_on_message(referee_message)
         dvov_act_single_event_referee_update(referee_message, synchro)
+
+        dvov_state_set_event_complete(False)
+
 
     elif parts[0] == "UPDATE" and rankings_enabled:
         referee_message = None
@@ -296,10 +286,15 @@ def process_udp_message(k: str):
         # AVIDEO|a|EMEA300365|1|ENDOFEVENT|^
         if len(parts) >= 5:
             if parts[4] == "ENDOFEVENT":
-                if debug:
-                    obs.script_log(obs.LOG_INFO, "AVIDEO ENDOFEVENT received, marking event complete.")
+                log_info_if_debug(debug, "AVIDEO ENDOFEVENT received, marking event complete.")
                 dvov_act_set_event_complete(True)
                 dvov_state_set_event_complete(True)
+
+    elif parts[0] == "AWARD":
+        # TODO: dive recorder sends AWARD(s) message after each judge score is entered. So it is possible to implement "live" display of scores after a dive
+        pass
+
+
 
 #---------- UDP polling (called on OBS timer) ----------
 def udp_timer_callback():
@@ -317,11 +312,14 @@ def udp_timer_callback():
     # Process pending rankings update on main thread (thread-safe for OBS API)
     if pending_rankings_update:
         try:
-            with ranking_records_lock:
-                if debug:
-                    obs.script_log(obs.LOG_INFO, "Processing rankings on main thread...")
+            if not ranking_records_lock.acquire(False):
+                return
+            try:
+                log_info_if_debug(debug, "Processing rankings on main thread...")
                 dvov_rank_set_divers(rankings_records, rankings_event_record)
                 pending_rankings_update = False
+            finally:
+                ranking_records_lock.release()
         except Exception as e:
             obs.script_log(obs.LOG_ERROR, f"Error processing rankings: {e}")
             pending_rankings_update = False
@@ -345,29 +343,12 @@ def udp_timer_callback():
                 if last_message_text != text or text.startswith("UPDATE|"):
                     last_message_text = text
 
-                    if debug:
-                        obs.script_log(obs.LOG_INFO, f"UDP Message Text: {text}")
+                    log_info_if_debug(debug, f"UDP Message Text: {text}")
 
                     process_udp_message(text)
-                #else:
-                    #file_contents_changed = False
+
     except Exception as e:
         obs.script_log(obs.LOG_ERROR, f"UDP polling error: {e}")
-
-# ---------- simultaneous_update ----------
-def simultaneous_update(v):
-    global tv_banner_removed, event_complete, sim_event_a_pos_left
-
-    # if debug:
-    #     obs.script_log(obs.LOG_INFO, f"start simultaneous_update(), Message Header: {v[0] if len(v)>0 else ''}")
-
-    # if event_complete and tv_banner_removed and not file_contents_changed:
-    #     return
-
-    # dvov_act_sim_event_referee_update (v,  (not eventB and sim_event_a_pos_left), synchro, debug)
-
-    # # schedule hide timer for simultaneous too
-    # obs.timer_add(lambda: tv_banner_remove_callback())
 
 
 # ---------- OBS script lifecycle ----------
@@ -375,8 +356,7 @@ def script_description():
     return "<center><h2>Display DiveRecorder Data as a Video Overlay or Overlays</h2></center><p>Display diver and scores from DiveRecorder for single individual or synchro diving event or simultaneous individual events. The appropriate OBS Source (.json) file must be imported into OBS for this overlay to function correctly. You must be connected to the same Class C sub-net as the DR computers.</p><p>Converted from divingoverlaysV4.0.0.lua</p>"
 
 def script_properties():
-    if debug:
-        obs.script_log(obs.LOG_INFO, "------------------------------ script_properties() called")
+    log_info_if_debug(debug, "------------------------------ script_properties() called")
 
     props = obs.obs_properties_create()
 
@@ -389,8 +369,7 @@ def script_properties():
 
 
 def script_defaults(settings):
-    if debug:
-        obs.script_log(obs.LOG_INFO, "------------------------------ script_defaults() called")
+    log_info_if_debug(debug, "------------------------------ script_defaults() called")
 
     obs.obs_data_set_default_bool(settings, "udp_polling_enabled", True)
 
@@ -398,8 +377,7 @@ def script_defaults(settings):
 
 def script_update(settings):
     global udp_polling_enabled, debug, activeId, rankings_enabled
-    if debug:
-        obs.script_log(obs.LOG_INFO, "------------------------------ script_update() called")
+    log_info_if_debug(debug, "------------------------------ script_update() called")
 
     dvov_script_update(settings)
 
@@ -428,13 +406,11 @@ def script_update(settings):
 
 def script_load(settings):
     global udp_polling_enabled, udp_sock, activeId, id_, rankings_enabled, debug
-    if debug:
-        obs.script_log(obs.LOG_INFO, "------------------------------ script_update() called")
+    log_info_if_debug(debug, "------------------------------ script_update() called")
 
     dvov_script_load(settings)
 
-    if debug:
-        obs.script_log(obs.LOG_INFO, "script_load()")
+    log_info_if_debug(debug, "script_load()")
 
     debug = obs.obs_data_get_bool(settings, "debug")
     rankings_enabled = obs.obs_data_get_bool(settings, "rankings_enabled")
@@ -479,8 +455,8 @@ def script_unload():
 def init():
     # increase activeId and start timer loop
     global activeId, id_
-    if debug:
-        obs.script_log(obs.LOG_INFO, "init()")
+    log_info_if_debug(debug, "init()")
+
     activeId += 1
     id_ = activeId
     obs.timer_add(udp_timer_callback, 200)

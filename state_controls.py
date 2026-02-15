@@ -12,8 +12,30 @@ else:
 
 from typing import Union
 
-from obs_utils import EventMode, set_source_string, set_color_source_alpha, set_source_visibility
-from overlay_data import dvov_act_set_synchro_judge_labels, dvov_act_single_event_referee_update
+from obs_utils import set_source_string, set_color_source_alpha, set_source_visibility, log_info_if_debug
+from enums import (
+    EventMode,
+    DiveInfoGrp,
+    JudgeAwardsGrp,
+    SynchroJLabels,
+    TVBannerGrp,
+    MainBoardGrp,
+    DiveInfoBoardGrp,
+    JudgeAwardsBoardGrp,
+    PreEventGrp,
+    InProgrGrp,
+    PostEventGrp,
+    EventABGrp,
+    EventInfoGrp,
+    DisableOvrlGrp,
+    AutoHideGrp,
+    TopOvrlPosGrp,
+    TopOverlayGrp,
+)
+
+from overlay_data import dvov_act_single_event_referee_update, dvov_act_set_event_ab, dvov_act_set_display_enabled
+from rankings import dvov_rank_set_event_ab
+
 from datatypes import DiveMessage
 
 debug = False
@@ -22,8 +44,8 @@ referee_message: Union[DiveMessage, None] = None
 
 synchro = False
 
-single_event_pos_left: bool = True
-sim_event_a_pos_left: bool = True
+top_overlay_pos_left: bool = True
+event_ab_is_a: bool = True
 overlays_enabled: bool = True
 event_complete: bool = False
 file_contents_changed: bool = True
@@ -34,13 +56,20 @@ script_settings = None
 def dvov_state_set_event_complete(is_event_complete: bool):
     global event_complete
     event_complete = is_event_complete
-    set_source_visibility("Event_Complete", event_complete)
+    set_color_source_alpha(PostEventGrp.EventCompleted, 255 if event_complete else 0)
+
 
 # responsible for updating visibility/overlay removal logic
 def dvov_state_on_message(msg: DiveMessage):
     global referee_message, synchro, event_complete
 
     referee_message = msg
+
+    # If not "our" event, ignore message (e.g. if Event A message received but currently displaying Event B)
+    if ((referee_message.event_ab == "a" and not event_ab_is_a)
+        or
+        (referee_message.event_ab == "b" and event_ab_is_a)):
+        return
 
     # Judges count
     set_judges_count(int(msg.number_of_judges) if msg.number_of_judges.isdigit() else 0)
@@ -50,51 +79,56 @@ def dvov_state_on_message(msg: DiveMessage):
     if referee_message.j1.strip() == "":
         obs.timer_add(lambda: tv_banner_remove_callback(), display_duration)
 
-    # Cannot have synchro if this is Event B
-    synchro = (referee_message.synchro_event == "True" and referee_message.event_ab == "a")
+    synchro = (referee_message.synchro_event == "True")
+
+    # Show warning if Synchro Event is true but it's B event (not sure if this is supported in diving software - original script did not handle this case)
+    # TODO: test synchro B event
+    if synchro and referee_message.event_ab == "b":
+        obs.script_log(obs.LOG_WARNING, "Received message with Synchro Event = True but it's B event. Is this supported?")
 
     # Event type (Synchro / Individual)
     set_synchro_event(synchro)
 
-    display_event_overlay(single_event_pos_left)
+    display_top_overlay(top_overlay_pos_left)
     display_tv_banner()
 
 
 def set_synchro_event(synchro: bool):
     if synchro:
-        set_source_string("Event_Type", "Synchro Event")
-        set_color_source_alpha("F9_Function_Background_True", 255)
-        set_color_source_alpha("F9_Function_Background_False", 0)
+        set_source_string(EventInfoGrp.EventType, "Synchro Event")
+        set_color_source_alpha(EventInfoGrp.Synchro, 255)
+        set_color_source_alpha(EventInfoGrp.Individual, 0)
     else:
-        set_source_string("Event_Type", "Individual Event")
-        set_color_source_alpha("F9_Function_Background_False", 255)
-        set_color_source_alpha("F9_Function_Background_True", 0)
+        set_source_string(EventInfoGrp.EventType, "Individual Event")
+        set_color_source_alpha(EventInfoGrp.Individual, 255)
+        set_color_source_alpha(EventInfoGrp.Synchro, 0)
 
 
 def set_judges_count(number_of_judges: int):
-    set_source_string("No_of_Judges", f"No Judges: {number_of_judges}")
+    set_source_string(EventInfoGrp.NoOfJudges, f"No Judges: {number_of_judges}")
 
 
-def display_event_overlay(left: bool):
+def display_top_overlay(left: bool):
     if left:
-        set_color_source_alpha("OverlayPositionLeft", 255)
-        set_color_source_alpha("OverlayPositionRight", 0)
+        set_color_source_alpha(TopOvrlPosGrp.Left, 255)
+        set_color_source_alpha(TopOvrlPosGrp.Right, 0)
         if overlays_enabled:
-            set_source_visibility("Event 1", True)
-            set_source_visibility("Event 2", False)
+            set_source_visibility(TopOverlayGrp.Left, True)
+            set_source_visibility(TopOverlayGrp.Right, False)
 
     else:
-        set_color_source_alpha("OverlayPositionLeft", 0)
-        set_color_source_alpha("OverlayPositionRight", 255)
+        set_color_source_alpha(TopOvrlPosGrp.Left, 0)
+        set_color_source_alpha(TopOvrlPosGrp.Right, 255)
 
         if overlays_enabled:
-            set_source_visibility("Event 1", False)
-            set_source_visibility("Event 2", True)
+            set_source_visibility(TopOverlayGrp.Left, False)
+            set_source_visibility(TopOverlayGrp.Right, True)
+
 
 def display_tv_banner():
     if overlays_enabled:
-        set_source_visibility("TVBanner", True)
-        set_source_visibility("MainBoard", True)
+        set_source_visibility(TVBannerGrp.GroupName, True)
+        set_source_visibility(MainBoardGrp.GroupName, True)
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # ---------- Banner ----------
@@ -102,11 +136,10 @@ def display_tv_banner():
 tv_banner_removed = False
 
 def remove_tv_banner():
-    if debug:
-        obs.script_log(obs.LOG_INFO, "start remove_tv_banner()")
+    log_info_if_debug(debug, "start remove_tv_banner()")
 
     # remove stream overlays, do not touch board info
-    for name in ["Event A", "Event B", "Event 1", "Event 2", "TVBanner", "JudgeAwards", "DiveInfo"]:
+    for name in [TopOverlayGrp.Left, TopOverlayGrp.Right, TVBannerGrp.GroupName, JudgeAwardsGrp.GroupName, DiveInfoGrp.GroupName]:
         set_source_visibility(name, False)
 
     # cancel any pending remove_TVbanner timer callback if exists:
@@ -115,10 +148,10 @@ def remove_tv_banner():
     except Exception:
         pass
 
+
 def tv_banner_remove_callback():
     global tv_banner_removed
-    if debug:
-        obs.script_log(obs.LOG_INFO, "start tv_banner_remove_callback()")
+    log_info_if_debug(debug, "start tv_banner_remove_callback()")
 
     if hide_disable and not event_complete:
         tv_banner_removed = True
@@ -127,8 +160,7 @@ def tv_banner_remove_callback():
         except Exception:
             pass
 
-        if debug:
-            obs.script_log(obs.LOG_INFO, "hide_disable set - skipping tv_banner_remove_callback unless event_complete true")
+        log_info_if_debug(debug, "hide_disable set - skipping tv_banner_remove_callback unless event_complete true")
 
         return
 
@@ -139,37 +171,34 @@ def tv_banner_remove_callback():
         pass
     tv_banner_removed = True
 
+
 # ---------- Hotkey/callback functions ----------
 def do_nothing(pressed):
     if not pressed:
         return
     obs.script_log(obs.LOG_INFO, "Do Nothing!")
 
+
 def remove_overlays(pressed):
     if not pressed:
         return
 
-    if debug:
-        obs.script_log(obs.LOG_INFO, "Removing overlays and board info.")
+    log_info_if_debug(debug, "Removing overlays and board info.")
 
     # disable all sources (overlays and board)
-    for name in ["Event A", "Event B", "Event 1", "Event 2", "TVBanner", "MainBoard", "JudgeAwards", "DiveInfo", "JudgeAwardsBoard", "DiveInfoBoard",
-                 "SynchroJLabels11", "SynchroJLabels9", "SynchroJLabels7", "SynchroJLabels5", "SynchroJLabelsBoard"]:
+    for name in [TopOverlayGrp.Left, TopOverlayGrp.Right,
+                 TVBannerGrp.GroupName, JudgeAwardsGrp.GroupName, DiveInfoGrp.GroupName,
+                 MainBoardGrp.GroupName, JudgeAwardsBoardGrp.GroupName, DiveInfoBoardGrp.GroupName,
+                 SynchroJLabels.Judges11, SynchroJLabels.Judges9, SynchroJLabels.Judges7, SynchroJLabels.Judges5, SynchroJLabels.JudgesBoard]:
         set_source_visibility(name, False)
+
 
 def display_overlays(pressed):
     if not pressed:
         return
 
-    # if simultaneous_events:
-    #     # enable the commonly used overlay groups:
-    #     return
-    #     for name in ["Event A", "Event B"]:
-    #         set_source_visibility(name, True)
-    # else:
-        # enable the commonly used overlay groups:
+    display_top_overlay(top_overlay_pos_left)
 
-    display_event_overlay(single_event_pos_left)
 
 # same as display_overlays plus redisplay tvBanner
 def redisplay_overlays(pressed):
@@ -179,8 +208,7 @@ def redisplay_overlays(pressed):
     display_overlays(True)
 
     if referee_message is None:
-        if debug:
-            obs.script_log(obs.LOG_INFO, "No parsed message available for redisplay.")
+        log_info_if_debug(debug, "No parsed message available for redisplay.")
         return
 
     # information is available, re-display tv banner
@@ -189,12 +217,11 @@ def redisplay_overlays(pressed):
 
 
 def set_display_enabled(is_enabled):
-    set_color_source_alpha("F4_Function_Background_True", 255 if is_enabled else 0)
-    set_color_source_alpha("F4_Function_Background_False",  0 if is_enabled else 255)
+    set_color_source_alpha(DisableOvrlGrp.Disabled, 0 if is_enabled else 255)
     if is_enabled:
-        set_source_string("Overlays_Visible", "Overlays Visible")
+        set_source_string(DisableOvrlGrp.Status, "Overlays Visible")
     else:
-        set_source_string("Overlays_Visible", "Overlays NOT Visible")
+        set_source_string(DisableOvrlGrp.Status, "Overlays NOT Visible")
         remove_overlays(True)
 
 
@@ -206,27 +233,35 @@ def toggle_display_disable(pressed):
 
     obs.obs_data_set_bool(script_settings, "overlays_enabled", overlays_enabled)
     set_display_enabled(overlays_enabled)
+    dvov_act_set_display_enabled(overlays_enabled)
+
+
+def set_event_a(is_a: bool):
+    set_color_source_alpha(EventABGrp.AActive, 255 if is_a else 0)
+    set_color_source_alpha(EventABGrp.BActive, 0 if is_a else 255)
+
+    dvov_act_set_event_ab(is_a)
+    dvov_rank_set_event_ab(is_a)
+
+    remove_overlays(True)
 
 
 def toggle_event_a_or_b(pressed):
-    global sim_event_a_pos_left
+    global event_ab_is_a
     if not pressed:
         return
-    sim_event_a_pos_left = not sim_event_a_pos_left
+    event_ab_is_a = not event_ab_is_a
 
-    #TODO: Implement toggling of Event A/B overlays
-    #TODO: Implement toggling of Event A/B overlays status
+    set_event_a(event_ab_is_a)
 
 
 def set_autohide_enabled(isEnabled):
     if isEnabled:
-        set_color_source_alpha("F5_Function_Background_True", 255)
-        set_color_source_alpha("F5_Function_Background_False", 0)
-        set_source_string("AutoHide", "Auto-Hide Enabled")
+        set_color_source_alpha(AutoHideGrp.Disabled, 0)
+        set_source_string(AutoHideGrp.Status, "Auto-Hide Enabled")
     else:
-        set_color_source_alpha("F5_Function_Background_True", 0)
-        set_color_source_alpha("F5_Function_Background_False", 255)
-        set_source_string("AutoHide", "Auto-Hide Disabled")
+        set_color_source_alpha(AutoHideGrp.Disabled, 255)
+        set_source_string(AutoHideGrp.Status, "Auto-Hide Disabled")
 
 
 def toggle_disable_of_autohide(pressed):
@@ -243,60 +278,31 @@ def toggle_disable_of_autohide(pressed):
 
     set_autohide_enabled(not hide_disable)
 
-def toggle_event_position(pressed):
-    global sim_event_a_pos_left, single_event_pos_left, simultaneous_events
+def toggle_top_overlay_position(pressed):
+    global top_overlay_pos_left
     if not pressed:
         return
 
-    # if simultaneous_events:
-    #     obs.script_log(obs.LOG_INFO, "Simultaneous mode not implemented.")
-    #     sim_event_a_pos_left = not sim_event_a_pos_left
-    # else:
+    top_overlay_pos_left = not top_overlay_pos_left
 
-    single_event_pos_left = not single_event_pos_left
-
-    obs.obs_data_set_bool(script_settings, "single_event_pos_left", single_event_pos_left)
-    display_event_overlay(single_event_pos_left)
+    obs.obs_data_set_bool(script_settings, "single_event_pos_left", top_overlay_pos_left)
+    display_top_overlay(top_overlay_pos_left)
 
     if debug:
         obs.script_log(obs.LOG_INFO, "Toggle single event position.")
 
-# def toggle_simultaneous_events(pressed):
-#     global simultaneous_events
-#     if not pressed:
-#         return
-#     simultaneous_events = not simultaneous_events
-#     if simultaneous_events:
-#         return
-#         # enable event groups for simultaneous
-#         set_source_visibility("Event A", True)
-#         # set_source_visibility("EventData_A", True)
-#         set_source_visibility("Event B", True)
-#         # set_source_visibility("EventData_B", True)
-
-#         set_color_source_alpha("Position1", 255)
-#         set_color_source_alpha("Position2", 255)
-
-#         toggle_event_position(True)
-#         display_overlays(True)
-#     else:
-#         # disable event groups for simultaneous
-#         set_source_visibility("Event A", False)
-#         set_source_visibility("Event B", False)
-
-#         dvov_status_set_event_overlay_position(single_event_pos_left)
 
 def set_event_mode (eventMode: EventMode):
-    set_color_source_alpha("F7_Function_Background_Active", 0)
-    set_color_source_alpha("F8_Function_Background_Active", 0)
-    set_color_source_alpha("F9_Function_Background_Active", 0)
+    set_color_source_alpha(PreEventGrp.Active, 0)
+    set_color_source_alpha(InProgrGrp.Active, 0)
+    set_color_source_alpha(PostEventGrp.Active, 0)
 
     if eventMode == EventMode.StartList:
-        set_color_source_alpha("F7_Function_Background_Active", 255)
+        set_color_source_alpha(PreEventGrp.Active, 255)
     elif eventMode == EventMode.Event:
-        set_color_source_alpha("F8_Function_Background_Active", 255)
+        set_color_source_alpha(InProgrGrp.Active, 255)
     elif eventMode == EventMode.Rankings:
-        set_color_source_alpha("F9_Function_Background_Active", 255)
+        set_color_source_alpha(PostEventGrp.Active, 255)
 
     if debug:
         obs.script_log(obs.LOG_INFO, f"Setting Event Mode to {eventMode}.")
@@ -337,7 +343,7 @@ def dvov_status_register_hotkeys_force():
         obs.script_log(obs.LOG_INFO, "Hotkeys already registered (skipping).")
         return
 
-    # JSON fragment similar to your Lua snippet. Use OBS key tokens here.
+    # JSON fragment. Use OBS key tokens here.
     json_s = (
         '{'
         '"htk_1":  [ { "key": "OBS_KEY_F1" } ],'
@@ -346,7 +352,7 @@ def dvov_status_register_hotkeys_force():
         '"htk_4":  [ { "key": "OBS_KEY_F4" } ],'
         '"htk_5":  [ { "key": "OBS_KEY_F5" } ],'
         '"htk_6":  [ { "key": "OBS_KEY_F6" } ],'
-        '"htk_7":  [ { "key": "OBS_KEY_F7" } ],' # Will become F1
+        '"htk_7":  [ { "key": "OBS_KEY_F7" } ],'
         '"htk_8":  [ { "key": "OBS_KEY_F8" } ],'
         '"htk_9":  [ { "key": "OBS_KEY_F9" } ],'
         '"htk_10": [ { "key": "OBS_KEY_F10" } ]'
@@ -356,19 +362,17 @@ def dvov_status_register_hotkeys_force():
 
     # Define mapping: id -> (description, callback)
     HK = {
-        "htk_1":  ("Temporary Remove DR2TVOverlays",            remove_overlays),
-        "htk_2":  ("Temporary Display All DR2TVOverlays",       display_overlays),
-        "htk_3":  ("Re-display Overlays",                       redisplay_overlays),
-        "htk_4":  ("Permanently Remove All Overlays",           toggle_display_disable),
-        "htk_5":  ("Disable Auto-hide of Overlays",             toggle_disable_of_autohide),
-        #"htk_6":  ("Toggle to Display Event A or Event B",       toggle_event_a_or_b),
-        "htk_6":  ("Not used",                                  do_nothing),
-        "htk_7":  ("Set Waiting for Event mode",                set_waiting_for_event_mode),
-        "htk_8":  ("Set Event mode",                            set_event_in_progress_mode),
-        "htk_9":  ("Set Rankings mode",                         set_event_rankings_mode),
-        "htk_10": ("Toggle Event Overlay Position",             toggle_event_position),
-        #"htk_12": ("Toggle to/from Simultaneous Event Overlays", toggle_simultaneous_events),
-    }
+            "htk_1":  ("Set Waiting for Event mode",                set_waiting_for_event_mode),
+            "htk_2":  ("Set Event mode",                            set_event_in_progress_mode),
+            "htk_3":  ("Set Rankings mode",                         set_event_rankings_mode),
+            "htk_4":  ("Toggle to Display Event A or Event B",       toggle_event_a_or_b),
+            "htk_5":  ("Temporary Remove DR2TVOverlays",            remove_overlays),
+            "htk_6":  ("Temporary Display All DR2TVOverlays",       display_overlays),
+            "htk_7":  ("Re-display Overlays",                       redisplay_overlays),
+            "htk_8":  ("Permanently Remove All Overlays",           toggle_display_disable),
+            "htk_9":  ("Disable Auto-hide of Overlays",             toggle_disable_of_autohide),
+            "htk_10": ("Toggle Event Overlay Position",             toggle_top_overlay_position),
+        }
 
     # Create an obs_data_t from JSON
     data = obs.obs_data_create_from_json(json_s)
@@ -403,12 +407,12 @@ def dvov_state_script_defaults(settings):
 
 # load state values from persisted script settings
 def dvov_state_script_update(settings):
-    global single_event_pos_left, overlays_enabled, hide_disable, debug, display_duration
+    global top_overlay_pos_left, overlays_enabled, hide_disable, debug, display_duration
 
     debug = obs.obs_data_get_bool(settings, "debug")
     display_duration = obs.obs_data_get_int(settings, "dinterval")
 
-    single_event_pos_left = obs.obs_data_get_bool(settings, "single_event_pos_left")
+    top_overlay_pos_left = obs.obs_data_get_bool(settings, "single_event_pos_left")
     overlays_enabled = obs.obs_data_get_bool(settings, "overlays_enabled")
     hide_disable = obs.obs_data_get_bool(settings, "hide_disable")
 
@@ -421,7 +425,7 @@ def dvov_state_script_load(settings):
     # load persisted states
     dvov_state_script_update(settings)
     if debug:
-        obs.script_log(obs.LOG_INFO, f"dvov_state_script_load(): single_event_pos_left={single_event_pos_left}, overlays_enabled={overlays_enabled}, hide_disable={hide_disable}")
+        obs.script_log(obs.LOG_INFO, f"dvov_state_script_load(): single_event_pos_left={top_overlay_pos_left}, overlays_enabled={overlays_enabled}, hide_disable={hide_disable}")
 
 
 

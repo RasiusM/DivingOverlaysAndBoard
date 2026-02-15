@@ -1,11 +1,5 @@
 import typing
-from enum import Enum
 
-class EventMode(Enum):
-    StartList = 1
-    Event = 2
-    Rankings = 3
-    Undefined = 4
 
 if typing.TYPE_CHECKING:
     import _obspython as obs  # full symbol set for IDE
@@ -20,7 +14,6 @@ def get_scene(scene_name):
     scene = obs.obs_scene_from_source(src)
     # DO NOT release scene — OBS owns it
     return scene, src  # return the source so we can release only that
-
 
 def find_scene_item(scene, source_name):
     if scene is None:
@@ -56,13 +49,6 @@ def get_all_scene_names():
 def set_source_visibility(name, visible):
     scene_items_to_set = []
 
-    # Check if this is a group action
-    # global group_actions
-    # if name in group_actions:
-    #     obs.script_log(obs.LOG_INFO, f"Performing group action for '{name}' with visibility {visible}")
-    #     group_actions[name](visible)
-    #     return
-
     # Step 1: Collect scene items to set
     for scene_name in get_all_scene_names():
         scene, scene_src = get_scene(scene_name)
@@ -77,6 +63,10 @@ def set_source_visibility(name, visible):
 
     for scene_name, item in scene_items_to_set:
         obs.obs_sceneitem_set_visible(item, visible)
+
+def log_info_if_debug(debug_enabled, message):
+    if debug_enabled:
+        obs.script_log(obs.LOG_INFO, message)
 
 # ---------- Helpers for OBS source updates ----------
 def set_source_string(source_name, text):
@@ -104,7 +94,7 @@ def set_source_file(source_name, file_path):
 def set_color_source_alpha(source_name, alpha):
     """
     Sets only the alpha channel of a color source's ABGR color.
-    Alpha: 0–255
+    Alpha: 0-255
     This is used as hack to hide/show sources inside source groups.
     Python OBS API does not work in setting source visibility directly inside groups.
     """
@@ -156,3 +146,44 @@ def set_color_source_color(source_name, rgb):
         obs.obs_source_update(source, settings)
         obs.obs_data_release(settings)
         obs.obs_source_release(source)
+
+
+def set_filter_path(source_name, filter_name, setting_name, new_path):
+    source = obs.obs_get_source_by_name(source_name)
+    if not source:
+        obs.script_log(obs.LOG_WARNING, f"Source not found (filter_path): {source_name}")
+        return
+    try:
+        filter_src = obs.obs_source_get_filter_by_name(source, filter_name)
+        if not filter_src:
+            obs.script_log(obs.LOG_WARNING, f"Filter not found (filter_path): {filter_name}")
+            return
+        try:
+            settings = obs.obs_source_get_settings(filter_src)
+            obs.obs_data_set_string(settings, setting_name, new_path)
+            obs.obs_source_update(filter_src, settings)
+        finally:
+            obs.obs_source_release(filter_src)
+    finally:
+        obs.obs_source_release(source)
+
+def set_vlc_playlist(source_name, folder_path):
+    src = obs.obs_get_source_by_name(source_name)
+    if not src:
+        return
+    try:
+        settings = obs.obs_source_get_settings(src)
+
+        playlist = obs.obs_data_array_create()
+        item = obs.obs_data_create()
+        obs.obs_data_set_string(item, "value", folder_path)  # can be file or folder
+        obs.obs_data_array_push_back(playlist, item)
+
+        obs.obs_data_set_array(settings, "playlist", playlist)
+        obs.obs_source_update(src, settings)
+
+        obs.obs_data_release(item)
+        obs.obs_data_array_release(playlist)
+        obs.obs_data_release(settings)
+    finally:
+        obs.obs_source_release(src)

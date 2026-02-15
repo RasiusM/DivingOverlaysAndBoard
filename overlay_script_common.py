@@ -8,12 +8,13 @@ else:
     import obspython as obs   # real runtime module
 
 from state_controls import dvov_state_script_properties, dvov_state_script_defaults, dvov_state_script_update, dvov_state_script_load, dvov_status_register_hotkeys_force
-from overlay_data import dvov_act_script_update, dvov_act_script_load, dvov_act_script_properties, dvov_act_script_defaults
+from overlay_data import dvov_act_script_update, dvov_act_script_load #, dvov_act_script_properties, dvov_act_script_defaults
 from rankings import dvov_rank_add_properties, dvov_rank_script_defaults, dvov_rank_script_update, dvov_rank_script_load, dvov_rank_register_hotkeys, on_rankings_hotkey_stop
 
 # ---------- OBS script lifecycle ----------
 def dvov_script_properties(props):
-    dvov_act_script_properties(props)
+    obs.obs_properties_add_path(props, "rootDir", "Diving Overlays Root Directory", obs.OBS_PATH_DIRECTORY, "", None)
+
     dvov_state_script_properties(props)
 
     obs.obs_properties_add_bool(props, "rankings_enabled", "Rankings Enabled")
@@ -26,7 +27,11 @@ def dvov_script_properties(props):
 
 
 def dvov_script_defaults(settings):
-    dvov_act_script_defaults(settings)
+    # get current folder path and set it as root directory
+    path = os.path.dirname(os.path.abspath(__file__))
+    obs.obs_data_set_default_string(settings, "rootDir", path)
+
+    # dvov_act_script_defaults(settings)
     dvov_rank_script_defaults(settings)
     dvov_state_script_defaults(settings)
 

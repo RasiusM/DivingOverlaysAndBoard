@@ -5,7 +5,7 @@ from dataclasses import dataclass
 class DiveMessage:
     packet_id: str                 #  1
     event_ab: str                  #  2
-    sending_computer_id: str       #  3   
+    sending_computer_id: str       #  3
     event_mode: str                #  4
     event_status: str              #  5
     round: str                     #  6
@@ -36,7 +36,7 @@ class DiveMessage:
     scoreboard_display_mode: str   # 31
     rank: str                      # 32
     prediction: str                # 33
-    likely_rank: str               # 34   
+    likely_rank: str               # 34
     background_color: str          # 35
     atext_color: str               # 36
     btext_color: str               # 37
