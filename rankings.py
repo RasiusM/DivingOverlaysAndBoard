@@ -9,7 +9,7 @@ else:
 from typing import List
 from datatypes import DiveListRecord, DiveMessage
 from enums import RankingsSrc, EventMode
-from obs_utils import set_source_file, set_source_string, set_source_visibility, log_info_if_debug
+from obs_utils import is_source_available, set_source_file, set_source_string, set_source_visibility, log_info_if_debug
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # --------- Rankings handling
@@ -25,6 +25,9 @@ rankings_event_rec_working_copy: DiveMessage
 mode: EventMode = EventMode.Undefined  # Initialize with default mode
 
 debug = False
+root_dir = ""
+set_source_props_retries = 0
+SET_SOURCE_PROPS_RETRIES_MAX_RETRIES = 10
 
 # ---------------------------
 # Internal state
@@ -213,6 +216,56 @@ def on_rankings_hotkey_stop(pressed):
 
         stop_pagination()
 
+
+# -------
+# script lifecycle functions
+# ------
+def set_source_paths():
+    global set_source_props_retries
+
+    do_source_exists_check=True
+
+    # set any source paths that depend on root directory here
+
+    # logic here looks too complicated because we need to deal with the fact that on script load,
+    # sources might not be available yet, so we have a timer to keep retrying until sources are available,
+    # but we also want to avoid infinite loop in case sources are really missing,
+    # so we stop retrying after several attempts and log warnings if sources don't exist.
+    set_source_props_retries += 1
+
+    if set_source_props_retries > SET_SOURCE_PROPS_RETRIES_MAX_RETRIES:
+        do_source_exists_check = False
+        obs.timer_remove(set_source_paths) # stop retrying, but still attempt to set source paths one last time (which will log warnings if sources don't exist)
+
+    pic_file = os.path.join(root_dir, f"Media\\Art\\{RankingsSrc.HeaderArtFile}")
+    if not os.path.isfile(pic_file):
+        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.HeaderArtFile} file does not exist: {pic_file}")
+
+    if not is_source_available(RankingsSrc.HeaderArt) and do_source_exists_check:
+        return
+    set_source_file(RankingsSrc.HeaderArt, pic_file)
+
+    pic_file = os.path.join(root_dir, f"Media\\Art\\{RankingsSrc.HeaderLogoFile}")
+    if not os.path.isfile(pic_file):
+        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.HeaderLogoFile} file does not exist: {pic_file}")
+
+    if not is_source_available(RankingsSrc.HeaderLogo) and do_source_exists_check:
+        return
+    set_source_file(RankingsSrc.HeaderLogo, pic_file)
+
+    # Set Schedule text to file content
+    schedule_file = os.path.join(root_dir, f"data\\{RankingsSrc.ScheduleTextFile}")
+    if not os.path.isfile(schedule_file):
+        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.ScheduleTextFile} file does not exist: {schedule_file}")
+
+    if not is_source_available(RankingsSrc.ScheduleText) and do_source_exists_check:
+        return
+    set_source_file(RankingsSrc.ScheduleText, schedule_file)
+
+    # if we're here, it means we succeeded in setting source paths or we failed (and reported) because sources don't exist and we want to stop retrying
+    obs.timer_remove(set_source_paths)
+
+
 def dvov_rank_add_properties(props):
     obs.obs_properties_add_int(props, "rnk_num_per_page", "Rankings: Divers per page", 1, RANKINGS_MAX_LINES, 1)
     obs.obs_properties_add_int(props, "rnk_display_duration", "Rankings: Seconds per page", 1, 20, 1)
@@ -223,10 +276,9 @@ def dvov_rank_script_defaults(settings):
     obs.obs_data_set_default_int(settings, "rnk_display_duration", 10)
 
 
-# script_update actions
 def dvov_rank_script_update(settings):
     # Rankings settings
-    global debug, rankings_no_lines_per_page, rankings_page_display_duration
+    global debug, rankings_no_lines_per_page, rankings_page_display_duration, root_dir
 
     debug = obs.obs_data_get_bool(settings, "debug")
     rankings_no_lines_per_page = obs.obs_data_get_int(settings, "rnk_num_per_page")
@@ -235,31 +287,14 @@ def dvov_rank_script_update(settings):
     # Set Header picture source files
     root_dir = obs.obs_data_get_string(settings, "rootDir")
 
-    pic_file = os.path.join(root_dir, f"Media\\Art\\{RankingsSrc.HeaderArtFile}")
-    if not os.path.isfile(pic_file):
-        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.HeaderArtFile} file does not exist: {pic_file}")
-
-    set_source_file(RankingsSrc.HeaderArt, pic_file)
-
-    pic_file = os.path.join(root_dir, f"Media\\Art\\{RankingsSrc.HeaderLogoFile}")
-    if not os.path.isfile(pic_file):
-        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.HeaderLogoFile} file does not exist: {pic_file}")
-
-    set_source_file(RankingsSrc.HeaderLogo, pic_file)
-
-    # Set Schedule text to file content
-    schedule_file = os.path.join(root_dir, f"data\\{RankingsSrc.ScheduleTextFile}")
-    if not os.path.isfile(schedule_file):
-        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.ScheduleTextFile} file does not exist: {schedule_file}")
-
-    set_source_file(RankingsSrc.ScheduleText, schedule_file)
+    # need to do this by timer, because on script load, sources aren't available yet
+    obs.timer_add(set_source_paths, 3000)
 
 
 def dvov_rank_script_load(settings):
     dvov_rank_script_update(settings)
 
 
-# script_load actions
 def dvov_rank_register_hotkeys(settings):
     # Rankings hotkeys
     global _hotkey_start_id, _hotkey_stop_id

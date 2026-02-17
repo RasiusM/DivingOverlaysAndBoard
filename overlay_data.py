@@ -6,7 +6,7 @@ else:
     import obspython as obs   # real runtime module
 
 from datatypes import DiveMessage
-from obs_utils import set_filter_path, set_source_string, set_source_file, set_source_visibility, log_info_if_debug, set_vlc_playlist
+from obs_utils import set_filter_path, set_source_string, set_source_file, set_source_visibility, log_info_if_debug, set_vlc_playlist, is_source_available
 from enums import DiveInfoBoardGrp, EventInfo, InstantReplaySrc, JudgeAwardsBoardGrp, MainBoardGrp, TVBannerGrp, SynchroJLabels, DiveInfoGrp, JudgeAwardsGrp
 import os
 
@@ -16,6 +16,9 @@ debug = False
 event_name = ""
 event_ab_is_a = True  # default to Event A
 overlays_enabled = True
+
+set_source_props_retries = 0
+SET_SOURCE_PROPS_RETRIES_MAX_RETRIES = 10
 
 # constants (penalty / position lookups)
 positionText = {
@@ -319,38 +322,64 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
             set_source_visibility(DiveInfoGrp.GroupName, True)
             set_source_visibility(DiveInfoBoardGrp.GroupName, True)
 
-def set_source_paths(root_dir):
+
+def set_source_paths():
+    global set_source_props_retries
+
+    do_source_exists_check = True
+
     # set any source paths that depend on root directory here
 
-    # Curtain and curtain logo for instant replay scene
-    curtain_file = os.path.join(root_dir, f"Media\\Art\\{InstantReplaySrc.CurtainFile}")
+    # logic here looks too complicated because we need to deal with the fact that on script load,
+    # sources might not be available yet, so we have a timer to keep retrying until sources are available,
+    # but we also want to avoid infinite loop in case sources are really missing,
+    # so we stop retrying after several attempts and log warnings if sources don't exist.
+    set_source_props_retries += 1
 
+    if set_source_props_retries > SET_SOURCE_PROPS_RETRIES_MAX_RETRIES:
+        do_source_exists_check = False
+        obs.timer_remove(set_source_paths) # stop retrying, but still attempt to set source paths one last time (which will log warnings if sources don't exist)
+
+    # Curtain and curtain logo for instant replay scene
+    curtain_file = os.path.join(rootDir, f"Media\\Art\\{InstantReplaySrc.CurtainFile}")
     if not os.path.isfile(curtain_file):
         obs.script_log(obs.LOG_WARNING, f"Curtain file not found: {curtain_file}")
         curtain_file = ""
 
+    if not is_source_available(InstantReplaySrc.Curtain) and do_source_exists_check:
+        return
     set_source_file(InstantReplaySrc.Curtain, curtain_file)
 
-    curtain_logo_file = os.path.join(root_dir, f"Media\\Art\\{InstantReplaySrc.CurtainLogoFile}")
+    curtain_logo_file = os.path.join(rootDir, f"Media\\Art\\{InstantReplaySrc.CurtainLogoFile}")
     if not os.path.isfile(curtain_logo_file):
         obs.script_log(obs.LOG_WARNING, f"Curtain logo file not found: {curtain_logo_file}")
         curtain_logo_file = ""
 
+    if not is_source_available(InstantReplaySrc.CurtainLogo) and do_source_exists_check:
+        return
     set_source_file(InstantReplaySrc.CurtainLogo, curtain_logo_file)
 
     # Recording and replay video path for Branch Output and Dir Watcher filters
     # Branch Output filter, when enabled, records video currently being played in the source
     # Dir Watcher filter watches the folder and updates the source with the latest video file (used for instant replay)
-    recording_video_path = os.path.join(root_dir, "Replay")
-    try:
-        set_filter_path(InstantReplaySrc.RecScene, InstantReplaySrc.RecSceneFilter, InstantReplaySrc.RecSceneFilterPathSetting, recording_video_path)
-        set_filter_path(InstantReplaySrc.ReplayMediaSrc, InstantReplaySrc.ReplayMediaSrcFilter, InstantReplaySrc.ReplayMediaSrcFilterPathSetting, recording_video_path)
-    except Exception as e:
-        obs.script_log(obs.LOG_WARNING, f"Error setting filter paths: {e}")
+    recording_video_path = os.path.join(rootDir, "Replay")
+    if not is_source_available(InstantReplaySrc.RecScene):
+        return
+    set_filter_path(InstantReplaySrc.RecScene, InstantReplaySrc.RecSceneFilter, InstantReplaySrc.RecSceneFilterPathSetting, recording_video_path)
+
+    if not is_source_available(InstantReplaySrc.ReplayMediaSrc) and do_source_exists_check:
+        return
+    set_filter_path(InstantReplaySrc.ReplayMediaSrc, InstantReplaySrc.ReplayMediaSrcFilter, InstantReplaySrc.ReplayMediaSrcFilterPathSetting, recording_video_path)
 
     # Set playlist for "Play Repeats" source
-    play_repeats_playlist_path = os.path.join(root_dir, "Replay")
+    play_repeats_playlist_path = os.path.join(rootDir, "Replay")
+
+    if not is_source_available(InstantReplaySrc.PlayRepeatsSrc) and do_source_exists_check:
+        return
     set_vlc_playlist(InstantReplaySrc.PlayRepeatsSrc, play_repeats_playlist_path)
+
+    # if we're here, it means we succeeded in setting source paths or we failed (and reported) because sources don't exist and we want to stop retrying
+    obs.timer_remove(set_source_paths)
 
 
 # load state values from persisted script settings
@@ -361,7 +390,9 @@ def dvov_act_script_update(settings):
     rootDir = obs.obs_data_get_string(settings, "rootDir")
     flagLoc = os.path.join(rootDir, "Media\\Flags")
 
-    set_source_paths(rootDir)
+    # need to do this by timer, because on script load, sources aren't available yet
+    obs.timer_add(set_source_paths, 3000)
+
 
 
 def dvov_act_script_load(settings):

@@ -187,3 +187,10 @@ def set_vlc_playlist(source_name, folder_path):
         obs.obs_data_release(settings)
     finally:
         obs.obs_source_release(src)
+
+def is_source_available(source_name) -> bool:
+    src = obs.obs_get_source_by_name(source_name)
+    if src:
+        obs.obs_source_release(src)
+        return True
+    return False
