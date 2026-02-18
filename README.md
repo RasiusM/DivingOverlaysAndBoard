@@ -63,14 +63,18 @@ Python 3.10 (latest supported by OBS). Set the path in OBS script settings.
 
 ### Script/scene installation
 
-Download ZIP, unzip into local folder, import Scene Collection and Profile, point OBS to script dive_recorder_overlays.py
+1. Download ZIP
+2. Unzip into local folder. Folders will contain imports for following items.
+3. Import Scene Collection (Scenes/Diving_Streaming_and_Board.json)
+4. Import Profile (Profile/DivingStreamingAndBoard)
+5. Add script dive_recorder_overlays.py
 
 ### Notes when upgrading
 
 When there's new version of the script/scenes, keep in mind:
 - Replacing scenes json with the newest downloaded version will replace **ALL** customizations that you did. This involves additional graphics you added or moved/removed, color/text changes etc. If the changes you did do not conflict with the changes from repository, you can try merging in some diff tool, but it's risky process. Make backups just in case.
 - I think you need to remove .json.bak file before applying new scene collection, otherwise it will just restore old one from backup. Make backup of backup just in case ;)
-- **Do not** replace Media folder, as it will reset Header, HeaderLogo etc. media back to defaults.
+- **Do not** replace Media folder if you replaced with your graphics, as it will reset Header, HeaderLogo etc. media back to defaults.
 
 ## Setup
 
@@ -81,7 +85,6 @@ Up to 3 simultanous cameras are supported "out of the box" - to add more, you wi
   
 Add your camera source to one of *Camera1..2* scenes. Scene can contain multiple cameras, the one that is set to visible (or is "on top") will be shown when you select that camera number.  
   
-
 One of Camera scenes contain Fake Camera media source, that you can point to, e.g. video recording of actual competition, enable it and use it to test and learn operations (Instant Replay will work too)  
 
 ### Instant replay setup
