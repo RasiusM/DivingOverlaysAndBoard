@@ -91,17 +91,17 @@ To use currently active camera as a source for Instant Replay:
 To use specific camera:  
     - Set corresponding source *Video Source for Replay/Camera1..3* to visible, set other sources to NOT visible  
 
-This is convenient if you would like to stream dive in real time from various cameras, but always show dive repeat from single camera.  
+This is convenient if you would like to stream dive in real time switching between various cameras, but always show dive repeat from specific camera. E.g some dives look good from the back, but side camera is more "technical".
 
 **Notes:**  
 - Replay clips are placed in Replay folder.  This folder is not cleaned-up - take care of it! Next time you start OBS after cleanup, you might get error about missing replay file. Ignore it.
 - Why not use "Native" OBS studio Replay buffer? Unreliable.
 - There's some lag between hotkey press and recording. Get some practice, use Fake Camera!
-- Replay clips are limited to 10s - recording will stop automatically. Some divers take their time on the board. Might want to setup hotkey to cut recording short without showing replay and start recording again (TODO).
+- Replay clips are limited to 10s - recording will stop automatically. Some divers take their time on the board, and if you realize that that's the case, cut recording short without triggering replay and start again (see hotkeys).
 
 ### Media
 
-Replace files with your art in Media/Art folder. If picture sizes are different from current ones, sources might need adjusting in corresponding scenes.
+Replace files with your art in Media/Art folder, do not change file names. If picture sizes are different from current ones, sources might need adjusting in corresponding scenes.
 
 ## Operation
 
