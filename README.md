@@ -44,15 +44,18 @@ Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
 
 ## Installation
 
+### Fonts
+Download and install two monotype fonts: **'DejaVu Sans Mono Book' and 'Monofonto Regular'**.
+
 ### Required OBS Plugins:
 
-- Countdown Timers (for event countdown)
-- Gradient Source (for graphics elements)
-- Move Transition (for instant replay transitions)
-- Source Dock (for status board)
-- advanced-scene-switcher (for scene scripting)
-- dir-watch-media (for instant replay support)
-- osi-branch-output (for instant replay support)
+- [Countdown Timers](https://obsproject.com/forum/resources/ashmanix-countdown-timer.1610/) (for event countdown)
+- [Gradient Source](https://obsproject.com/forum/resources/gradient-source.1172/) (for graphics elements)
+- [Move Transition](https://obsproject.com/forum/resources/move.913/) (for instant replay transitions)
+- [Source Dock](https://obsproject.com/forum/resources/source-dock.1317/) (for status board)
+- [advanced-scene-switcher](https://obsproject.com/forum/resources/advanced-scene-switcher.395/) (for scene scripting)
+- [dir-watch-media](https://obsproject.com/forum/resources/directory-watch-media.801/) (for instant replay support)
+- [osi-branch-output](https://obsproject.com/forum/resources/branch-output-streaming-recording-filter-for-source-scene.1987/) (for instant replay support)
 
 ### Python
 
