@@ -61,8 +61,8 @@
         "monitoring_type": 0,
         "private_settings": {}
     },
-    "current_scene": "Play Repeats Scene",
-    "current_program_scene": "Play Repeats Scene",
+    "current_scene": "LiveStream Composite",
+    "current_program_scene": "LiveStream Composite",
     "scene_order": [
         {
             "name": "LiveStream Composite"
@@ -114,6 +114,15 @@
         },
         {
             "name": "Delay Video for Training - incomplete"
+        },
+        {
+            "name": "Camera1"
+        },
+        {
+            "name": "Camera2"
+        },
+        {
+            "name": "Camera3"
         },
         {
             "name": "----------------------------- Overlays"
@@ -16295,7 +16304,7 @@
     "transition_duration": 300,
     "preview_locked": false,
     "scaling_enabled": false,
-    "scaling_level": -8,
+    "scaling_level": -6,
     "scaling_off_x": 0.0,
     "scaling_off_y": 0.0,
     "virtual-camera": {
@@ -18757,146 +18766,14 @@
                     "group": true,
                     "groupData": {
                         "collapsed": true,
-                        "size": 8
+                        "size": 5
                     }
-                },
-                {
-                    "name": "Switch between currently active cameras",
-                    "group": false,
-                    "pauseSaveBehavior": 0,
-                    "pause": false,
-                    "parallel": false,
-                    "checkConditionsInParallel": false,
-                    "onChange": true,
-                    "skipExecOnStart": false,
-                    "stopActionsIfNotDone": false,
-                    "useShortCircuitEvaluation": false,
-                    "useCustomConditionCheckInterval": false,
-                    "customConditionCheckInterval": {
-                        "value": {
-                            "value": 0.3,
-                            "type": 0
-                        },
-                        "unit": 0,
-                        "version": 1
-                    },
-                    "dockSettings": {
-                        "register": false,
-                        "standaloneDock": true,
-                        "dockWindow": "Dock",
-                        "hasRunButton": true,
-                        "hasPauseButton": true,
-                        "hasStatusLabel": false,
-                        "highlightIfConditionsTrue": false,
-                        "runButtonText": "Run",
-                        "pauseButtonText": "Pause",
-                        "unpauseButtonText": "Unpause",
-                        "conditionsTrueStatusText": "Conditions are true.",
-                        "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-98c8562a-ad7a-490b-b33f-0a34910acddb",
-                        "version": 1
-                    },
-                    "macroActionConditionSplitterPosition": [
-                        {
-                            "pos": 517
-                        },
-                        {
-                            "pos": 516
-                        }
-                    ],
-                    "macroElseActionSplitterPosition": [
-                        {
-                            "pos": 484
-                        },
-                        {
-                            "pos": 0
-                        }
-                    ],
-                    "registerHotkeys": false,
-                    "pauseHotkey": [],
-                    "unpauseHotkey": [],
-                    "togglePauseHotkey": [],
-                    "conditions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "hotkey",
-                            "logic": 0,
-                            "durationModifier": {
-                                "time_constraint": 0,
-                                "seconds": {
-                                    "value": {
-                                        "value": 0.0,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                }
-                            },
-                            "desc": "Switch Current Active Cameras",
-                            "keyBind": [],
-                            "checkPressed": true
-                        }
-                    ],
-                    "actions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene_visibility",
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "Active Video Source",
-                                "canvasSelection": "Main"
-                            },
-                            "sceneItemSelection": {
-                                "type": 0,
-                                "idxType": 0,
-                                "idx": 0,
-                                "item": "Iriun Camera Main"
-                            },
-                            "action": 2
-                        },
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene_visibility",
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "Active Video Source",
-                                "canvasSelection": "Main"
-                            },
-                            "sceneItemSelection": {
-                                "type": 0,
-                                "idxType": 0,
-                                "idx": 0,
-                                "item": "Iriun Camera 2"
-                            },
-                            "action": 2
-                        }
-                    ],
-                    "elseActions": [],
-                    "inputVariables": []
                 },
                 {
                     "name": "Hide all camera sources",
                     "group": false,
                     "pauseSaveBehavior": 0,
-                    "pause": false,
+                    "pause": true,
                     "parallel": false,
                     "checkConditionsInParallel": false,
                     "onChange": true,
@@ -19087,7 +18964,7 @@
                     "inputVariables": []
                 },
                 {
-                    "name": "When switched to Iriun Main",
+                    "name": "When switched to Camera 1",
                     "group": false,
                     "pauseSaveBehavior": 0,
                     "pause": false,
@@ -19119,7 +18996,7 @@
                         "unpauseButtonText": "Unpause",
                         "conditionsTrueStatusText": "Conditions are true.",
                         "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-765d7794-7fab-4e9b-8d32-343f776e0465",
+                        "dockId": "advss-macro-dock-a8678028-ba94-418a-9fc8-2cc1e2aadac5",
                         "version": 1
                     },
                     "macroActionConditionSplitterPosition": [
@@ -19173,7 +19050,7 @@
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "Iriun Camera Main"
+                                "item": "Camera1"
                             },
                             "condition": 0,
                             "version": 1
@@ -19188,91 +19065,19 @@
                                 "enabled": true,
                                 "version": 1
                             },
-                            "id": "macro",
-                            "action": 3,
-                            "macro": "Hide all camera sources",
-                            "actionSelectionType": 0,
-                            "actionIndex": {
-                                "value": 1,
-                                "type": 0
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Active Video Source",
+                                "canvasSelection": "Main"
                             },
-                            "label": "Custom label",
-                            "actionId": "",
-                            "regexConfig": {
-                                "enable": false,
-                                "partial": false,
-                                "options": 0
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Camera2"
                             },
-                            "runOptions": {
-                                "logic": 0,
-                                "reevaluateConditionState": false,
-                                "runElseActions": false,
-                                "skipWhenPaused": true,
-                                "setInputs": false,
-                                "inputs": []
-                            },
-                            "nestedMacro": {
-                                "name": "",
-                                "group": false,
-                                "pauseSaveBehavior": 0,
-                                "pause": false,
-                                "parallel": false,
-                                "checkConditionsInParallel": false,
-                                "onChange": true,
-                                "skipExecOnStart": false,
-                                "stopActionsIfNotDone": false,
-                                "useShortCircuitEvaluation": false,
-                                "useCustomConditionCheckInterval": false,
-                                "customConditionCheckInterval": {
-                                    "value": {
-                                        "value": 0.3,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                },
-                                "dockSettings": {
-                                    "register": false,
-                                    "standaloneDock": true,
-                                    "dockWindow": "Dock",
-                                    "hasRunButton": true,
-                                    "hasPauseButton": true,
-                                    "hasStatusLabel": false,
-                                    "highlightIfConditionsTrue": false,
-                                    "runButtonText": "Run",
-                                    "pauseButtonText": "Pause",
-                                    "unpauseButtonText": "Unpause",
-                                    "conditionsTrueStatusText": "Conditions are true.",
-                                    "conditionsFalseStatusText": "Conditions are false.",
-                                    "dockId": "advss-macro-dock-7d3b27b3-0b8b-4027-847f-f09c605b705d",
-                                    "version": 1
-                                },
-                                "macroActionConditionSplitterPosition": [
-                                    {
-                                        "pos": 89
-                                    },
-                                    {
-                                        "pos": 208
-                                    }
-                                ],
-                                "macroElseActionSplitterPosition": [
-                                    {
-                                        "pos": 88
-                                    },
-                                    {
-                                        "pos": 88
-                                    }
-                                ],
-                                "registerHotkeys": true,
-                                "pauseHotkey": [],
-                                "unpauseHotkey": [],
-                                "togglePauseHotkey": [],
-                                "conditions": [],
-                                "actions": [],
-                                "elseActions": [],
-                                "inputVariables": []
-                            },
-                            "customWidgetHeight": 600
+                            "action": 1
                         },
                         {
                             "segmentSettings": {
@@ -19292,16 +19097,38 @@
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "Iriun Camera Main"
+                                "item": "Camera3"
                             },
-                            "action": 0
+                            "action": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Active Video Source",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Play Repeats Scene"
+                            },
+                            "action": 1
                         }
                     ],
                     "elseActions": [],
                     "inputVariables": []
                 },
                 {
-                    "name": "When switched to Iriun 2",
+                    "name": "When switched to Camera 2",
                     "group": false,
                     "pauseSaveBehavior": 0,
                     "pause": false,
@@ -19333,7 +19160,7 @@
                         "unpauseButtonText": "Unpause",
                         "conditionsTrueStatusText": "Conditions are true.",
                         "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-41d9197f-1601-40b5-8acc-531a7592f4db",
+                        "dockId": "advss-macro-dock-e7900f45-2404-443a-8b89-6919326e24b6",
                         "version": 1
                     },
                     "macroActionConditionSplitterPosition": [
@@ -19387,7 +19214,7 @@
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "Iriun Camera 2"
+                                "item": "Camera2"
                             },
                             "condition": 0,
                             "version": 1
@@ -19402,91 +19229,19 @@
                                 "enabled": true,
                                 "version": 1
                             },
-                            "id": "macro",
-                            "action": 3,
-                            "macro": "Hide all camera sources",
-                            "actionSelectionType": 0,
-                            "actionIndex": {
-                                "value": 1,
-                                "type": 0
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Active Video Source",
+                                "canvasSelection": "Main"
                             },
-                            "label": "Custom label",
-                            "actionId": "",
-                            "regexConfig": {
-                                "enable": false,
-                                "partial": false,
-                                "options": 0
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Camera1"
                             },
-                            "runOptions": {
-                                "logic": 0,
-                                "reevaluateConditionState": false,
-                                "runElseActions": false,
-                                "skipWhenPaused": true,
-                                "setInputs": false,
-                                "inputs": []
-                            },
-                            "nestedMacro": {
-                                "name": "",
-                                "group": false,
-                                "pauseSaveBehavior": 0,
-                                "pause": false,
-                                "parallel": false,
-                                "checkConditionsInParallel": false,
-                                "onChange": true,
-                                "skipExecOnStart": false,
-                                "stopActionsIfNotDone": false,
-                                "useShortCircuitEvaluation": false,
-                                "useCustomConditionCheckInterval": false,
-                                "customConditionCheckInterval": {
-                                    "value": {
-                                        "value": 0.3,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                },
-                                "dockSettings": {
-                                    "register": false,
-                                    "standaloneDock": true,
-                                    "dockWindow": "Dock",
-                                    "hasRunButton": true,
-                                    "hasPauseButton": true,
-                                    "hasStatusLabel": false,
-                                    "highlightIfConditionsTrue": false,
-                                    "runButtonText": "Run",
-                                    "pauseButtonText": "Pause",
-                                    "unpauseButtonText": "Unpause",
-                                    "conditionsTrueStatusText": "Conditions are true.",
-                                    "conditionsFalseStatusText": "Conditions are false.",
-                                    "dockId": "advss-macro-dock-7d3b27b3-0b8b-4027-847f-f09c605b705d",
-                                    "version": 1
-                                },
-                                "macroActionConditionSplitterPosition": [
-                                    {
-                                        "pos": 89
-                                    },
-                                    {
-                                        "pos": 208
-                                    }
-                                ],
-                                "macroElseActionSplitterPosition": [
-                                    {
-                                        "pos": 88
-                                    },
-                                    {
-                                        "pos": 88
-                                    }
-                                ],
-                                "registerHotkeys": true,
-                                "pauseHotkey": [],
-                                "unpauseHotkey": [],
-                                "togglePauseHotkey": [],
-                                "conditions": [],
-                                "actions": [],
-                                "elseActions": [],
-                                "inputVariables": []
-                            },
-                            "customWidgetHeight": 600
+                            "action": 1
                         },
                         {
                             "segmentSettings": {
@@ -19506,16 +19261,38 @@
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "Iriun Camera 2"
+                                "item": "Camera3"
                             },
-                            "action": 0
+                            "action": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Active Video Source",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Play Repeats Scene"
+                            },
+                            "action": 1
                         }
                     ],
                     "elseActions": [],
                     "inputVariables": []
                 },
                 {
-                    "name": "When switched to Iriun 3",
+                    "name": "When switched to Camera 3",
                     "group": false,
                     "pauseSaveBehavior": 0,
                     "pause": false,
@@ -19547,7 +19324,7 @@
                         "unpauseButtonText": "Unpause",
                         "conditionsTrueStatusText": "Conditions are true.",
                         "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-7d75cfe0-de69-42ad-9b0f-141041d72b02",
+                        "dockId": "advss-macro-dock-330d7055-6710-4a4e-a4ce-972413877d8f",
                         "version": 1
                     },
                     "macroActionConditionSplitterPosition": [
@@ -19601,7 +19378,7 @@
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "Iriun Camera 3"
+                                "item": "Camera2"
                             },
                             "condition": 0,
                             "version": 1
@@ -19616,91 +19393,19 @@
                                 "enabled": true,
                                 "version": 1
                             },
-                            "id": "macro",
-                            "action": 3,
-                            "macro": "Hide all camera sources",
-                            "actionSelectionType": 0,
-                            "actionIndex": {
-                                "value": 1,
-                                "type": 0
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Active Video Source",
+                                "canvasSelection": "Main"
                             },
-                            "label": "Custom label",
-                            "actionId": "",
-                            "regexConfig": {
-                                "enable": false,
-                                "partial": false,
-                                "options": 0
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Camera1"
                             },
-                            "runOptions": {
-                                "logic": 0,
-                                "reevaluateConditionState": false,
-                                "runElseActions": false,
-                                "skipWhenPaused": true,
-                                "setInputs": false,
-                                "inputs": []
-                            },
-                            "nestedMacro": {
-                                "name": "",
-                                "group": false,
-                                "pauseSaveBehavior": 0,
-                                "pause": false,
-                                "parallel": false,
-                                "checkConditionsInParallel": false,
-                                "onChange": true,
-                                "skipExecOnStart": false,
-                                "stopActionsIfNotDone": false,
-                                "useShortCircuitEvaluation": false,
-                                "useCustomConditionCheckInterval": false,
-                                "customConditionCheckInterval": {
-                                    "value": {
-                                        "value": 0.3,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                },
-                                "dockSettings": {
-                                    "register": false,
-                                    "standaloneDock": true,
-                                    "dockWindow": "Dock",
-                                    "hasRunButton": true,
-                                    "hasPauseButton": true,
-                                    "hasStatusLabel": false,
-                                    "highlightIfConditionsTrue": false,
-                                    "runButtonText": "Run",
-                                    "pauseButtonText": "Pause",
-                                    "unpauseButtonText": "Unpause",
-                                    "conditionsTrueStatusText": "Conditions are true.",
-                                    "conditionsFalseStatusText": "Conditions are false.",
-                                    "dockId": "advss-macro-dock-7d3b27b3-0b8b-4027-847f-f09c605b705d",
-                                    "version": 1
-                                },
-                                "macroActionConditionSplitterPosition": [
-                                    {
-                                        "pos": 89
-                                    },
-                                    {
-                                        "pos": 208
-                                    }
-                                ],
-                                "macroElseActionSplitterPosition": [
-                                    {
-                                        "pos": 88
-                                    },
-                                    {
-                                        "pos": 88
-                                    }
-                                ],
-                                "registerHotkeys": true,
-                                "pauseHotkey": [],
-                                "unpauseHotkey": [],
-                                "togglePauseHotkey": [],
-                                "conditions": [],
-                                "actions": [],
-                                "elseActions": [],
-                                "inputVariables": []
-                            },
-                            "customWidgetHeight": 600
+                            "action": 1
                         },
                         {
                             "segmentSettings": {
@@ -19720,201 +19425,9 @@
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "Iriun Camera 3"
+                                "item": "Camera2"
                             },
-                            "action": 0
-                        }
-                    ],
-                    "elseActions": [],
-                    "inputVariables": []
-                },
-                {
-                    "name": "When switched to Osmo Action 3",
-                    "group": false,
-                    "pauseSaveBehavior": 0,
-                    "pause": false,
-                    "parallel": false,
-                    "checkConditionsInParallel": false,
-                    "onChange": true,
-                    "skipExecOnStart": false,
-                    "stopActionsIfNotDone": false,
-                    "useShortCircuitEvaluation": false,
-                    "useCustomConditionCheckInterval": false,
-                    "customConditionCheckInterval": {
-                        "value": {
-                            "value": 0.3,
-                            "type": 0
-                        },
-                        "unit": 0,
-                        "version": 1
-                    },
-                    "dockSettings": {
-                        "register": false,
-                        "standaloneDock": true,
-                        "dockWindow": "Dock",
-                        "hasRunButton": true,
-                        "hasPauseButton": true,
-                        "hasStatusLabel": false,
-                        "highlightIfConditionsTrue": false,
-                        "runButtonText": "Run",
-                        "pauseButtonText": "Pause",
-                        "unpauseButtonText": "Unpause",
-                        "conditionsTrueStatusText": "Conditions are true.",
-                        "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-cee35a4f-7a98-44e4-b435-07237e1944d4",
-                        "version": 1
-                    },
-                    "macroActionConditionSplitterPosition": [
-                        {
-                            "pos": 517
-                        },
-                        {
-                            "pos": 516
-                        }
-                    ],
-                    "macroElseActionSplitterPosition": [
-                        {
-                            "pos": 484
-                        },
-                        {
-                            "pos": 0
-                        }
-                    ],
-                    "registerHotkeys": false,
-                    "pauseHotkey": [],
-                    "unpauseHotkey": [],
-                    "togglePauseHotkey": [],
-                    "conditions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene_visibility",
-                            "logic": 0,
-                            "durationModifier": {
-                                "time_constraint": 0,
-                                "seconds": {
-                                    "value": {
-                                        "value": 0.0,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                }
-                            },
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "Active Video Source",
-                                "canvasSelection": "Main"
-                            },
-                            "sceneItemSelection": {
-                                "type": 0,
-                                "idxType": 0,
-                                "idx": 0,
-                                "item": ""
-                            },
-                            "condition": 0,
-                            "version": 1
-                        }
-                    ],
-                    "actions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "macro",
-                            "action": 3,
-                            "macro": "Hide all camera sources",
-                            "actionSelectionType": 0,
-                            "actionIndex": {
-                                "value": 1,
-                                "type": 0
-                            },
-                            "label": "Custom label",
-                            "actionId": "",
-                            "regexConfig": {
-                                "enable": false,
-                                "partial": false,
-                                "options": 0
-                            },
-                            "runOptions": {
-                                "logic": 0,
-                                "reevaluateConditionState": false,
-                                "runElseActions": false,
-                                "skipWhenPaused": true,
-                                "setInputs": false,
-                                "inputs": []
-                            },
-                            "nestedMacro": {
-                                "name": "",
-                                "group": false,
-                                "pauseSaveBehavior": 0,
-                                "pause": false,
-                                "parallel": false,
-                                "checkConditionsInParallel": false,
-                                "onChange": true,
-                                "skipExecOnStart": false,
-                                "stopActionsIfNotDone": false,
-                                "useShortCircuitEvaluation": false,
-                                "useCustomConditionCheckInterval": false,
-                                "customConditionCheckInterval": {
-                                    "value": {
-                                        "value": 0.3,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                },
-                                "dockSettings": {
-                                    "register": false,
-                                    "standaloneDock": true,
-                                    "dockWindow": "Dock",
-                                    "hasRunButton": true,
-                                    "hasPauseButton": true,
-                                    "hasStatusLabel": false,
-                                    "highlightIfConditionsTrue": false,
-                                    "runButtonText": "Run",
-                                    "pauseButtonText": "Pause",
-                                    "unpauseButtonText": "Unpause",
-                                    "conditionsTrueStatusText": "Conditions are true.",
-                                    "conditionsFalseStatusText": "Conditions are false.",
-                                    "dockId": "advss-macro-dock-7d3b27b3-0b8b-4027-847f-f09c605b705d",
-                                    "version": 1
-                                },
-                                "macroActionConditionSplitterPosition": [
-                                    {
-                                        "pos": 89
-                                    },
-                                    {
-                                        "pos": 208
-                                    }
-                                ],
-                                "macroElseActionSplitterPosition": [
-                                    {
-                                        "pos": 88
-                                    },
-                                    {
-                                        "pos": 88
-                                    }
-                                ],
-                                "registerHotkeys": true,
-                                "pauseHotkey": [],
-                                "unpauseHotkey": [],
-                                "togglePauseHotkey": [],
-                                "conditions": [],
-                                "actions": [],
-                                "elseActions": [],
-                                "inputVariables": []
-                            },
-                            "customWidgetHeight": 600
+                            "action": 1
                         },
                         {
                             "segmentSettings": {
@@ -19934,223 +19447,9 @@
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "OsmoAction 3"
+                                "item": "Play Repeats Scene"
                             },
-                            "action": 0
-                        }
-                    ],
-                    "elseActions": [],
-                    "inputVariables": []
-                },
-                {
-                    "name": "When switched to Fake Camera",
-                    "group": false,
-                    "pauseSaveBehavior": 0,
-                    "pause": false,
-                    "parallel": false,
-                    "checkConditionsInParallel": false,
-                    "onChange": true,
-                    "skipExecOnStart": false,
-                    "stopActionsIfNotDone": false,
-                    "useShortCircuitEvaluation": false,
-                    "useCustomConditionCheckInterval": false,
-                    "customConditionCheckInterval": {
-                        "value": {
-                            "value": 0.3,
-                            "type": 0
-                        },
-                        "unit": 0,
-                        "version": 1
-                    },
-                    "dockSettings": {
-                        "register": false,
-                        "standaloneDock": true,
-                        "dockWindow": "Dock",
-                        "hasRunButton": true,
-                        "hasPauseButton": true,
-                        "hasStatusLabel": false,
-                        "highlightIfConditionsTrue": false,
-                        "runButtonText": "Run",
-                        "pauseButtonText": "Pause",
-                        "unpauseButtonText": "Unpause",
-                        "conditionsTrueStatusText": "Conditions are true.",
-                        "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-27901b78-7fd4-4860-9165-a149ae9df29d",
-                        "version": 1
-                    },
-                    "macroActionConditionSplitterPosition": [
-                        {
-                            "pos": 517
-                        },
-                        {
-                            "pos": 516
-                        }
-                    ],
-                    "macroElseActionSplitterPosition": [
-                        {
-                            "pos": 484
-                        },
-                        {
-                            "pos": 0
-                        }
-                    ],
-                    "registerHotkeys": false,
-                    "pauseHotkey": [],
-                    "unpauseHotkey": [],
-                    "togglePauseHotkey": [],
-                    "conditions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene_visibility",
-                            "logic": 0,
-                            "durationModifier": {
-                                "time_constraint": 0,
-                                "seconds": {
-                                    "value": {
-                                        "value": 0.0,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                }
-                            },
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "Active Video Source",
-                                "canvasSelection": "Main"
-                            },
-                            "sceneItemSelection": {
-                                "type": 0,
-                                "idxType": 0,
-                                "idx": 0,
-                                "item": "Fake Camera"
-                            },
-                            "condition": 0,
-                            "version": 1
-                        }
-                    ],
-                    "actions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "macro",
-                            "action": 3,
-                            "macro": "Hide all camera sources",
-                            "actionSelectionType": 0,
-                            "actionIndex": {
-                                "value": 1,
-                                "type": 0
-                            },
-                            "label": "Custom label",
-                            "actionId": "",
-                            "regexConfig": {
-                                "enable": false,
-                                "partial": false,
-                                "options": 0
-                            },
-                            "runOptions": {
-                                "logic": 0,
-                                "reevaluateConditionState": false,
-                                "runElseActions": false,
-                                "skipWhenPaused": true,
-                                "setInputs": false,
-                                "inputs": []
-                            },
-                            "nestedMacro": {
-                                "name": "",
-                                "group": false,
-                                "pauseSaveBehavior": 0,
-                                "pause": false,
-                                "parallel": false,
-                                "checkConditionsInParallel": false,
-                                "onChange": true,
-                                "skipExecOnStart": false,
-                                "stopActionsIfNotDone": false,
-                                "useShortCircuitEvaluation": false,
-                                "useCustomConditionCheckInterval": false,
-                                "customConditionCheckInterval": {
-                                    "value": {
-                                        "value": 0.3,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                },
-                                "dockSettings": {
-                                    "register": false,
-                                    "standaloneDock": true,
-                                    "dockWindow": "Dock",
-                                    "hasRunButton": true,
-                                    "hasPauseButton": true,
-                                    "hasStatusLabel": false,
-                                    "highlightIfConditionsTrue": false,
-                                    "runButtonText": "Run",
-                                    "pauseButtonText": "Pause",
-                                    "unpauseButtonText": "Unpause",
-                                    "conditionsTrueStatusText": "Conditions are true.",
-                                    "conditionsFalseStatusText": "Conditions are false.",
-                                    "dockId": "advss-macro-dock-7d3b27b3-0b8b-4027-847f-f09c605b705d",
-                                    "version": 1
-                                },
-                                "macroActionConditionSplitterPosition": [
-                                    {
-                                        "pos": 89
-                                    },
-                                    {
-                                        "pos": 208
-                                    }
-                                ],
-                                "macroElseActionSplitterPosition": [
-                                    {
-                                        "pos": 88
-                                    },
-                                    {
-                                        "pos": 88
-                                    }
-                                ],
-                                "registerHotkeys": true,
-                                "pauseHotkey": [],
-                                "unpauseHotkey": [],
-                                "togglePauseHotkey": [],
-                                "conditions": [],
-                                "actions": [],
-                                "elseActions": [],
-                                "inputVariables": []
-                            },
-                            "customWidgetHeight": 600
-                        },
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene_visibility",
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "Active Video Source",
-                                "canvasSelection": "Main"
-                            },
-                            "sceneItemSelection": {
-                                "type": 0,
-                                "idxType": 0,
-                                "idx": 0,
-                                "item": "Fake Camera"
-                            },
-                            "action": 0
+                            "action": 1
                         }
                     ],
                     "elseActions": [],
@@ -20258,127 +19557,19 @@
                                 "enabled": true,
                                 "version": 1
                             },
-                            "id": "macro",
-                            "action": 3,
-                            "macro": "Hide all camera sources",
-                            "actionSelectionType": 0,
-                            "actionIndex": {
-                                "value": 1,
-                                "type": 0
-                            },
-                            "label": "Custom label",
-                            "actionId": "",
-                            "regexConfig": {
-                                "enable": false,
-                                "partial": false,
-                                "options": 0
-                            },
-                            "runOptions": {
-                                "logic": 0,
-                                "reevaluateConditionState": false,
-                                "runElseActions": false,
-                                "skipWhenPaused": true,
-                                "setInputs": false,
-                                "inputs": []
-                            },
-                            "nestedMacro": {
-                                "name": "",
-                                "group": false,
-                                "pauseSaveBehavior": 0,
-                                "pause": false,
-                                "parallel": false,
-                                "checkConditionsInParallel": false,
-                                "onChange": true,
-                                "skipExecOnStart": false,
-                                "stopActionsIfNotDone": false,
-                                "useShortCircuitEvaluation": false,
-                                "useCustomConditionCheckInterval": false,
-                                "customConditionCheckInterval": {
-                                    "value": {
-                                        "value": 0.3,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                },
-                                "dockSettings": {
-                                    "register": false,
-                                    "standaloneDock": true,
-                                    "dockWindow": "Dock",
-                                    "hasRunButton": true,
-                                    "hasPauseButton": true,
-                                    "hasStatusLabel": false,
-                                    "highlightIfConditionsTrue": false,
-                                    "runButtonText": "Run",
-                                    "pauseButtonText": "Pause",
-                                    "unpauseButtonText": "Unpause",
-                                    "conditionsTrueStatusText": "Conditions are true.",
-                                    "conditionsFalseStatusText": "Conditions are false.",
-                                    "dockId": "advss-macro-dock-7d3b27b3-0b8b-4027-847f-f09c605b705d",
-                                    "version": 1
-                                },
-                                "macroActionConditionSplitterPosition": [
-                                    {
-                                        "pos": 89
-                                    },
-                                    {
-                                        "pos": 208
-                                    }
-                                ],
-                                "macroElseActionSplitterPosition": [
-                                    {
-                                        "pos": 88
-                                    },
-                                    {
-                                        "pos": 88
-                                    }
-                                ],
-                                "registerHotkeys": true,
-                                "pauseHotkey": [],
-                                "unpauseHotkey": [],
-                                "togglePauseHotkey": [],
-                                "conditions": [],
-                                "actions": [],
-                                "elseActions": [],
-                                "inputVariables": []
-                            },
-                            "customWidgetHeight": 600
-                        },
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "source",
-                            "source": {
+                            "id": "scene_visibility",
+                            "sceneSelection": {
                                 "type": 0,
-                                "name": "Play Repeats"
+                                "name": "Active Video Source",
+                                "canvasSelection": "Main"
                             },
-                            "action": 3,
-                            "sourceSettingButton": {
-                                "id": "",
-                                "description": ""
-                            },
-                            "inputMethod": 0,
-                            "sourceSetting": {
-                                "id": "loop",
-                                "type": 1,
-                                "description": "Loop Playlist (Bool)"
-                            },
-                            "manualSettingValue": "",
-                            "tempVar": {
+                            "sceneItemSelection": {
                                 "type": 0,
-                                "idx": -1,
-                                "id": "",
-                                "version": 1
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Camera1"
                             },
-                            "settings": "",
-                            "deinterlaceMode": 0,
-                            "deinterlaceOrder": 0,
-                            "acceptDialog": false
+                            "action": 1
                         },
                         {
                             "segmentSettings": {
@@ -20398,9 +19589,9 @@
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "Play Repeats Scene"
+                                "item": "Camera2"
                             },
-                            "action": 0
+                            "action": 1
                         },
                         {
                             "segmentSettings": {
@@ -20413,16 +19604,16 @@
                             "id": "scene_visibility",
                             "sceneSelection": {
                                 "type": 0,
-                                "name": "ProjectorScreen Composite",
+                                "name": "Active Video Source",
                                 "canvasSelection": "Main"
                             },
                             "sceneItemSelection": {
                                 "type": 0,
                                 "idxType": 0,
                                 "idx": 0,
-                                "item": "Play Repeats Scene"
+                                "item": "Camera3"
                             },
-                            "action": 0
+                            "action": 1
                         }
                     ],
                     "elseActions": [],
@@ -21904,14 +21095,14 @@
                     "group": true,
                     "groupData": {
                         "collapsed": false,
-                        "size": 17
+                        "size": 18
                     }
                 },
                 {
                     "name": "Rankings/Start - Hide on no data",
                     "group": false,
                     "pauseSaveBehavior": 0,
-                    "pause": false,
+                    "pause": true,
                     "parallel": true,
                     "checkConditionsInParallel": false,
                     "onChange": true,
@@ -24124,6 +23315,126 @@
                     "inputVariables": []
                 },
                 {
+                    "name": "Play Repeats: Sync Active Video Source with Board",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "onChange": true,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-2638e969-d702-41b8-89ba-7b18e03ff77c",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 517
+                        },
+                        {
+                            "pos": 516
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 484
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Active Video Source",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Play Repeats Scene"
+                            },
+                            "condition": 2,
+                            "version": 1
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "ProjectorScreen Composite",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Play Repeats Scene"
+                            },
+                            "action": 2
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
                     "name": "Instant Replay Scene controls",
                     "group": true,
                     "groupData": {
@@ -26097,8 +25408,8 @@
                 }
             ],
             "saveWindowGeo": true,
-            "windowPosX": 385,
-            "windowPosY": 47,
+            "windowPosX": 611,
+            "windowPosY": 46,
             "windowWidth": 1808,
             "windowHeight": 1250,
             "macroListMacroEditSplitterPosition": [
@@ -26186,7 +25497,7 @@
                     "properties": false,
                     "filters": false,
                     "textinput": false,
-                    "geometry": "AdnQywADAAAAAAAAAAAAGgAAA3IAAAJHAAAAAAAAAAD//////////wAAAAEAAAAACgAAAAAAAAAAGgAAA3IAAAJH",
+                    "geometry": "AdnQywADAAAAAAAAAAAAGgAAA3IAAAHfAAAAAAAAAAD//////////wAAAAEAAAAACgAAAAAAAAAAGgAAA3IAAAHf",
                     "split": "AAAA/wAAAAEAAAABAAAAHgD/////AQAAAAIA",
                     "window": "",
                     "dockarea": 8,
@@ -26407,121 +25718,11 @@
             "versioned_id": "scene",
             "settings": {
                 "custom_size": false,
-                "id_counter": 14,
+                "id_counter": 17,
                 "items": [
                     {
-                        "name": "Iriun Camera 3",
-                        "source_uuid": "ec46566c-d751-437f-9d10-3c56d20d6912",
-                        "visible": false,
-                        "locked": false,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 2,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 1,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "bounds_rel": {
-                            "x": 3.555555582046509,
-                            "y": 2.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "Iriun Camera Main",
-                        "source_uuid": "1aa1732f-096a-45e9-9e24-ab004a3c5478",
-                        "visible": false,
-                        "locked": false,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 2,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "bounds_rel": {
-                            "x": 3.555555582046509,
-                            "y": 2.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "Iriun Camera 2",
-                        "source_uuid": "2c2dcbaf-65af-49e7-b695-dbbe2fe47a98",
+                        "name": "Camera3",
+                        "source_uuid": "a3683749-7df4-4e53-9a3b-004490cff57d",
                         "visible": false,
                         "locked": false,
                         "rot": 0.0,
@@ -26537,7 +25738,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 11,
+                        "id": 17,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -26575,8 +25776,8 @@
                         "private_settings": {}
                     },
                     {
-                        "name": "Fake Camera",
-                        "source_uuid": "491e3efb-1b9a-4f09-b03a-c29cbda99463",
+                        "name": "Camera2",
+                        "source_uuid": "c7039301-8443-4f9f-bfc7-cefcd3dbba64",
                         "visible": false,
                         "locked": false,
                         "rot": 0.0,
@@ -26592,7 +25793,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 4,
+                        "id": 16,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -26630,9 +25831,9 @@
                         "private_settings": {}
                     },
                     {
-                        "name": "OsmoAction 3",
-                        "source_uuid": "b07af2b0-ac28-4804-8f8c-95aecc8635c6",
-                        "visible": false,
+                        "name": "Camera1",
+                        "source_uuid": "9f47c5c9-a92d-4ca1-ae69-72862774b986",
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -26647,7 +25848,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 14,
+                        "id": 15,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -26756,26 +25957,33 @@
                 "OBSBasic.SelectScene": [],
                 "EnableFilter.f9573be4-a5b4-476d-996b-c4fe12d23135": [],
                 "DisableFilter.f9573be4-a5b4-476d-996b-c4fe12d23135": [],
-                "libobs.show_scene_item.1": [],
-                "libobs.hide_scene_item.1": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": [],
-                "libobs.show_scene_item.11": [],
-                "libobs.hide_scene_item.11": [],
-                "libobs.show_scene_item.4": [],
-                "libobs.hide_scene_item.4": [],
-                "libobs.show_scene_item.14": [],
-                "libobs.hide_scene_item.14": [],
                 "libobs.show_scene_item.9": [
                     {
                         "key": "OBS_KEY_NUMMINUS"
                     }
                 ],
-                "libobs.hide_scene_item.9": [
+                "libobs.hide_scene_item.9": [],
+                "libobs.show_scene_item.15": [
                     {
-                        "key": "OBS_KEY_NUMMINUS"
+                        "control": true,
+                        "key": "OBS_KEY_NUM1"
                     }
-                ]
+                ],
+                "libobs.hide_scene_item.15": [],
+                "libobs.show_scene_item.16": [
+                    {
+                        "control": true,
+                        "key": "OBS_KEY_NUM2"
+                    }
+                ],
+                "libobs.hide_scene_item.16": [],
+                "libobs.show_scene_item.17": [
+                    {
+                        "control": true,
+                        "key": "OBS_KEY_NUM3"
+                    }
+                ],
+                "libobs.hide_scene_item.17": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -26857,7 +26065,7 @@
             "id": "color_source",
             "versioned_id": "color_source_v3",
             "settings": {
-                "color": 43690,
+                "color": 4278233770,
                 "width": 550,
                 "height": 160
             },
@@ -26918,7 +26126,7 @@
             "id": "text_gdiplus",
             "versioned_id": "text_gdiplus_v2",
             "settings": {
-                "text": "Auto-Hide Enabled",
+                "text": "Auto-Hide Disabled",
                 "font": {
                     "face": "Monofonto",
                     "style": "Regular",
@@ -27903,7 +27111,7 @@
                     {
                         "name": "MainBoard",
                         "source_uuid": "6566441a-5ebb-4174-879e-e6ad8a566eaa",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -29463,7 +28671,7 @@
                     {
                         "name": "JudgeAwardsBoard",
                         "source_uuid": "615166cd-e583-4a3d-a233-6d455743bbc9",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -31458,7 +30666,7 @@
                     {
                         "name": "BoardListLine 4",
                         "source_uuid": "af223ad0-e207-4d90-a63a-657fe28e5067",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -31790,7 +30998,7 @@
                     {
                         "name": "BoardListLine 3",
                         "source_uuid": "71afc5f0-7841-4877-9a78-a0b045aa6d86",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -32122,7 +31330,7 @@
                     {
                         "name": "BoardListLine 2",
                         "source_uuid": "2e0eb506-4019-45db-a801-bad6f0c8be7a",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -32454,7 +31662,7 @@
                     {
                         "name": "BoardListLine 1",
                         "source_uuid": "c31d755d-7d22-4972-bdcc-d1697476069f",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -32639,12 +31847,12 @@
                         "id": 25,
                         "group_item_backup": false,
                         "pos": {
-                            "x": 1550.0,
-                            "y": 49.0
+                            "x": 1536.0,
+                            "y": 28.0
                         },
                         "pos_rel": {
-                            "x": 1.0925925970077515,
-                            "y": -0.9092592597007751
+                            "x": 1.0666667222976685,
+                            "y": -0.9481481313705444
                         },
                         "scale": {
                             "x": 0.20000000298023224,
@@ -33032,6 +32240,558 @@
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
             "monitoring_type": 0,
+            "private_settings": {}
+        },
+        {
+            "prev_ver": 536870916,
+            "name": "Camera1",
+            "uuid": "9f47c5c9-a92d-4ca1-ae69-72862774b986",
+            "id": "scene",
+            "versioned_id": "scene",
+            "settings": {
+                "id_counter": 3,
+                "custom_size": false,
+                "items": [
+                    {
+                        "name": "VideoNotAvailable",
+                        "source_uuid": "964cafdf-c360-4bea-b1ad-05292b0fc0d0",
+                        "visible": true,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 3,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0395236015319824,
+                            "y": 1.039933443069458
+                        },
+                        "scale_rel": {
+                            "x": 1.0395236015319824,
+                            "y": 1.039933443069458
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    },
+                    {
+                        "name": "Fake Camera",
+                        "source_uuid": "491e3efb-1b9a-4f09-b03a-c29cbda99463",
+                        "visible": true,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 2,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_rel": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    },
+                    {
+                        "name": "Iriun Camera Main",
+                        "source_uuid": "1aa1732f-096a-45e9-9e24-ab004a3c5478",
+                        "visible": false,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 2,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 1,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_rel": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "bounds": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "bounds_rel": {
+                            "x": 3.555555582046509,
+                            "y": 2.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    }
+                ]
+            },
+            "mixers": 0,
+            "sync": 0,
+            "flags": 0,
+            "volume": 1.0,
+            "balance": 0.5,
+            "enabled": true,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [],
+                "libobs.show_scene_item.1": [],
+                "libobs.hide_scene_item.1": [],
+                "libobs.show_scene_item.2": [],
+                "libobs.hide_scene_item.2": [],
+                "libobs.show_scene_item.3": [],
+                "libobs.hide_scene_item.3": []
+            },
+            "deinterlace_mode": 0,
+            "deinterlace_field_order": 0,
+            "monitoring_type": 0,
+            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+            "private_settings": {}
+        },
+        {
+            "prev_ver": 536870916,
+            "name": "Camera2",
+            "uuid": "c7039301-8443-4f9f-bfc7-cefcd3dbba64",
+            "id": "scene",
+            "versioned_id": "scene",
+            "settings": {
+                "id_counter": 2,
+                "custom_size": false,
+                "items": [
+                    {
+                        "name": "VideoNotAvailable",
+                        "source_uuid": "964cafdf-c360-4bea-b1ad-05292b0fc0d0",
+                        "visible": true,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 2,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0395236015319824,
+                            "y": 1.039933443069458
+                        },
+                        "scale_rel": {
+                            "x": 1.0395236015319824,
+                            "y": 1.039933443069458
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    },
+                    {
+                        "name": "Iriun Camera 2",
+                        "source_uuid": "2c2dcbaf-65af-49e7-b695-dbbe2fe47a98",
+                        "visible": false,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 1,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_rel": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    }
+                ]
+            },
+            "mixers": 0,
+            "sync": 0,
+            "flags": 0,
+            "volume": 1.0,
+            "balance": 0.5,
+            "enabled": true,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [],
+                "libobs.show_scene_item.1": [],
+                "libobs.hide_scene_item.1": [],
+                "libobs.show_scene_item.2": [],
+                "libobs.hide_scene_item.2": []
+            },
+            "deinterlace_mode": 0,
+            "deinterlace_field_order": 0,
+            "monitoring_type": 0,
+            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+            "private_settings": {}
+        },
+        {
+            "prev_ver": 536870916,
+            "name": "Camera3",
+            "uuid": "a3683749-7df4-4e53-9a3b-004490cff57d",
+            "id": "scene",
+            "versioned_id": "scene",
+            "settings": {
+                "id_counter": 3,
+                "custom_size": false,
+                "items": [
+                    {
+                        "name": "VideoNotAvailable",
+                        "source_uuid": "964cafdf-c360-4bea-b1ad-05292b0fc0d0",
+                        "visible": true,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 3,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0395236015319824,
+                            "y": 1.039933443069458
+                        },
+                        "scale_rel": {
+                            "x": 1.0395236015319824,
+                            "y": 1.039933443069458
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    },
+                    {
+                        "name": "Iriun Camera 3",
+                        "source_uuid": "ec46566c-d751-437f-9d10-3c56d20d6912",
+                        "visible": false,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 1,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_rel": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    },
+                    {
+                        "name": "OsmoAction 3",
+                        "source_uuid": "b07af2b0-ac28-4804-8f8c-95aecc8635c6",
+                        "visible": false,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 2,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_rel": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    }
+                ]
+            },
+            "mixers": 0,
+            "sync": 0,
+            "flags": 0,
+            "volume": 1.0,
+            "balance": 0.5,
+            "enabled": true,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [],
+                "libobs.show_scene_item.1": [],
+                "libobs.hide_scene_item.1": [],
+                "libobs.show_scene_item.2": [],
+                "libobs.hide_scene_item.2": [],
+                "libobs.show_scene_item.3": [],
+                "libobs.hide_scene_item.3": []
+            },
+            "deinterlace_mode": 0,
+            "deinterlace_field_order": 0,
+            "monitoring_type": 0,
+            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
             "private_settings": {}
         },
         {
@@ -33543,7 +33303,7 @@
             "versioned_id": "text_gdiplus_v2",
             "settings": {
                 "extents": false,
-                "text": "Vardaite3 Pavardaite3 -- KPM",
+                "text": "Vardaite2 Pavardaite2 -- KPM",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -33580,7 +33340,7 @@
             "versioned_id": "text_gdiplus_v2",
             "settings": {
                 "extents": false,
-                "text": "Vardaite3 Pavardaite3 -- KPM",
+                "text": "Vardaite2 Pavardaite2 -- KPM",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -33770,7 +33530,7 @@
             "id": "text_gdiplus",
             "versioned_id": "text_gdiplus_v2",
             "settings": {
-                "text": "Reverse Dive, Straight",
+                "text": "Inward 1½ Somersaults, Pike",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -33830,7 +33590,7 @@
             "id": "text_gdiplus",
             "versioned_id": "text_gdiplus_v2",
             "settings": {
-                "text": "2.0",
+                "text": "2.1",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -33948,7 +33708,7 @@
             "id": "text_gdiplus",
             "versioned_id": "text_gdiplus_v2",
             "settings": {
-                "text": "301A",
+                "text": "403B",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -34188,7 +33948,7 @@
             "id": "color_source",
             "versioned_id": "color_source_v3",
             "settings": {
-                "color": 121,
+                "color": 4278190201,
                 "width": 250,
                 "height": 75
             },
@@ -34216,7 +33976,7 @@
             "id": "color_source",
             "versioned_id": "color_source_v3",
             "settings": {
-                "color": 4278190201,
+                "color": 121,
                 "width": 250,
                 "height": 75
             },
@@ -34311,7 +34071,7 @@
             "settings": {
                 "extents": false,
                 "gradient": false,
-                "text": " Event B \n Completed",
+                "text": " Demo Event \n Completed",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -34496,7 +34256,7 @@
             "settings": {
                 "extents": true,
                 "gradient": false,
-                "text": "Event B",
+                "text": "Demo Event",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -36402,7 +36162,7 @@
                 "extents": false,
                 "source_name": "TestTextSource",
                 "undo_uuid": "8a33d015-c8b3-45db-bc88-68332da38139",
-                "text": " 7",
+                "text": " 8",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 1,
@@ -36553,7 +36313,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": " 8",
+                "text": " 9",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 1,
@@ -36600,7 +36360,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": " 5",
+                "text": " 9",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 1,
@@ -36647,7 +36407,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": " 5",
+                "text": " 9",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 1,
@@ -36694,7 +36454,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": "5½",
+                "text": "7½",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 1,
@@ -36929,7 +36689,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": " 7",
+                "text": " 8",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Bold",
@@ -36986,7 +36746,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": " 8",
+                "text": " 9",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Bold",
@@ -37043,7 +36803,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": " 5",
+                "text": " 9",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Bold",
@@ -37100,7 +36860,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": " 5",
+                "text": " 9",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Bold",
@@ -37157,7 +36917,7 @@
                 ],
                 "extents": false,
                 "source_name": "TestTextSource",
-                "text": "5½",
+                "text": "7½",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Bold",
@@ -38214,7 +37974,7 @@
                     {
                         "name": "OverlaySchedule",
                         "source_uuid": "36d7754a-b179-4027-986a-4662262d5107",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -39757,7 +39517,7 @@
                     {
                         "name": "TVBanner",
                         "source_uuid": "9da357cb-0073-4fcd-9f35-357936f86a9d",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -42597,7 +42357,7 @@
                     {
                         "name": "JudgeAwards",
                         "source_uuid": "4a19102b-c49d-4050-acd6-1a0b7c568481",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -43063,7 +42823,7 @@
                     {
                         "name": "TopLeft",
                         "source_uuid": "7c63edb9-ebfa-4337-b6d1-de5f4b0caf31",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -45799,7 +45559,7 @@
                     {
                         "name": "ListLine 4",
                         "source_uuid": "905c5e66-2de8-4fe3-88c7-c0c4152a53b4",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -46143,7 +45903,7 @@
                     {
                         "name": "ListLine 3",
                         "source_uuid": "e6a81ce7-4413-4edd-9468-38349a72af2a",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -46487,7 +46247,7 @@
                     {
                         "name": "ListLine 2",
                         "source_uuid": "ff8b8cf8-50ac-44f1-8ab6-dab47713e630",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -46831,7 +46591,7 @@
                     {
                         "name": "ListLine 1",
                         "source_uuid": "eafdfdc7-a8fb-436f-881e-cbf8532cf80a",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -46894,7 +46654,7 @@
                             "duration": 300
                         },
                         "private_settings": {
-                            "collapsed": false
+                            "collapsed": true
                         }
                     }
                 ]
@@ -47605,7 +47365,7 @@
                         "value": "C:\\_Personal\\OBSStudioData\\Replay\\FakeForReplay (15).mkv"
                     }
                 ],
-                "local_file": "C:\\_Personal\\OBSStudioData\\Packages\\New Diving Overlays\\Replay/ForReplay (7).mp4",
+                "local_file": "C:\\_Personal\\OBSStudioData\\Packages\\New Diving Overlays\\Replay/ForReplay (16).mp4",
                 "is_local_file": true,
                 "looping": false,
                 "clear_on_media_end": false,
@@ -47685,7 +47445,7 @@
             "settings": {
                 "extents": true,
                 "undo_uuid": "cdca90ea-3ce2-42ea-8afc-9ede8c3cf97e",
-                "text": "35.00",
+                "text": "54.60",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -47807,7 +47567,7 @@
             "settings": {
                 "extents": false,
                 "outline": false,
-                "text": " P3",
+                "text": " P1",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -48706,7 +48466,7 @@
                     {
                         "name": "BoardSchedule",
                         "source_uuid": "168c510b-ec8f-4278-aae8-32fa36bc8c82",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -49512,7 +49272,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": false,
-                "text": "Event B",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 1,
@@ -49814,7 +49574,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": false,
-                "text": "Nukrisiu nuo kėdės",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Bold",
@@ -49852,7 +49612,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "Aida Marmeladaitė",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -49926,7 +49686,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "Vardaite2 Pavardaite2",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -49963,7 +49723,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "Vardaite3 Pavardaite3",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50000,7 +49760,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "Vardaite1 Pavardaite1",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50224,7 +49984,7 @@
                 "extents": true,
                 "gradient": false,
                 "outline": false,
-                "text": "1",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50304,7 +50064,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "2",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50342,7 +50102,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "3",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50380,7 +50140,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "4",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50608,7 +50368,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "119.25",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50682,7 +50442,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "96.30",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50719,7 +50479,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "90.50",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50756,7 +50516,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "56.10",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -50978,7 +50738,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "VDC",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -51054,7 +50814,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "KPM",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -51091,7 +50851,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "KPM",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -51128,7 +50888,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
-                "text": "KPM",
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -55911,7 +55671,7 @@
             "settings": {
                 "extents": true,
                 "undo_uuid": "8298e4fd-7268-4bb8-a6c8-31229c8372db",
-                "text": "90.50",
+                "text": "121.65",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Book",
@@ -56381,122 +56141,12 @@
             "id": "scene",
             "versioned_id": "scene",
             "settings": {
-                "id_counter": 8,
+                "id_counter": 11,
                 "custom_size": false,
                 "items": [
                     {
-                        "name": "Iriun Camera 3",
-                        "source_uuid": "ec46566c-d751-437f-9d10-3c56d20d6912",
-                        "visible": false,
-                        "locked": false,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 2,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 1,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "bounds_rel": {
-                            "x": 3.555555582046509,
-                            "y": 2.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "Iriun Camera Main",
-                        "source_uuid": "1aa1732f-096a-45e9-9e24-ab004a3c5478",
-                        "visible": false,
-                        "locked": false,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 2,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 2,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "bounds_rel": {
-                            "x": 3.555555582046509,
-                            "y": 2.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "Iriun Camera 2",
-                        "source_uuid": "2c2dcbaf-65af-49e7-b695-dbbe2fe47a98",
+                        "name": "Camera3",
+                        "source_uuid": "a3683749-7df4-4e53-9a3b-004490cff57d",
                         "visible": false,
                         "locked": false,
                         "rot": 0.0,
@@ -56512,7 +56162,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 3,
+                        "id": 11,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -56550,63 +56200,8 @@
                         "private_settings": {}
                     },
                     {
-                        "name": "Fake Camera",
-                        "source_uuid": "491e3efb-1b9a-4f09-b03a-c29cbda99463",
-                        "visible": false,
-                        "locked": true,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 0,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 4,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "bounds_rel": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "duration": 0
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "OsmoAction 3",
-                        "source_uuid": "b07af2b0-ac28-4804-8f8c-95aecc8635c6",
+                        "name": "Camera2",
+                        "source_uuid": "c7039301-8443-4f9f-bfc7-cefcd3dbba64",
                         "visible": false,
                         "locked": false,
                         "rot": 0.0,
@@ -56622,7 +56217,62 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 7,
+                        "id": 10,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_rel": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    },
+                    {
+                        "name": "Camera1",
+                        "source_uuid": "9f47c5c9-a92d-4ca1-ae69-72862774b986",
+                        "visible": false,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 9,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -56731,18 +56381,14 @@
                 "OBSBasic.SelectScene": [],
                 "EnableFilter.27287477-33f1-4584-a37d-89281a36c551": [],
                 "DisableFilter.27287477-33f1-4584-a37d-89281a36c551": [],
-                "libobs.show_scene_item.1": [],
-                "libobs.hide_scene_item.1": [],
-                "libobs.show_scene_item.2": [],
-                "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": [],
-                "libobs.show_scene_item.4": [],
-                "libobs.hide_scene_item.4": [],
-                "libobs.show_scene_item.7": [],
-                "libobs.hide_scene_item.7": [],
                 "libobs.show_scene_item.8": [],
-                "libobs.hide_scene_item.8": []
+                "libobs.hide_scene_item.8": [],
+                "libobs.show_scene_item.9": [],
+                "libobs.hide_scene_item.9": [],
+                "libobs.show_scene_item.10": [],
+                "libobs.hide_scene_item.10": [],
+                "libobs.show_scene_item.11": [],
+                "libobs.hide_scene_item.11": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -56760,6 +56406,7 @@
                         "resolution": "custom",
                         "service_count": 1,
                         "Save Path": "C:\\_Personal\\OBSStudioData\\Packages\\New Diving Overlays\\Replay",
+                        "rate_control": "CBR",
                         "audio_encoder": "ffmpeg_aac",
                         "video_encoder": "obs_nvenc_h264_tex",
                         "audio_bitrate": 64,
@@ -56768,8 +56415,7 @@
                         "custom_width": 1920,
                         "custom_height": 1080,
                         "path": "C:\\_Personal\\OBSStudioData\\Packages\\New Diving Overlays\\Replay",
-                        "filename_formatting": "ForReplay",
-                        "rate_control": "CBR"
+                        "filename_formatting": "ForReplay"
                     },
                     "mixers": 0,
                     "sync": 0,
@@ -56789,6 +56435,33 @@
                     "private_settings": {}
                 }
             ]
+        },
+        {
+            "prev_ver": 536870916,
+            "name": "VideoNotAvailable",
+            "uuid": "964cafdf-c360-4bea-b1ad-05292b0fc0d0",
+            "id": "image_source",
+            "versioned_id": "image_source",
+            "settings": {
+                "file": "C:/_Personal/OBSStudioData/Packages/New Diving Overlays/Media/Art/video_not_available.jpg",
+                "unload": true
+            },
+            "mixers": 0,
+            "sync": 0,
+            "flags": 0,
+            "volume": 1.0,
+            "balance": 0.5,
+            "enabled": true,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "hotkeys": {},
+            "deinterlace_mode": 0,
+            "deinterlace_field_order": 0,
+            "monitoring_type": 0,
+            "private_settings": {}
         },
         {
             "prev_ver": 536870916,

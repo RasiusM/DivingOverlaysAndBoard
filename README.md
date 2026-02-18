@@ -1,7 +1,7 @@
 # Diving Overlays And Scoreboard
 
 [OBS studio](https://obsproject.com/) Python script/scenes to present springboard/platform diving competition information in overlays for live streaming and on scoreboard in venue.  
-Python port and heavy refactoring from [Andy's DR2TVOverlay](https://github.com/andy5211d/DR2TVOverlay)  
+Python port and heavy refactoring from @andy5211d [Andy's DR2TVOverlay](https://github.com/andy5211d/DR2TVOverlay)
 Designed more for "single man orchestra" operations :) - automated as much as possible.   
 Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
 
@@ -65,32 +65,38 @@ Python 3.10 (latest supported by OBS). Set the path in OBS script settings.
 
 Download ZIP, unzip into local folder, import Scene Collection and Profile, point OBS to script dive_recorder_overlays.py
 
-*More detailed instructions to come...*
+### Notes when upgrading
+
+When there's new version of the script/scenes, keep in mind:
+- Replacing scenes json with the newest downloaded version will replace **ALL** customizations that you did. This involves additional graphics you added or moved/removed, color/text changes etc. If the changes you did do not conflict with the changes from repository, you can try merging in some diff tool, but it's risky process. Make backups just in case.
+- I think you need to remove .json.bak file before applying new scene collection, otherwise it will just restore old one from backup. Make backup of backup just in case ;)
+- **Do not** replace Media folder, as it will reset Header, HeaderLogo etc. media back to defaults.
+
+## Setup
 
 ### Camera setup
 
 Most likely you will need to add and use your specific camera source(s).
-1. Add source to scene *Active Video Source* - this scene is used as video source for streaming.
-2. Set source to not visible
-3. Add this source to Video Source for Replay, set it to not visible.
-4. Open Advenced Scene Switcher, add this camera to *Active camera switches/Hide all camera sources* macro (similar to already existing actions)
-5. Duplicate one of *When switched to ...* macros and modify it for your camera source.
-6. Setup hotkey to Show this camera source (do not set Hide unless you want to go to black scree/preset background). I usually set **Ctrl-Num 1..3** to manage cameras.
-7. Repeat for all your cameras.
+Up to 3 simultanous cameras are supported "out of the box" - to add more, you will need to change/add Advanced Scene Switcher macros.  
+  
+Add your camera source to one of *Camera1..2* scenes. Scene can contain multiple cameras, the one that is set to visible (or is "on top") will be shown when you select that camera number.  
+  
 
-You can use some recording as fake camera to test whole setup - just point *Active Video Source/Fake Camera* to your file.  
+One of Camera scenes contain Fake Camera media source, that you can point to, e.g. video recording of actual competition, enable it and use it to test and learn operations (Instant Replay will work too)  
 
 ### Instant replay setup
 
-Scene/source, that is set to visible in *Video Source for Replay* will be used for recording clips for instant replays.  
-To use specific camera, set that camera source to visible.  
-To use camera, currently active in streaming, set *Active Video Source* subscene to visible.  
+To use currently active camera as a source for Instant Replay:  
+    - Set *Video Source for Replay/Active Video Source* to visible, set *Video Source for Replay/Camera1..3* sources to NOT visible.  
+To use specific camera:  
+    - Set corresponding source *Video Source for Replay/Camera1..3* to visible, set other sources to NOT visible  
 
 This is convenient if you would like to stream dive in real time from various cameras, but always show dive repeat from single camera.  
-**Notes:**
+
+**Notes:**  
 - Replay clips are placed in Replay folder.  This folder is not cleaned-up - take care of it! Next time you start OBS after cleanup, you might get error about missing replay file. Ignore it.
 - Why not use "Native" OBS studio Replay buffer? Unreliable.
-- There's some lag between hotkey press and recording. Get some practice!
+- There's some lag between hotkey press and recording. Get some practice, use Fake Camera!
 - Replay clips are limited to 10s - recording will stop automatically. Some divers take their time on the board. Might want to setup hotkey to cut recording short without showing replay and start recording again (TODO).
 
 ### Media
@@ -124,6 +130,11 @@ Replace files with your art in Media/Art folder. If picture sizes are different 
 
 **Num 0** - start recording for instant replay  
 **Ctrl-Num 0** - stop recording and show instant replay  
+**Ctrl-Alt-Num 0** - stop recording  
+
+**Ctrl-Num 1** - switch livestream to Camera1  
+**Ctrl-Num 2** - switch livestream to Camera2  
+**Ctrl-Num 3** - switch livestream to Camera3  
 
 **Num +** - show/hide instant replay  
 **Num -** - show repeats (repeats are played until switched to different camera)  
@@ -140,4 +151,37 @@ Replace files with your art in Media/Art folder. If picture sizes are different 
 
 Meet title/event title will not be populated unless DiveRecorder is in Recording or Results Display mode.
 
-*More detailed instructions to come...*
+
+## Screnshots
+
+### Overlays
+![Schedule](Screenshots/DivingOverlays_Scrn_Schedule.jpg)
+
+![Pre-dive](Screenshots/DivingOverlays_Scrn_NextDiver1.jpg)
+
+![Scores](Screenshots/DivingOverlays_Scrn_Scores1.jpg)
+
+![Rankings](Screenshots/DivingOverlays_Scrn_Rankings1.png)
+
+### Scoreboard
+
+![Pre-dive Board](Screenshots/DivingOverlays_Brd_Scrn_NextDiver1.jpg)
+
+![Dive scores Board](Screenshots/DivingOverlays_Brd_Scrn_Scores2-1.jpg)
+
+![Rankings Board](Screenshots/DivingOverlays_Brd_Scrn_Results1.jpg)
+
+
+## Future plans
+
+### Short term
+- If there's no data for rankings list, do not show headers (now just header is displayed)
+- Test with Team events (should probably work, it's mainly how DR presents info)
+- Test with events, where divers carries some points over to the next event
+- Use different spacing between scores for different judge numbers.
+- *Studio Mode*-friendly scene collection (maybe more suited for serious streaming and important events, as with Studio Mode you can verify that the scene shows what you intended to before switching to it)
+
+### Long term
+- Integration with *Divecalc*
+
+
