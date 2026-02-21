@@ -108,6 +108,8 @@ Replace files with your art in Media/Art folder, do not change file names. If pi
 
 ## Operation
 
+**Note:** After you install the script, cycle all F1 hotkeys several times. Do the same if you remove and re-install the script.
+
 ### Scenes
 
 - use *LiveStream Composite* for streaming.
