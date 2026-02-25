@@ -25989,46 +25989,7 @@
             "deinterlace_field_order": 0,
             "monitoring_type": 0,
             "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
-            "private_settings": {},
-            "filters": [
-                {
-                    "prev_ver": 536870916,
-                    "name": "BO: Active Video Source",
-                    "uuid": "f9573be4-a5b4-476d-996b-c4fe12d23135",
-                    "id": "osi_branch_output",
-                    "versioned_id": "osi_branch_output",
-                    "settings": {
-                        "resolution": "custom",
-                        "service_count": 1,
-                        "rate_control": "CBR",
-                        "audio_encoder": "ffmpeg_aac",
-                        "video_encoder": "obs_nvenc_h264_tex",
-                        "audio_bitrate": 64,
-                        "stream_recording": true,
-                        "use_profile_recording_path": false,
-                        "custom_width": 1920,
-                        "custom_height": 1080,
-                        "path": "C:/_Personal/OBSStudioData/Replay",
-                        "filename_formatting": "ForReplay"
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                }
-            ]
+            "private_settings": {}
         },
         {
             "prev_ver": 536870916,
@@ -34584,44 +34545,7 @@
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
             "monitoring_type": 0,
-            "private_settings": {},
-            "filters": [
-                {
-                    "prev_ver": 536870916,
-                    "name": "BO: Fake Camera",
-                    "uuid": "1e470bb3-9c71-4cf7-8294-cf491b02abfc",
-                    "id": "osi_branch_output",
-                    "versioned_id": "osi_branch_output",
-                    "settings": {
-                        "resolution": "",
-                        "service_count": 1,
-                        "audio_encoder": "ffmpeg_aac",
-                        "video_encoder": "obs_x264",
-                        "audio_bitrate": 160,
-                        "stream_recording": true,
-                        "use_profile_recording_path": false,
-                        "rec_format": "mp4",
-                        "path": "C:/_Personal/OBSStudioData/Replay",
-                        "filename_formatting": "FakeForReplay"
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                }
-            ]
+            "private_settings": {}
         },
         {
             "prev_ver": 536870916,
@@ -36071,42 +35995,7 @@
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
             "monitoring_type": 0,
-            "private_settings": {},
-            "filters": [
-                {
-                    "prev_ver": 536870916,
-                    "name": "BO: Canon For Replay",
-                    "uuid": "260c61e3-2a1d-4c80-8bc3-86ef319f747d",
-                    "id": "osi_branch_output",
-                    "versioned_id": "osi_branch_output",
-                    "settings": {
-                        "service_count": 1,
-                        "audio_encoder": "ffmpeg_aac",
-                        "video_encoder": "obs_x264",
-                        "audio_bitrate": 160,
-                        "stream_recording": true,
-                        "use_profile_recording_path": false,
-                        "path": "C:/_Personal/OBSStudioData/Replay",
-                        "filename_formatting": "CanonForReplay"
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                }
-            ]
+            "private_settings": {}
         },
         {
             "prev_ver": 536870916,
