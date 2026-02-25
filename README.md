@@ -5,7 +5,14 @@ Python port and heavy refactoring from @andy5211d [Andy's DR2TVOverlay](https://
 Designed more for "single man orchestra" operations :) - automated as much as possible.   
 Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
 
-**Functionality**:
+## Updates
+
+**!!! I accidently left Branch Output filters** on two of the Video Capture Sources in _Camera 1..3_ scenes and one on _Active Camera Source_ scene. They silently recorded hours and hours of black until my drive run out of space (that's when I noticed it). 
+Look for files CanonForReplay*.mp4 and ForReplay*.mp4 in your drive (default Recordings output folder I think) - if you started using these scene collections, most likely these filters are active on your machine too.  
+Remove Branch Output filters from these camera sources and scene and delete files. There should NOT be any BO filters on camera sources in Camera1..3 (unless you put some there yourself for whatever reason).
+Sorry :(
+
+## Functionality
 
 - Supported event types:
     - Individual
@@ -63,14 +70,18 @@ Python 3.10 (latest supported by OBS). Set the path in OBS script settings.
 
 ### Script/scene installation
 
-Download ZIP, unzip into local folder, import Scene Collection and Profile, point OBS to script dive_recorder_overlays.py
+1. Download ZIP
+2. Unzip into local folder. Folders will contain imports for following items.
+3. Import Scene Collection (Scenes/Diving_Streaming_and_Board.json)
+4. Import Profile (Profile/DivingStreamingAndBoard)
+5. Add script dive_recorder_overlays.py
 
 ### Notes when upgrading
 
 When there's new version of the script/scenes, keep in mind:
 - Replacing scenes json with the newest downloaded version will replace **ALL** customizations that you did. This involves additional graphics you added or moved/removed, color/text changes etc. If the changes you did do not conflict with the changes from repository, you can try merging in some diff tool, but it's risky process. Make backups just in case.
 - I think you need to remove .json.bak file before applying new scene collection, otherwise it will just restore old one from backup. Make backup of backup just in case ;)
-- **Do not** replace Media folder, as it will reset Header, HeaderLogo etc. media back to defaults.
+- **Do not** replace Media folder if you replaced with your graphics, as it will reset Header, HeaderLogo etc. media back to defaults.
 
 ## Setup
 
@@ -81,7 +92,6 @@ Up to 3 simultanous cameras are supported "out of the box" - to add more, you wi
   
 Add your camera source to one of *Camera1..2* scenes. Scene can contain multiple cameras, the one that is set to visible (or is "on top") will be shown when you select that camera number.  
   
-
 One of Camera scenes contain Fake Camera media source, that you can point to, e.g. video recording of actual competition, enable it and use it to test and learn operations (Instant Replay will work too)  
 
 ### Instant replay setup
@@ -91,19 +101,21 @@ To use currently active camera as a source for Instant Replay:
 To use specific camera:  
     - Set corresponding source *Video Source for Replay/Camera1..3* to visible, set other sources to NOT visible  
 
-This is convenient if you would like to stream dive in real time from various cameras, but always show dive repeat from single camera.  
+This is convenient if you would like to stream dive in real time switching between various cameras, but always show dive repeat from specific camera. E.g some dives look good from the back, but side camera is more "technical".
 
 **Notes:**  
 - Replay clips are placed in Replay folder.  This folder is not cleaned-up - take care of it! Next time you start OBS after cleanup, you might get error about missing replay file. Ignore it.
 - Why not use "Native" OBS studio Replay buffer? Unreliable.
 - There's some lag between hotkey press and recording. Get some practice, use Fake Camera!
-- Replay clips are limited to 10s - recording will stop automatically. Some divers take their time on the board. Might want to setup hotkey to cut recording short without showing replay and start recording again (TODO).
+- Replay clips are limited to 10s - recording will stop automatically. Some divers take their time on the board, and if you realize that that's the case, cut recording short without triggering replay and start again (see hotkeys).
 
 ### Media
 
-Replace files with your art in Media/Art folder. If picture sizes are different from current ones, sources might need adjusting in corresponding scenes.
+Replace files with your art in Media/Art folder, do not change file names. If picture sizes are different from current ones, sources might need adjusting in corresponding scenes.
 
 ## Operation
+
+**Note:** After you install the script, cycle all F1 hotkeys several times. Do the same if you remove and re-install the script.
 
 ### Scenes
 
