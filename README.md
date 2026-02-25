@@ -5,7 +5,12 @@ Python port and heavy refactoring from @andy5211d [Andy's DR2TVOverlay](https://
 Designed more for "single man orchestra" operations :) - automated as much as possible.   
 Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
 
-**Functionality**:
+## Updates
+
+**!!! I accidently left Branch Output filters** on two of the Video Capture Sources in Camera 1..3 scenes. They silently recorded hours and hours of black until my drive run out of space (that's when I noticed it). Look for files CanonForReplay*.mp4 and ForReplay*.mp4 in your drive (default Recordings output folder I think) - if you started using these scene collections, most likely these filters are active on your machine too. Remove Branch Output filters from these camera sources and delete files. There should NOT be any BO filters on camera sources in Camera1..3 (unless you put some there yourself for whatever reason).
+Sorry :(
+
+## Functionality
 
 - Supported event types:
     - Individual
