@@ -6,8 +6,10 @@ else:
     import obspython as obs   # real runtime module
 
 from datatypes import DiveMessage
-from obs_utils import set_filter_path, set_source_string, set_source_file, set_source_visibility, log_info_if_debug, set_vlc_playlist, is_source_available
-from enums import DiveInfoBoardGrp, EventInfo, InstantReplaySrc, JudgeAwardsBoardGrp, MainBoardGrp, TVBannerGrp, SynchroJLabels, DiveInfoGrp, JudgeAwardsGrp
+from obs_utils import center_score, set_filter_path, set_source_string, set_source_file, set_source_visibility, log_info_if_debug, set_vlc_playlist, is_source_available
+from enums import (DiveInfoBoardGrp, EventInfo, IndividualAwards, InstantReplaySrc, JudgeAwardsBoardGrp, MainBoardGrp, SynchroLabelsBoardGrp,
+                   TVBannerGrp, SynchroAwards, SynchroLabelsGrp, DiveInfoGrp, AwardsCommonGrp)
+
 import os
 
 flagLoc = ""
@@ -31,9 +33,9 @@ positionText = {
 penaltyText = {
     "0": " ",
     "1": "Failed Dive",
-    "2": "Restarted\n(-2 points)",
-    "3": "Flight or Danger\n(Max 2 points)",
-    "4": "Arm position\n(Max 4½ points)"
+    "2": "Restarted (-2 points)",
+    "3": "Flight or Danger (Max 2 points)",
+    "4": "Arm position (Max 4½ points)"
 }
 
 def clear_data():
@@ -54,29 +56,56 @@ def clear_data():
     set_source_string(MainBoardGrp.Diver1, " ")
     set_source_string(MainBoardGrp.Diver2, " ")
 
-    set_source_visibility(JudgeAwardsGrp.GroupName, False)
+    set_source_visibility(IndividualAwards.JudgesGrp7, False)
+    set_source_visibility(IndividualAwards.JudgesGrp5, False)
+    set_source_visibility(IndividualAwards.JudgesGrp3, False)
+
+    set_source_visibility(SynchroLabelsGrp.GroupName, False)
+
+    set_source_visibility(SynchroAwards.JudgesGrp11, False)
+    set_source_visibility(SynchroAwards.JudgesGrp9, False)
+    set_source_visibility(SynchroAwards.JudgesGrp7, False)
+    set_source_visibility(SynchroAwards.JudgesGrp5, False)
+
     set_source_visibility(JudgeAwardsBoardGrp.GroupName, False)
-    set_source_visibility(SynchroJLabels.JudgesBoard, False)
+    set_source_visibility(SynchroLabelsBoardGrp.GroupName, False)
 
     for i in range(1, 12):
-        set_source_string(f"{SynchroJLabels.JPrefix}{i}", "  ")
-
         if i <= 7:
-            set_source_string(f"{SynchroJLabels.JBExecPrefix}{i}", "  ")
+            set_source_string(f"{SynchroAwards.JudgeExecPrefix}{i}", "  ")
+            set_source_string(f"{IndividualAwards.JudgePrefix}{i}", "  ")
+            set_source_string(f"{JudgeAwardsBoardGrp.JExecPrefix}{i}", "  ")
 
         if i <= 5:
-            set_source_string(f"{SynchroJLabels.JBSynchroPrefix}{i}", "  ")
+            set_source_string(f"{SynchroAwards.JudgeSynchroPrefix}{i}", "  ")
+            set_source_string(f"{JudgeAwardsBoardGrp.JSynchroPrefix}{i}", "  ")
 
     set_source_visibility(DiveInfoGrp.GroupName, False)
     set_source_visibility(DiveInfoBoardGrp.GroupName, False)
 
 
-def set_synchro_judge_labels(count_judges):
-    # overlay synchro judge labels visibility
-    set_source_visibility(SynchroJLabels.Judges11, (count_judges == "11") and overlays_enabled)
-    set_source_visibility(SynchroJLabels.Judges9, (count_judges == "9") and overlays_enabled)
-    set_source_visibility(SynchroJLabels.Judges7, (count_judges == "7") and overlays_enabled)
-    set_source_visibility(SynchroJLabels.Judges5, (count_judges == "5") and overlays_enabled)
+def set_synchro_judge_number(count_judges: int):
+    # overlay synchro judge awards and labels visibility
+    set_source_visibility(SynchroLabelsGrp.GroupName, (count_judges > 0))
+    set_source_visibility(SynchroAwards.JudgesGrp11, (count_judges == 11))
+    set_source_visibility(SynchroAwards.JudgesGrp9, (count_judges == 9))
+    set_source_visibility(SynchroAwards.JudgesGrp7, (count_judges == 7))
+    set_source_visibility(SynchroAwards.JudgesGrp5, (count_judges == 5))
+
+    # setting Synchro Labels in Board visibility
+    set_source_visibility(SynchroLabelsBoardGrp.GroupName, (count_judges > 0))
+    set_source_visibility(JudgeAwardsBoardGrp.GroupName, (count_judges > 0))
+
+
+def set_individual_judge_number(count_judges: int):
+    log_info_if_debug(debug, f"Setting individual judge number: {count_judges}")
+    # overlay individual judge scores visibility
+    set_source_visibility(IndividualAwards.JudgesGrp7, (count_judges == 7))
+    set_source_visibility(IndividualAwards.JudgesGrp5, (count_judges == 5))
+    set_source_visibility(IndividualAwards.JudgesGrp3, (count_judges == 3))
+
+    # board judge scores visibility (visibility of irrelevant score fields is managed by emptying the text)
+    set_source_visibility(JudgeAwardsBoardGrp.GroupName, (count_judges > 0))
 
 
 def dvov_act_set_event_complete(is_event_complete: bool):
@@ -120,7 +149,9 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
     #----------------------------------------------------------
     event_name = msg.long_event_name
 
-    diverNo = f"Diver {msg.start_no}/{msg.divers_in_event} "
+    diverLabel = "Divers" if synchro else "Diver"
+
+    diverNo = f"{diverLabel} {msg.start_no}/{msg.divers_in_event} "
     roundNo = f"Round {msg.round}/{msg.rounds_in_event} "
     event_info = (
         f" {event_name} \n "
@@ -182,14 +213,13 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
 
     log_info_if_debug(debug, f"J1 contents: [{msg.j1}]")
 
-    set_source_string(JudgeAwardsGrp.Penalty, "")
+    set_source_string(AwardsCommonGrp.Penalty, "")
 
     # always hide synchro labels initially
-    set_synchro_judge_labels(0)
-    set_source_visibility(SynchroJLabels.JudgesBoard, False)
+    set_synchro_judge_number(0)
+    set_individual_judge_number(0)
 
     if awards_present:
-
         # on awards, hide pre-dive info
         set_source_visibility(DiveInfoGrp.GroupName, False)
         set_source_visibility(DiveInfoBoardGrp.GroupName, False)
@@ -201,103 +231,65 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
         set_source_string(TVBannerGrp.Position, rank)
 
         # ----- Judge lists -----
-        count_j = msg.number_of_judges
+        count_j =  int(msg.number_of_judges)
 
         if synchro:
-            set_synchro_judge_labels(count_j)
-
-            if overlays_enabled:
-                set_source_visibility(SynchroJLabels.JudgesBoard, True)
-
-            # Fill in board judge values JE1..JE6 and JS1..JS5
-            # Populate Execution Judge sources JE1..JE6
+            # Populate Execution Judge sources JE1..JE6, JOE1..JOE6
             judge_values = [
                     msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6
                 ]
 
             for i, val in enumerate(judge_values, start=1):
-                set_source_string(f"{SynchroJLabels.JBExecPrefix}{i}", val)
+                set_source_string(f"{SynchroAwards.JudgeExecPrefix}{i}", val.rjust(3))
+                set_source_string(f"{JudgeAwardsBoardGrp.JExecPrefix}{i}", center_score(val))
 
-            # Populate Synchro Judge sources JS1..JS5
+            # Populate Synchro Judge sources JS1..JS5, JOS1..JOS5
             judge_values = [
                     msg.j7, msg.j8, msg.j9, msg.j10, msg.j11
                 ]
 
             for i, val in enumerate(judge_values, start=1):
-                set_source_string(f"{SynchroJLabels.JBSynchroPrefix}{i}", val)
-
-            # Fill in overlay judge values
-            # populate variable judge_values for J1..J11 based on count_j
-            if count_j == "11":
-                judge_values = [
-                    msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6,
-                    msg.j7, msg.j8, msg.j9, msg.j10, msg.j11
-                ]
-            elif count_j == "9":
-                judge_values = [
-                    msg.j1, msg.j2, msg.j3, msg.j4,
-                    msg.j7, msg.j8, msg.j9, msg.j10, msg.j11,
-                    "  ", "  "
-                ]
-            elif count_j == "7":
-                judge_values = [
-                    msg.j1, msg.j2, msg.j3, msg.j4,
-                    msg.j7, msg.j8, msg.j9,
-                    "  ", "  ", "  ", "  "
-                ]
-            elif count_j == "5":
-                judge_values = [
-                    msg.j1, msg.j2,
-                    msg.j7, msg.j8, msg.j9,
-                    "  ", "  ", "  ", "  ", "  "
-                ]
-            else:
-                obs.script_log(obs.LOG_WARNING, f"Invalid number of synchro judges: {count_j}")
-
-            for i, val in enumerate(judge_values, start=1):
-                set_source_string(f"{SynchroJLabels.JPrefix}{i}", val.rjust(2) if i <= int(count_j) else "  ")
+                set_source_string(f"{SynchroAwards.JudgeSynchroPrefix}{i}", val.rjust(3))
+                set_source_string(f"{JudgeAwardsBoardGrp.JSynchroPrefix}{i}", center_score(val))
 
         else:
-            # Fill in board judge values JE1..JE7 and clear JS1..JS5
+            # Fill in Execution judge values for overlay and board JE1..JE7, JOE1..JOE7
             judge_values = [
                     msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6, msg.j7
                 ]
 
             for i, val in enumerate(judge_values, start=1):
-                set_source_string(f"{SynchroJLabels.JBExecPrefix}{i}", val.rjust(2))
-            # Clear JS1..JS5
+                set_source_string(f"{IndividualAwards.JudgePrefix}{i}", val.rjust(3))
+                set_source_string(f"{JudgeAwardsBoardGrp.JExecPrefix}{i}", center_score(val))
+
+            # Clear JS1..JS5, JOS1..JOS5
             clear_values = ["  "] * 5
             for i, val in enumerate(clear_values, start=1):
-                set_source_string(f"{SynchroJLabels.JBSynchroPrefix}{i}", val)
-            # Fill in overlay judge values
-            # mapping of judge values for variable J1..J11
-            judge_values = [
-                msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6,
-                msg.j7, msg.j8, msg.j9, msg.j10, msg.j11
-            ]
-
-            for i, val in enumerate(judge_values, start=1):
-                set_source_string(f"{SynchroJLabels.JPrefix}{i}", val.rjust(2) if i <= int(count_j) else "  ")
+                set_source_string(f"{SynchroAwards.JudgeSynchroPrefix}{i}", val)
+                set_source_string(f"{JudgeAwardsBoardGrp.JSynchroPrefix}{i}", val)
 
         # Penalty text
         penalty = penaltyText.get(msg.penalty_code, " ")
 
-        set_source_string(JudgeAwardsGrp.Points, msg.points)
-        set_source_string(JudgeAwardsGrp.Penalty, penalty)
+        set_source_string(AwardsCommonGrp.Points, msg.points)
+        set_source_string(AwardsCommonGrp.Penalty, penalty)
         set_source_string(TVBannerGrp.Total, msg.total)
 
         # show awards sources
         if overlays_enabled:
-            set_source_visibility(JudgeAwardsGrp.GroupName, True)
-            set_source_visibility(JudgeAwardsBoardGrp.GroupName, True)
+            set_source_visibility(AwardsCommonGrp.GroupName, True)
 
+            if synchro:
+                set_synchro_judge_number(count_j)
+            else:
+                set_individual_judge_number(count_j)
     else:
         #------------------------------------------------------
         # Pre dive info
         #------------------------------------------------------
-        set_source_visibility(JudgeAwardsGrp.GroupName, False)
+        set_source_visibility(AwardsCommonGrp.GroupName, False)
         set_source_visibility(JudgeAwardsBoardGrp.GroupName, False)
-        set_source_visibility(SynchroJLabels.JudgesBoard, False)
+        set_source_visibility(SynchroLabelsBoardGrp.GroupName, False)
 
         # ----- Start No
         # Ensure start number is 3 characters wide for display alignment (text source is buggy with alignment)
@@ -392,7 +384,6 @@ def dvov_act_script_update(settings):
 
     # need to do this by timer, because on script load, sources aren't available yet
     obs.timer_add(set_source_paths, 3000)
-
 
 
 def dvov_act_script_load(settings):

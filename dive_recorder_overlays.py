@@ -312,14 +312,9 @@ def udp_timer_callback():
     # Process pending rankings update on main thread (thread-safe for OBS API)
     if pending_rankings_update:
         try:
-            if not ranking_records_lock.acquire(False):
-                return
-            try:
-                log_info_if_debug(debug, "Processing rankings on main thread...")
-                dvov_rank_set_divers(rankings_records, rankings_event_record)
-                pending_rankings_update = False
-            finally:
-                ranking_records_lock.release()
+            log_info_if_debug(debug, "Processing rankings on main thread...")
+            dvov_rank_set_divers(rankings_records, rankings_event_record)
+            pending_rankings_update = False
         except Exception as e:
             obs.script_log(obs.LOG_ERROR, f"Error processing rankings: {e}")
             pending_rankings_update = False

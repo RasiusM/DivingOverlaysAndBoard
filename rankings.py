@@ -9,14 +9,14 @@ else:
 from typing import List
 from datatypes import DiveListRecord, DiveMessage
 from enums import RankingsSrc, EventMode
-from obs_utils import is_source_available, set_source_file, set_source_string, set_source_visibility, log_info_if_debug
+from obs_utils import get_source_string, is_source_available, set_source_file, set_source_string, set_source_visibility, log_info_if_debug
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # --------- Rankings handling
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-RANKINGS_MAX_LINES = 8  # max number of lines supported in the scene
+RANKINGS_MAX_LINES = 10  # max number of lines supported in the scene
 
-rankings_no_lines_per_page = 8
+rankings_no_lines_per_page = RANKINGS_MAX_LINES
 rankings_page_display_duration = 10  # seconds per page
 
 ranking_rec_working_copy: List[DiveListRecord] = []
@@ -41,31 +41,12 @@ _hotkey_stop_id = None
 
 event_ab_is_a = True  # default to event A
 
-def dvov_rank_set_mode(eventMode: EventMode):
-    global mode
-    mode = eventMode
-
-    # Reset pagination on any mode (usefull for resseting)
-    stop_pagination()
-
-    if (EventMode.StartList == mode) or (EventMode.Rankings == mode):
-        start_pagination()
-
-
-def dvov_rank_set_event_ab(event_is_a: bool):
-    global event_ab_is_a
-    event_ab_is_a = event_is_a
-
-    # event changed, all data is invalid
-    clear_data()
-    stop_pagination()
-
-
 def clear_data():
     log_info_if_debug(debug, "Clearing ranking data from sources...")
 
     set_source_string(RankingsSrc.HeaderMeet, " ")
     set_source_string(RankingsSrc.HeaderEvent, " ")
+    set_source_string(RankingsSrc.HeaderListType, " ")
 
     for i in range(RANKINGS_MAX_LINES):
         set_source_visibility(f"{RankingsSrc.LinePrefix}{i+1}", False)
@@ -77,25 +58,91 @@ def clear_data():
         set_source_string(f"{RankingsSrc.ScorePrefix}{i+1}", " ")
 
 
+def dvov_rank_set_mode(eventMode: EventMode):
+    global mode
+    mode = eventMode
+
+    sort_list()
+    reset_pagination()
+
+
+def dvov_rank_set_event_ab(event_is_a: bool):
+    global event_ab_is_a
+    event_ab_is_a = event_is_a
+
+    # event changed, all data is invalid
+    ranking_rec_working_copy.clear()
+    clear_data()
+    reset_pagination()
+
+
+def sort_list():
+    global ranking_rec_working_copy
+    # Sort according to mode (when in Event, we might want to show intermediate rankings, therefore sort by rank)
+    if EventMode.Rankings == mode or EventMode.Event == mode:
+        ranking_rec_working_copy.sort(key=lambda r: r.rank)  # sort by rank
+        set_source_string(RankingsSrc.HeaderListType, " ")
+    else:
+        ranking_rec_working_copy.sort(key=lambda r: r.start_position)  # sort by position number for startlist
+        set_source_string(RankingsSrc.HeaderListType, "Start List")
+
+
 def dvov_rank_set_divers(records: List[DiveListRecord], event_record: DiveMessage):
     global ranking_rec_working_copy, rankings_event_rec_working_copy
 
     ranking_rec_working_copy = records.copy()
     rankings_event_rec_working_copy = event_record
 
-    log_info_if_debug(debug, "Set Divers event.")
-
-    # Reset pagination on any data update
-    stop_pagination()
-
-    log_info_if_debug(debug, "Set Divers event: Stopped pagination.")
-
-    if (EventMode.StartList == mode) or (EventMode.Rankings == mode):
-        log_info_if_debug(debug, "Set Divers event: Starting pagination.")
-        start_pagination()
+    clear_data()
+    reset_pagination()
 
     log_info_if_debug(debug, f"Set Divers event: Got ranking records for {len(ranking_rec_working_copy)} divers.")
 
+
+def show_rank_line (diver: DiveListRecord, disp_no: int):
+    # use rank or start position based on mode
+    # TODO: check Guest diver positioning (it looks like it should be possible to show Guest diver in correct ranking position)
+
+    # Determine what the new values should be
+    if EventMode.Rankings == mode or EventMode.Event == mode:
+        rank = str(diver.rank) if int(diver.rank) > 0 else "G"
+        score = diver.points
+    else:
+        rank = str(diver.start_position)
+        score = " "
+
+    diver_name = diver.diver
+    club_code = diver.club_code
+
+    # Get current values from sources
+    prev_rank = get_source_string(f"{RankingsSrc.RankPrefix}{disp_no}")
+    prev_diver_name = get_source_string(f"{RankingsSrc.NamePrefix}{disp_no}")
+    prev_club_code = get_source_string(f"{RankingsSrc.TeamPrefix}{disp_no}")
+    prev_score = get_source_string(f"{RankingsSrc.ScorePrefix}{disp_no}")
+
+    # Check if any data changed
+    data_changed = (
+        rank != prev_rank or
+        diver_name != prev_diver_name or
+        club_code != prev_club_code or
+        score != prev_score
+    )
+
+    # Only update if data changed
+    if data_changed:
+        set_source_visibility(f"{RankingsSrc.LinePrefix}{disp_no}", False)
+        set_source_visibility(f"{RankingsSrc.BoardLinePrefix}{disp_no}", False)
+
+        set_source_string(f"{RankingsSrc.RankPrefix}{disp_no}", rank)
+        set_source_string(f"{RankingsSrc.NamePrefix}{disp_no}", diver_name)
+        set_source_string(f"{RankingsSrc.TeamPrefix}{disp_no}", club_code)
+        set_source_string(f"{RankingsSrc.ScorePrefix}{disp_no}", score)
+
+    # set sources to visible even if data didn't change - e.g. first page contained 8 divers, next 3,
+    # so when we get back to first page, last 5 lines will have unchanged data but will be invisible
+    if diver_name.strip() != "":  # just a precaution to avoid showing empty lines if diver name is empty (it shouldn't be, but just in case)
+        set_source_visibility(f"{RankingsSrc.LinePrefix}{disp_no}", True)
+        set_source_visibility(f"{RankingsSrc.BoardLinePrefix}{disp_no}", True)
 
 # ---------------------------
 # Pagination (show each page)
@@ -104,44 +151,18 @@ def show_page(ranking_rec: List[DiveListRecord], rankings_event_rec: DiveMessage
     set_source_string(RankingsSrc.HeaderMeet, rankings_event_rec.meet_title)
     set_source_string(RankingsSrc.HeaderEvent, rankings_event_rec.long_event_name)
 
-    # Sort according to mode
-    if EventMode.Rankings == mode:
-        ranking_rec_working_copy.sort(key=lambda r: r.rank)  # sort by rank
-    else:
-        ranking_rec_working_copy.sort(key=lambda r: r.start_position)  # sort by position number for startlist
-
     start = page_index * rankings_no_lines_per_page
     chunk = ranking_rec[start:start + rankings_no_lines_per_page]
 
-    # only hide lines if more than 1 page (it looks annoying on single page, flickering)
-    if _total_pages > 1:
-        for i in range(RANKINGS_MAX_LINES):
+    for i in range(rankings_no_lines_per_page):
+        disp_no = i + 1
+        if i < len(chunk):
+            diver = chunk[i]
+            show_rank_line(diver, disp_no)
+        else:
+            log_info_if_debug(debug, f"Clearing line {i+1} for page {page_index+1} (line not used on this page)")
             set_source_visibility(f"{RankingsSrc.LinePrefix}{i + 1}", False)
             set_source_visibility(f"{RankingsSrc.BoardLinePrefix}{i + 1}", False)
-
-    for i in range(rankings_no_lines_per_page):
-        if i < rankings_no_lines_per_page:
-            disp_no = i + 1
-            if i < len(chunk):
-                diver = chunk[i]
-
-                # use rank or start position based on mode
-                if EventMode.Rankings == mode:
-                    set_source_string(f"{RankingsSrc.RankPrefix}{disp_no}", str(diver.rank) if int(diver.rank) > 0 else "G")
-                else:
-                    set_source_string(f"{RankingsSrc.RankPrefix}{disp_no}", str(diver.start_position))
-
-                set_source_string(f"{RankingsSrc.NamePrefix}{disp_no}", diver.diver)
-                set_source_string(f"{RankingsSrc.TeamPrefix}{disp_no}", diver.club_code)
-
-                if EventMode.Rankings == mode:
-                    set_source_string(f"{RankingsSrc.ScorePrefix}{disp_no}", diver.points)
-                else:
-                    set_source_string(f"{RankingsSrc.ScorePrefix}{disp_no}", " ")
-
-                set_source_visibility(f"{RankingsSrc.LinePrefix}{disp_no}", True)
-                set_source_visibility(f"{RankingsSrc.BoardLinePrefix}{disp_no}", True)
-
 
 # ---------------------------
 # Pagination control
@@ -149,13 +170,13 @@ def show_page(ranking_rec: List[DiveListRecord], rankings_event_rec: DiveMessage
 def start_pagination():
     global ranking_rec_working_copy, rankings_event_rec_working_copy, _current_page, _total_pages, _timer_active
 
-    clear_data()
-
     if ranking_rec_working_copy == []:
         log_info_if_debug(debug, "No startlist/ranking records")
         return
 
     log_info_if_debug(debug, "Starting pagination...")
+
+    sort_list()
 
     _current_page = 0
     _total_pages = (len(ranking_rec_working_copy) + rankings_no_lines_per_page - 1) // rankings_no_lines_per_page
@@ -200,6 +221,12 @@ def stop_pagination():
         obs.timer_remove(_advance_page)
         _timer_active = False
     log_info_if_debug(debug, "Stopped pagination.")
+
+
+def reset_pagination():
+    stop_pagination()
+    start_pagination()
+
 
 # ---------------------------
 # Ranking Hotkeys callbacks

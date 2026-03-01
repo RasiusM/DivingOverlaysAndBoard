@@ -17,16 +17,22 @@ class TVBannerGrp(str, Enum):
     Position = "Position_Rank"
     Diver = "Diver"
 
-class SynchroJLabels(str, Enum):
-    Judges11 = "SynchroJLabels11"
-    Judges9 = "SynchroJLabels9"
-    Judges7 = "SynchroJLabels7"
-    Judges5 = "SynchroJLabels5"
-    JudgesBoard = "SynchroJLabelsBoard"
-    JPrefix = "J"
-    JBSynchroPrefix = "JS"
-    JBExecPrefix = "JE"
+class SynchroLabelsGrp(str, Enum):
+    GroupName = "SynchroLabels"
 
+class SynchroAwards(str, Enum):
+    JudgesGrp11 = "SynchroAwards11"
+    JudgesGrp9 = "SynchroAwards9"
+    JudgesGrp7 = "SynchroAwards7"
+    JudgesGrp5 = "SynchroAwards5"
+    JudgeExecPrefix = "JOE"
+    JudgeSynchroPrefix = "JOS"
+
+class IndividualAwards(str, Enum):
+    JudgesGrp7 = "IndividualAwards7"
+    JudgesGrp5 = "IndividualAwards5"
+    JudgesGrp3 = "IndividualAwards3"
+    JudgePrefix = "JOE"
 
 class DiveInfoGrp(str, Enum):
     GroupName = "DiveInfo"
@@ -35,8 +41,8 @@ class DiveInfoGrp(str, Enum):
     Board = "Dive_Board"
     Description = "Dive_Description"
 
-class JudgeAwardsGrp(str, Enum):
-    GroupName = "JudgeAwards"
+class AwardsCommonGrp(str, Enum):
+    GroupName = "AwardsCommon"
     Points = "Points"
     Penalty = "Penalty"
 
@@ -55,6 +61,12 @@ class DiveInfoBoardGrp(str, Enum):
 # most of sources in this group are shared, judge award sources are hardcoded
 class JudgeAwardsBoardGrp(str, Enum):
     GroupName = "JudgeAwardsBoard"
+    JExecPrefix = "JE"
+    JSynchroPrefix = "JS"
+
+class SynchroLabelsBoardGrp(str, Enum):
+    GroupName = "SynchroLabelsBoard"
+
 
 # Rankings sources
 class RankingsSrc(str, Enum):
@@ -66,6 +78,7 @@ class RankingsSrc(str, Enum):
     ScorePrefix = "Rnk_Score "
     HeaderMeet = "Rnk_MeetTitle"
     HeaderEvent = "Rnk_EventTitle"
+    HeaderListType = "Rnk_ListType"
     # not exactly rankings sources - used in rankings and pre-event scenes
     HeaderArt = "HeaderArt"
     HeaderArtFile = "header_art.png"
@@ -109,7 +122,7 @@ class EventABGrp(str, Enum):
     BActive = "EventAB_Background_B_Active"
 
 class EventInfoGrp(str, Enum):
-    EventType = "EventInfo"
+    EventType = "Event_Type"
     NoOfJudges = "No_Of_Judges"
     Individual = "EventInfo_Background_Individual"
     Synchro = "EventInfo_Background_Synchro"

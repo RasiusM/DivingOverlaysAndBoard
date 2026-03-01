@@ -16,8 +16,11 @@ from obs_utils import set_source_string, set_color_source_alpha, set_source_visi
 from enums import (
     EventMode,
     DiveInfoGrp,
-    JudgeAwardsGrp,
-    SynchroJLabels,
+    AwardsCommonGrp,
+    IndividualAwards,
+    SynchroAwards,
+    SynchroLabelsBoardGrp,
+    SynchroLabelsGrp,
     TVBannerGrp,
     MainBoardGrp,
     DiveInfoBoardGrp,
@@ -139,7 +142,7 @@ def remove_tv_banner():
     log_info_if_debug(debug, "start remove_tv_banner()")
 
     # remove stream overlays, do not touch board info
-    for name in [TopOverlayGrp.Left, TopOverlayGrp.Right, TVBannerGrp.GroupName, JudgeAwardsGrp.GroupName, DiveInfoGrp.GroupName]:
+    for name in [TopOverlayGrp.Left, TopOverlayGrp.Right, TVBannerGrp.GroupName, AwardsCommonGrp.GroupName, DiveInfoGrp.GroupName]:
         set_source_visibility(name, False)
 
     # cancel any pending remove_TVbanner timer callback if exists:
@@ -187,9 +190,11 @@ def remove_overlays(pressed):
 
     # disable all sources (overlays and board)
     for name in [TopOverlayGrp.Left, TopOverlayGrp.Right,
-                 TVBannerGrp.GroupName, JudgeAwardsGrp.GroupName, DiveInfoGrp.GroupName,
-                 MainBoardGrp.GroupName, JudgeAwardsBoardGrp.GroupName, DiveInfoBoardGrp.GroupName,
-                 SynchroJLabels.Judges11, SynchroJLabels.Judges9, SynchroJLabels.Judges7, SynchroJLabels.Judges5, SynchroJLabels.JudgesBoard]:
+                 TVBannerGrp.GroupName, AwardsCommonGrp.GroupName, DiveInfoGrp.GroupName,
+                 MainBoardGrp.GroupName, JudgeAwardsBoardGrp.GroupName, DiveInfoBoardGrp.GroupName, SynchroLabelsBoardGrp.GroupName,
+                 IndividualAwards.JudgesGrp7, IndividualAwards.JudgesGrp5, IndividualAwards.JudgesGrp3,
+                 SynchroLabelsGrp.GroupName, SynchroAwards.JudgesGrp11, SynchroAwards.JudgesGrp9, SynchroAwards.JudgesGrp7, SynchroAwards.JudgesGrp5
+                 ]:
         set_source_visibility(name, False)
 
 

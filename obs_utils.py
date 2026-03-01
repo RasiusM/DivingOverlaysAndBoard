@@ -69,6 +69,18 @@ def log_info_if_debug(debug_enabled, message):
         obs.script_log(obs.LOG_INFO, message)
 
 # ---------- Helpers for OBS source updates ----------
+def get_source_string(source_name):
+    src = obs.obs_get_source_by_name(source_name)
+    if src is not None:
+        settings = obs.obs_source_get_settings(src)
+        text = obs.obs_data_get_string(settings, "text")
+        obs.obs_data_release(settings)
+        obs.obs_source_release(src)
+        return text
+    else:
+        obs.script_log(obs.LOG_WARNING, f"Source not found: {source_name}")
+        return ""
+
 def set_source_string(source_name, text):
     src = obs.obs_get_source_by_name(source_name)
     if src is not None:
@@ -194,3 +206,35 @@ def is_source_available(source_name) -> bool:
         obs.obs_source_release(src)
         return True
     return False
+
+def center_score(score_str: str, width: int = 3) -> str:
+    """
+    Centers a diving score string within the specified width.
+    OBS sources with custom extends aren't good at centering, so we do it "manually".
+    Handles scores like "4½", "10", "5", etc.
+    
+    Args:
+        score_str: The score string (e.g., "4½", "10", "5")
+        width: Total width for centering (default: 3)
+    
+    Returns:
+        Centered score string with spaces
+    
+    Examples:
+        "4½"    -> " 4½"
+        "10"    -> "10 "
+        "5"     -> " 5 "
+    """
+    score_str = score_str.strip()
+    if len(score_str) >= width:
+        return score_str
+
+    if score_str.endswith("½"):
+        padding_left = 1
+        padding_right = 0
+    else:
+        padding_needed = width - len(score_str)
+        padding_left = padding_needed // 2
+        padding_right = padding_needed - padding_left
+
+    return " " * padding_left + score_str + " " * padding_right
