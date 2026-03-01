@@ -61,8 +61,8 @@
         "monitoring_type": 0,
         "private_settings": {}
     },
-    "current_scene": "BoardRankings",
-    "current_program_scene": "LiveStream - Waiting for Event - Start List",
+    "current_scene": "LiveStream",
+    "current_program_scene": "LiveStream",
     "scene_order": [
         {
             "name": "----------------------------- Stream Scenes"
@@ -123,6 +123,9 @@
         },
         {
             "name": "Replay Scene 2"
+        },
+        {
+            "name": "Replay Scene 3"
         },
         {
             "name": "Play Repeats Scene"
@@ -20306,7 +20309,7 @@
             "name": "ProjectorScreen Composite",
             "monitor": -1,
             "type": 1,
-            "geometry": "AdnQywADAAAAAAcKAAAC9gAACWcAAASuAAAHCgAAAxUAAAlnAAAErgAAAAAAAAAACgAAAAcKAAADFQAACWcAAASu",
+            "geometry": "AdnQywADAAAAAArCAAADUwAADR8AAAULAAAKwgAAA3IAAA0fAAAFCwAAAAEAAAAACgAAAArCAAADcgAADR8AAAUL",
             "alwaysOnTopOverridden": false
         }
     ],
@@ -20315,7 +20318,7 @@
     "transition_duration": 300,
     "preview_locked": false,
     "scaling_enabled": false,
-    "scaling_level": -9,
+    "scaling_level": -8,
     "scaling_off_x": 0.0,
     "scaling_off_y": 0.0,
     "virtual-camera": {
@@ -22649,7 +22652,7 @@
                     "group": true,
                     "groupData": {
                         "collapsed": false,
-                        "size": 12
+                        "size": 13
                     }
                 },
                 {
@@ -24384,6 +24387,126 @@
                     "inputVariables": []
                 },
                 {
+                    "name": "Instant Replay: Sync with Board",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "onChange": true,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-2d3c0c0a-e922-4fb0-aab9-7933d8f2bfc2",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 517
+                        },
+                        {
+                            "pos": 516
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 484
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Instant Replay Scene"
+                            },
+                            "condition": 2,
+                            "version": 1
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "ProjectorScreen Composite",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Instant Replay Scene"
+                            },
+                            "action": 2
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
                     "name": "Scene Switch Events",
                     "group": true,
                     "groupData": {
@@ -24897,11 +25020,634 @@
                     "group": true,
                     "groupData": {
                         "collapsed": false,
-                        "size": 6
+                        "size": 9
                     }
                 },
                 {
-                    "name": "IRS: Activate Move Filter On Show",
+                    "name": "Start Rec for Instant Replay",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "onChange": true,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-c08acd44-cc55-4c6d-a3b6-073ff9d67328",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 518
+                        },
+                        {
+                            "pos": 515
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 483
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "type": 10,
+                            "pattern": ".*Scene.*",
+                            "useTransitionTargetScene": false,
+                            "regexConfig": {
+                                "enable": true,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "hotkey",
+                            "logic": 101,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "desc": "Start Recording for Replay",
+                            "keyBind": [
+                                {
+                                    "key": "OBS_KEY_NUM0"
+                                }
+                            ],
+                            "checkPressed": true
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "filter",
+                            "source": {
+                                "type": 0,
+                                "name": "Video Source for Replay"
+                            },
+                            "filter": {
+                                "type": 0,
+                                "name": "BO: Replay Video Source"
+                            },
+                            "action": 0,
+                            "inputMethod": 0,
+                            "sourceSetting": {
+                                "id": "service_count",
+                                "type": 6,
+                                "description": "[Stream] Stream Count (List)"
+                            },
+                            "manualSettingValue": "",
+                            "tempVar": {
+                                "type": 0,
+                                "idx": -1,
+                                "id": "",
+                                "version": 1
+                            },
+                            "settings": "",
+                            "sourceSettingButton": {
+                                "id": "",
+                                "description": ""
+                            },
+                            "version": 1
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "Stop Rec for Instant Replay (auto start IRS)",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "onChange": true,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-d52983ee-6f2d-472b-9236-9cb76999fb2c",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 517
+                        },
+                        {
+                            "pos": 516
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 484
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "type": 10,
+                            "pattern": ".*Scene.*",
+                            "useTransitionTargetScene": false,
+                            "regexConfig": {
+                                "enable": true,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "hotkey",
+                            "logic": 101,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "desc": "Stop Recording for Replay",
+                            "keyBind": [
+                                {
+                                    "control": true,
+                                    "key": "OBS_KEY_NUM0"
+                                }
+                            ],
+                            "checkPressed": true
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "filter",
+                            "source": {
+                                "type": 0,
+                                "name": "Video Source for Replay"
+                            },
+                            "filter": {
+                                "type": 0,
+                                "name": "BO: Replay Video Source"
+                            },
+                            "action": 1,
+                            "inputMethod": 0,
+                            "sourceSetting": {
+                                "id": "service_count",
+                                "type": 6,
+                                "description": "[Stream] Stream Count (List)"
+                            },
+                            "manualSettingValue": "",
+                            "tempVar": {
+                                "type": 0,
+                                "idx": -1,
+                                "id": "",
+                                "version": 1
+                            },
+                            "settings": "",
+                            "sourceSettingButton": {
+                                "id": "",
+                                "description": ""
+                            },
+                            "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "wait",
+                            "duration": {
+                                "value": {
+                                    "value": 1.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            },
+                            "duration2": {
+                                "value": {
+                                    "value": 0.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            },
+                            "waitType": 0,
+                            "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Instant Replay Scene"
+                            },
+                            "action": 0
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "RS2: Sync video and ReplaySign",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "onChange": true,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-b397ce23-fc6f-4978-aded-f53390f3287f",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 517
+                        },
+                        {
+                            "pos": 516
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 484
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Replay Scene 2",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "PlayLatestRecording"
+                            },
+                            "condition": 2,
+                            "version": 1
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Replay Scene 2",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "ReplaySign"
+                            },
+                            "action": 2
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "RS3: Sync video and ReplaySign",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "onChange": true,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-ed64add1-45e3-46b2-af8b-05f20fddf5a6",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 517
+                        },
+                        {
+                            "pos": 516
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 484
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Replay Scene 3",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "PlayLatestRecording"
+                            },
+                            "condition": 2,
+                            "version": 1
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Replay Scene 3",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "ReplaySign"
+                            },
+                            "action": 2
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "IRS: Activate Instant Replay on Show",
                     "group": false,
                     "pauseSaveBehavior": 0,
                     "pause": false,
@@ -24933,7 +25679,7 @@
                         "unpauseButtonText": "Unpause",
                         "conditionsTrueStatusText": "Conditions are true.",
                         "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-54623522-4e96-4251-a428-9908a2818bd8",
+                        "dockId": "advss-macro-dock-b2703171-6837-4f4f-8664-59f41d17adcc",
                         "version": 1
                     },
                     "macroActionConditionSplitterPosition": [
@@ -25218,35 +25964,41 @@
                                 "enabled": true,
                                 "version": 1
                             },
-                            "id": "filter",
-                            "source": {
+                            "id": "scene_visibility",
+                            "sceneSelection": {
                                 "type": 0,
-                                "name": "Replay Scene 2"
+                                "name": "Replay Scene 2",
+                                "canvasSelection": "Main"
                             },
-                            "filter": {
+                            "sceneItemSelection": {
                                 "type": 0,
-                                "name": "RS2: Fade In Transition Video"
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "PlayLatestRecording"
                             },
-                            "action": 0,
-                            "inputMethod": 0,
-                            "sourceSetting": {
-                                "id": "source",
-                                "type": 6,
-                                "description": "[General] Source (List)"
-                            },
-                            "manualSettingValue": "",
-                            "tempVar": {
-                                "type": 0,
-                                "idx": -1,
-                                "id": "",
+                            "action": 0
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": false,
                                 "version": 1
                             },
-                            "settings": "",
-                            "sourceSettingButton": {
-                                "id": "",
-                                "description": ""
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Replay Scene 3",
+                                "canvasSelection": "Main"
                             },
-                            "version": 1
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "PlayLatestRecording"
+                            },
+                            "action": 0
                         }
                     ],
                     "elseActions": [],
@@ -25367,28 +26119,6 @@
                                 "item": "Instant Replay Scene"
                             },
                             "action": 1
-                        },
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene_visibility",
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "ProjectorScreen Composite",
-                                "canvasSelection": "Main"
-                            },
-                            "sceneItemSelection": {
-                                "type": 0,
-                                "idxType": 0,
-                                "idx": 0,
-                                "item": "Instant Replay Scene"
-                            },
-                            "action": 1
                         }
                     ],
                     "elseActions": [],
@@ -25496,383 +26226,10 @@
                                 "enabled": true,
                                 "version": 1
                             },
-                            "id": "scene_visibility",
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "LiveStream",
-                                "canvasSelection": "Main"
-                            },
-                            "sceneItemSelection": {
-                                "type": 0,
-                                "idxType": 0,
-                                "idx": 0,
-                                "item": "Instant Replay Scene"
-                            },
-                            "action": 1
-                        },
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene_visibility",
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "ProjectorScreen Composite",
-                                "canvasSelection": "Main"
-                            },
-                            "sceneItemSelection": {
-                                "type": 0,
-                                "idxType": 0,
-                                "idx": 0,
-                                "item": "Instant Replay Scene"
-                            },
-                            "action": 1
-                        }
-                    ],
-                    "elseActions": [],
-                    "inputVariables": []
-                },
-                {
-                    "name": "Start Rec for Instant Replay",
-                    "group": false,
-                    "pauseSaveBehavior": 0,
-                    "pause": false,
-                    "parallel": false,
-                    "checkConditionsInParallel": false,
-                    "onChange": true,
-                    "skipExecOnStart": false,
-                    "stopActionsIfNotDone": false,
-                    "useShortCircuitEvaluation": false,
-                    "useCustomConditionCheckInterval": false,
-                    "customConditionCheckInterval": {
-                        "value": {
-                            "value": 0.3,
-                            "type": 0
-                        },
-                        "unit": 0,
-                        "version": 1
-                    },
-                    "dockSettings": {
-                        "register": false,
-                        "standaloneDock": true,
-                        "dockWindow": "Dock",
-                        "hasRunButton": true,
-                        "hasPauseButton": true,
-                        "hasStatusLabel": false,
-                        "highlightIfConditionsTrue": false,
-                        "runButtonText": "Run",
-                        "pauseButtonText": "Pause",
-                        "unpauseButtonText": "Unpause",
-                        "conditionsTrueStatusText": "Conditions are true.",
-                        "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-c08acd44-cc55-4c6d-a3b6-073ff9d67328",
-                        "version": 1
-                    },
-                    "macroActionConditionSplitterPosition": [
-                        {
-                            "pos": 518
-                        },
-                        {
-                            "pos": 515
-                        }
-                    ],
-                    "macroElseActionSplitterPosition": [
-                        {
-                            "pos": 483
-                        },
-                        {
-                            "pos": 0
-                        }
-                    ],
-                    "registerHotkeys": false,
-                    "pauseHotkey": [],
-                    "unpauseHotkey": [],
-                    "togglePauseHotkey": [],
-                    "conditions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene",
-                            "logic": 0,
-                            "durationModifier": {
-                                "time_constraint": 0,
-                                "seconds": {
-                                    "value": {
-                                        "value": 0.0,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                }
-                            },
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "LiveStream",
-                                "canvasSelection": "Main"
-                            },
-                            "type": 10,
-                            "pattern": ".*Scene.*",
-                            "useTransitionTargetScene": false,
-                            "regexConfig": {
-                                "enable": true,
-                                "partial": false,
-                                "options": 0
-                            },
-                            "version": 1
-                        },
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "hotkey",
-                            "logic": 101,
-                            "durationModifier": {
-                                "time_constraint": 0,
-                                "seconds": {
-                                    "value": {
-                                        "value": 0.0,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                }
-                            },
-                            "desc": "Start Recording for Replay",
-                            "keyBind": [],
-                            "checkPressed": true
-                        }
-                    ],
-                    "actions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "filter",
-                            "source": {
-                                "type": 0,
-                                "name": "Video Source for Replay"
-                            },
-                            "filter": {
-                                "type": 0,
-                                "name": "BO: Replay Video Source"
-                            },
-                            "action": 0,
-                            "inputMethod": 0,
-                            "sourceSetting": {
-                                "id": "service_count",
-                                "type": 6,
-                                "description": "[Stream] Stream Count (List)"
-                            },
-                            "manualSettingValue": "",
-                            "tempVar": {
-                                "type": 0,
-                                "idx": -1,
-                                "id": "",
-                                "version": 1
-                            },
-                            "settings": "",
-                            "sourceSettingButton": {
-                                "id": "",
-                                "description": ""
-                            },
-                            "version": 1
-                        }
-                    ],
-                    "elseActions": [],
-                    "inputVariables": []
-                },
-                {
-                    "name": "Stop Rec for Instant Replay (auto start IRS)",
-                    "group": false,
-                    "pauseSaveBehavior": 0,
-                    "pause": false,
-                    "parallel": false,
-                    "checkConditionsInParallel": false,
-                    "onChange": true,
-                    "skipExecOnStart": false,
-                    "stopActionsIfNotDone": false,
-                    "useShortCircuitEvaluation": false,
-                    "useCustomConditionCheckInterval": false,
-                    "customConditionCheckInterval": {
-                        "value": {
-                            "value": 0.3,
-                            "type": 0
-                        },
-                        "unit": 0,
-                        "version": 1
-                    },
-                    "dockSettings": {
-                        "register": false,
-                        "standaloneDock": true,
-                        "dockWindow": "Dock",
-                        "hasRunButton": true,
-                        "hasPauseButton": true,
-                        "hasStatusLabel": false,
-                        "highlightIfConditionsTrue": false,
-                        "runButtonText": "Run",
-                        "pauseButtonText": "Pause",
-                        "unpauseButtonText": "Unpause",
-                        "conditionsTrueStatusText": "Conditions are true.",
-                        "conditionsFalseStatusText": "Conditions are false.",
-                        "dockId": "advss-macro-dock-d52983ee-6f2d-472b-9236-9cb76999fb2c",
-                        "version": 1
-                    },
-                    "macroActionConditionSplitterPosition": [
-                        {
-                            "pos": 517
-                        },
-                        {
-                            "pos": 516
-                        }
-                    ],
-                    "macroElseActionSplitterPosition": [
-                        {
-                            "pos": 484
-                        },
-                        {
-                            "pos": 0
-                        }
-                    ],
-                    "registerHotkeys": false,
-                    "pauseHotkey": [],
-                    "unpauseHotkey": [],
-                    "togglePauseHotkey": [],
-                    "conditions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "scene",
-                            "logic": 0,
-                            "durationModifier": {
-                                "time_constraint": 0,
-                                "seconds": {
-                                    "value": {
-                                        "value": 0.0,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                }
-                            },
-                            "sceneSelection": {
-                                "type": 0,
-                                "name": "LiveStream",
-                                "canvasSelection": "Main"
-                            },
-                            "type": 10,
-                            "pattern": ".*Scene.*",
-                            "useTransitionTargetScene": false,
-                            "regexConfig": {
-                                "enable": true,
-                                "partial": false,
-                                "options": 0
-                            },
-                            "version": 1
-                        },
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "hotkey",
-                            "logic": 101,
-                            "durationModifier": {
-                                "time_constraint": 0,
-                                "seconds": {
-                                    "value": {
-                                        "value": 0.0,
-                                        "type": 0
-                                    },
-                                    "unit": 0,
-                                    "version": 1
-                                }
-                            },
-                            "desc": "Stop Recording for Replay",
-                            "keyBind": [
-                                {
-                                    "control": true,
-                                    "key": "OBS_KEY_NUM0"
-                                }
-                            ],
-                            "checkPressed": true
-                        }
-                    ],
-                    "actions": [
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
-                            "id": "filter",
-                            "source": {
-                                "type": 0,
-                                "name": "Video Source for Replay"
-                            },
-                            "filter": {
-                                "type": 0,
-                                "name": "BO: Replay Video Source"
-                            },
-                            "action": 1,
-                            "inputMethod": 0,
-                            "sourceSetting": {
-                                "id": "service_count",
-                                "type": 6,
-                                "description": "[Stream] Stream Count (List)"
-                            },
-                            "manualSettingValue": "",
-                            "tempVar": {
-                                "type": 0,
-                                "idx": -1,
-                                "id": "",
-                                "version": 1
-                            },
-                            "settings": "",
-                            "sourceSettingButton": {
-                                "id": "",
-                                "description": ""
-                            },
-                            "version": 1
-                        },
-                        {
-                            "segmentSettings": {
-                                "collapsed": false,
-                                "useCustomLabel": false,
-                                "customLabel": "My label",
-                                "enabled": true,
-                                "version": 1
-                            },
                             "id": "wait",
                             "duration": {
                                 "value": {
-                                    "value": 1.0,
+                                    "value": 2.0,
                                     "type": 0
                                 },
                                 "unit": 0,
@@ -25909,7 +26266,155 @@
                                 "idx": 0,
                                 "item": "Instant Replay Scene"
                             },
-                            "action": 0
+                            "action": 1
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "IRS: Hide after Replay 3 ends",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": true,
+                    "checkConditionsInParallel": false,
+                    "onChange": true,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-e5014309-0601-4f95-bf30-265d93441b46",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 517
+                        },
+                        {
+                            "pos": 516
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 484
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 1.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "Replay Scene 3",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "PlayLatestRecording"
+                            },
+                            "condition": 1,
+                            "version": 1
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "wait",
+                            "duration": {
+                                "value": {
+                                    "value": 2.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            },
+                            "duration2": {
+                                "value": {
+                                    "value": 0.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            },
+                            "waitType": 0,
+                            "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 1
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Instant Replay Scene"
+                            },
+                            "action": 1
                         }
                     ],
                     "elseActions": [],
@@ -27052,16 +27557,16 @@
                 }
             ],
             "saveWindowGeo": true,
-            "windowPosX": 2704,
-            "windowPosY": 55,
+            "windowPosX": 2914,
+            "windowPosY": 0,
             "windowWidth": 1548,
             "windowHeight": 1250,
             "macroListMacroEditSplitterPosition": [
                 {
-                    "pos": 257
+                    "pos": 450
                 },
                 {
-                    "pos": 1264
+                    "pos": 1071
                 }
             ],
             "version": "a0e6e6f528d78d35950dd71ad8aaa54aef4b27af",
@@ -34292,7 +34797,7 @@
                             "duration": 0
                         },
                         "private_settings": {
-                            "collapsed": false
+                            "collapsed": true
                         }
                     },
                     {
@@ -37695,7 +38200,7 @@
             "id": "color_source",
             "versioned_id": "color_source_v3",
             "settings": {
-                "color": 121,
+                "color": 4278190201,
                 "width": 600,
                 "height": 170
             },
@@ -37789,11 +38294,66 @@
             "versioned_id": "scene",
             "settings": {
                 "custom_size": false,
-                "id_counter": 13,
+                "id_counter": 15,
                 "items": [
                     {
+                        "name": "Replay Scene 3",
+                        "source_uuid": "24697f9d-4ec0-4ceb-a2bf-96808bb0251b",
+                        "visible": false,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 15,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_rel": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "duration": 0
+                        },
+                        "hide_transition": {
+                            "duration": 0
+                        },
+                        "private_settings": {}
+                    },
+                    {
                         "name": "Replay Scene 2",
-                        "source_uuid": "f23e6d3f-7b92-4629-bccd-9b26b202a08c",
+                        "source_uuid": "464d0783-8e02-4075-b43e-c3ba3bbb5f2c",
                         "visible": true,
                         "locked": false,
                         "rot": 0.0,
@@ -37809,7 +38369,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 13,
+                        "id": 14,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -37916,10 +38476,12 @@
             "push-to-talk-delay": 0,
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
-                "libobs.show_scene_item.13": [],
-                "libobs.hide_scene_item.13": [],
                 "libobs.show_scene_item.12": [],
-                "libobs.hide_scene_item.12": []
+                "libobs.hide_scene_item.12": [],
+                "libobs.show_scene_item.14": [],
+                "libobs.hide_scene_item.14": [],
+                "libobs.show_scene_item.15": [],
+                "libobs.hide_scene_item.15": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -52555,7 +53117,7 @@
                 "color_range": 2,
                 "hw_decode": true,
                 "input": "GetLatestRecordingName",
-                "local_file": "C:\\_Personal\\OBSStudioData\\Packages\\New Diving Overlays\\Replay/ForReplay (140).mp4",
+                "local_file": "C:\\_Personal\\OBSStudioData\\Packages\\New Diving Overlays\\Replay/ForReplay (150).mp4",
                 "playlist": [
                     {
                         "value": "C:\\_Personal\\OBSStudioData\\Replay\\FakeForReplay (15).mkv"
@@ -52977,7 +53539,7 @@
             "id": "color_source",
             "versioned_id": "color_source_v3",
             "settings": {
-                "color": 4278190201,
+                "color": 121,
                 "width": 600,
                 "height": 170
             },
@@ -53598,7 +54160,7 @@
                     {
                         "name": "BoardRankings",
                         "source_uuid": "92794cdb-7da8-4cd9-8000-18d199384251",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -53884,7 +54446,7 @@
                     {
                         "name": "ProjectorScreen",
                         "source_uuid": "f8236e39-811b-4269-b750-884e4a075614",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -53947,7 +54509,7 @@
                     {
                         "name": "ProjectorScreen - Waiting for Event",
                         "source_uuid": "89a3cd0b-b001-4934-810a-de1efea3cf9d",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -54473,6 +55035,12 @@
             "push-to-talk-delay": 0,
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
+                "libobs.show_scene_item.1": [],
+                "libobs.hide_scene_item.1": [],
+                "libobs.show_scene_item.2": [],
+                "libobs.hide_scene_item.2": [],
+                "libobs.show_scene_item.3": [],
+                "libobs.hide_scene_item.3": [],
                 "MS: LogoToInitialPosition": [],
                 "MS: LogoToInitialPosition Hold": [],
                 "MS: MoveLogoIn_FromRIght": [],
@@ -54492,13 +55060,7 @@
                 "MS: HideReplaySign": [],
                 "MS: HideReplaySign Hold": [],
                 "MS: MoveLogoOut_ToRight": [],
-                "MS: MoveLogoOut_ToRight Hold": [],
-                "libobs.show_scene_item.1": [],
-                "libobs.hide_scene_item.1": [],
-                "libobs.show_scene_item.2": [],
-                "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": []
+                "MS: MoveLogoOut_ToRight Hold": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -54610,7 +55172,7 @@
                         },
                         "simultaneous_move": "",
                         "source": "Curtain Scene",
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 200,
                         "easing_match": 1,
                         "easing_function_match": 5
@@ -54672,7 +55234,7 @@
                         "simultaneous_move": "MS: ShowVideo",
                         "source": "Curtain Scene",
                         "start_delay": 400,
-                        "transform_text": "pos: x -1920.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x -1920.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 200,
                         "easing_match": 1,
                         "easing_function_match": 5
@@ -54738,7 +55300,7 @@
                         "simultaneous_move": "MS: ShowReplaySign",
                         "source": "PlayLatestRecording",
                         "start_delay": 400,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 0,
                         "transform": false,
                         "easing_match": 0
@@ -54865,7 +55427,7 @@
                         },
                         "source": "PlayLatestRecording",
                         "start_trigger": 12,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 0,
                         "transform": false,
                         "easing_match": 0
@@ -54927,7 +55489,7 @@
                         },
                         "source": "Curtain Scene",
                         "start_trigger": 0,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 200,
                         "easing_match": 1,
                         "easing_function_match": 5
@@ -54992,7 +55554,7 @@
                         "source": "PlayLatestRecording",
                         "start_delay": 200,
                         "start_trigger": 12,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 0,
                         "transform": false,
                         "easing_match": 0
@@ -55118,7 +55680,7 @@
                         },
                         "source": "Curtain Scene",
                         "start_delay": 400,
-                        "transform_text": "pos: x 1920.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x 1920.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 200,
                         "custom_duration": true,
                         "easing_match": 1,
@@ -55146,75 +55708,16 @@
         {
             "prev_ver": 536870916,
             "name": "Replay Scene 2",
-            "uuid": "f23e6d3f-7b92-4629-bccd-9b26b202a08c",
+            "uuid": "464d0783-8e02-4075-b43e-c3ba3bbb5f2c",
             "id": "scene",
             "versioned_id": "scene",
             "settings": {
+                "id_counter": 2,
                 "custom_size": false,
-                "id_counter": 4,
                 "items": [
                     {
                         "name": "PlayLatestRecording",
                         "source_uuid": "95fe9a6f-91a5-4b9b-93ea-d5faa07994fc",
-                        "visible": false,
-                        "locked": false,
-                        "rot": 0.0,
-                        "scale_ref": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "align": 5,
-                        "bounds_type": 2,
-                        "bounds_align": 0,
-                        "bounds_crop": false,
-                        "crop_left": 0,
-                        "crop_top": 0,
-                        "crop_right": 0,
-                        "crop_bottom": 0,
-                        "id": 3,
-                        "group_item_backup": false,
-                        "pos": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "pos_rel": {
-                            "x": -1.7777777910232544,
-                            "y": -1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "scale_rel": {
-                            "x": 1.0,
-                            "y": 1.0
-                        },
-                        "bounds": {
-                            "x": 1920.0,
-                            "y": 1080.0
-                        },
-                        "bounds_rel": {
-                            "x": 3.555555582046509,
-                            "y": 2.0
-                        },
-                        "scale_filter": "disable",
-                        "blend_method": "default",
-                        "blend_type": "normal",
-                        "show_transition": {
-                            "id": "fade_transition",
-                            "versioned_id": "fade_transition",
-                            "name": "PlayLatestRecording Show Transition",
-                            "transition": {},
-                            "duration": 300
-                        },
-                        "hide_transition": {
-                            "duration": 0
-                        },
-                        "private_settings": {}
-                    },
-                    {
-                        "name": "RS2_Transition",
-                        "source_uuid": "2019d289-6df7-48ff-bf9a-5e845f14f7c7",
                         "visible": false,
                         "locked": false,
                         "rot": 0.0,
@@ -55230,7 +55733,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 2,
+                        "id": 1,
                         "group_item_backup": false,
                         "pos": {
                             "x": 0.0,
@@ -55260,18 +55763,27 @@
                         "blend_method": "default",
                         "blend_type": "normal",
                         "show_transition": {
-                            "id": "fade_transition",
-                            "versioned_id": "fade_transition",
-                            "name": "Transition Show Transition",
-                            "transition": {},
-                            "duration": 400
+                            "id": "obs_stinger_transition",
+                            "versioned_id": "obs_stinger_transition",
+                            "name": "PlayLatestRecording Show Transition",
+                            "transition": {
+                                "path": "C:/_Personal/OBSStudioData/Packages/New Diving Overlays/Media/Stinger_Ripple_l_r.mov",
+                                "transition_point": 800,
+                                "preload": true,
+                                "track_matte_enabled": false
+                            },
+                            "duration": 1000
                         },
                         "hide_transition": {
-                            "id": "fade_transition",
-                            "versioned_id": "fade_transition",
-                            "name": "Transition Hide Transition",
-                            "transition": {},
-                            "duration": 400
+                            "id": "obs_stinger_transition",
+                            "versioned_id": "obs_stinger_transition",
+                            "name": "PlayLatestRecording Hide Transition",
+                            "transition": {
+                                "path": "C:/_Personal/OBSStudioData/Packages/New Diving Overlays/Media/Stinger_Ripple_l_r.mov",
+                                "transition_point": 800,
+                                "preload": true
+                            },
+                            "duration": 300
                         },
                         "private_settings": {}
                     },
@@ -55293,7 +55805,7 @@
                         "crop_top": 0,
                         "crop_right": 0,
                         "crop_bottom": 0,
-                        "id": 4,
+                        "id": 2,
                         "group_item_backup": false,
                         "pos": {
                             "x": 1746.0,
@@ -55304,12 +55816,12 @@
                             "y": -0.9407407641410828
                         },
                         "scale": {
-                            "x": 0.519630491733551,
-                            "y": 0.5219511985778809
+                            "x": 0.5199999809265137,
+                            "y": 0.5220000147819519
                         },
                         "scale_rel": {
-                            "x": 0.519630491733551,
-                            "y": 0.5219511985778809
+                            "x": 0.5199999809265137,
+                            "y": 0.5220000147819519
                         },
                         "bounds": {
                             "x": 0.0,
@@ -55323,10 +55835,18 @@
                         "blend_method": "default",
                         "blend_type": "normal",
                         "show_transition": {
-                            "duration": 0
+                            "id": "fade_transition",
+                            "versioned_id": "fade_transition",
+                            "name": "ReplaySign Show Transition",
+                            "transition": {},
+                            "duration": 3000
                         },
                         "hide_transition": {
-                            "duration": 0
+                            "id": "fade_transition",
+                            "versioned_id": "fade_transition",
+                            "name": "ReplaySign Hide Transition",
+                            "transition": {},
+                            "duration": 300
                         },
                         "private_settings": {}
                     }
@@ -55345,30 +55865,12 @@
             "push-to-talk-delay": 0,
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
-                "RS2: Fade In Transition Video": [],
-                "RS2: Fade In Transition Video Hold": [],
-                "RS2: Fade out Transition Video": [],
-                "RS2: Fade out Transition Video Hold": [],
-                "RS2: ShowVideo": [],
-                "RS2: ShowVideo Hold": [],
-                "RS2: TriggerExitSequence": [],
-                "RS2: TriggerExitSequence Hold": [],
-                "RS2: HideVideo": [],
-                "RS2: HideVideo Hold": [],
-                "RS2: Fade In End Transition Video": [],
-                "RS2: Fade In End Transition Video Hold": [],
-                "RS2: Fade out End Transition Video": [],
-                "RS2: Fade out End Transition Video Hold": [],
-                "libobs.show_scene_item.3": [],
-                "libobs.hide_scene_item.3": [],
+                "libobs.show_scene_item.1": [],
+                "libobs.hide_scene_item.1": [],
+                "RS2: HideVideo on Finish": [],
+                "RS2: HideVideo on Finish Hold": [],
                 "libobs.show_scene_item.2": [],
-                "libobs.hide_scene_item.2": [],
-                "libobs.show_scene_item.4": [],
-                "libobs.hide_scene_item.4": [],
-                "MS: HideReplaySign": [],
-                "MS: HideReplaySign Hold": [],
-                "RS2: ShowReplaySign": [],
-                "RS2: ShowReplaySign Hold": []
+                "libobs.hide_scene_item.2": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -55378,145 +55880,33 @@
             "filters": [
                 {
                     "prev_ver": 536870916,
-                    "name": "RS2: Fade In Transition Video",
-                    "uuid": "138f689b-a8fd-4ed4-8aab-de5d3962a793",
+                    "name": "RS2: HideVideo on Finish",
+                    "uuid": "c49aa2b8-11c0-4dfc-8203-6fa1c4864738",
                     "id": "move_source_filter",
                     "versioned_id": "move_source_filter",
                     "settings": {
-                        "bounds": {
-                            "x": 0,
-                            "x_sign": " ",
-                            "y": 0,
-                            "y_sign": " "
-                        },
-                        "change_visibility": 1,
-                        "crop": {
-                            "left": 0.0,
-                            "left_sign": " ",
-                            "top": 0.0,
-                            "top_sign": " ",
-                            "right": 0.0,
-                            "right_sign": " ",
-                            "bottom": 0.0,
-                            "bottom_sign": " "
-                        },
-                        "next_move": "RS2: Fade out Transition Video",
+                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
+                        "source": "PlayLatestRecording",
+                        "rot": 0.0,
+                        "rot_sign": " ",
                         "pos": {
                             "x": 0.0,
                             "x_sign": " ",
                             "y": 0.0,
                             "y_sign": " "
                         },
-                        "rot": 0.0,
-                        "rot_sign": " ",
                         "scale": {
                             "x": 1.0,
                             "x_sign": " ",
                             "y": 1.0,
                             "y_sign": " "
                         },
-                        "simultaneous_move": "",
-                        "source": "RS2_Transition",
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
-                        "duration": 300,
-                        "custom_duration": true,
-                        "easing_match": 1
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                },
-                {
-                    "prev_ver": 536870916,
-                    "name": "RS2: Fade out Transition Video",
-                    "uuid": "d05b8803-b5ed-4c4b-b724-1646b1197c26",
-                    "id": "move_source_filter",
-                    "versioned_id": "move_source_filter",
-                    "settings": {
                         "bounds": {
-                            "x": 0,
+                            "x": 0.0,
                             "x_sign": " ",
-                            "y": 0,
+                            "y": 0.0,
                             "y_sign": " "
                         },
-                        "change_visibility": 2,
-                        "crop": {
-                            "bottom": 0,
-                            "bottom_sign": " ",
-                            "left": 0,
-                            "left_sign": " ",
-                            "right": 0,
-                            "right_sign": " ",
-                            "top": 0,
-                            "top_sign": " "
-                        },
-                        "next_move": "",
-                        "pos": {
-                            "x": 0,
-                            "x_sign": " ",
-                            "y": 0,
-                            "y_sign": " "
-                        },
-                        "rot": 0,
-                        "rot_sign": " ",
-                        "scale": {
-                            "x": 1,
-                            "x_sign": " ",
-                            "y": 1,
-                            "y_sign": " "
-                        },
-                        "simultaneous_move": "RS2: ShowVideo",
-                        "source": "RS2_Transition",
-                        "start_delay": 300,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 0.000 y 0.000 crop: l 0 t 0 r 0 b 0",
-                        "duration": 300,
-                        "custom_duration": true,
-                        "easing_match": 2
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                },
-                {
-                    "prev_ver": 536870916,
-                    "name": "RS2: ShowVideo",
-                    "uuid": "69bf0766-1023-4361-b979-2cb098164822",
-                    "id": "move_source_filter",
-                    "versioned_id": "move_source_filter",
-                    "settings": {
-                        "bounds": {
-                            "x": 1920.0,
-                            "x_sign": " ",
-                            "y": 1080.0,
-                            "y_sign": " "
-                        },
-                        "change_visibility": 1,
                         "crop": {
                             "left": 0.0,
                             "left_sign": " ",
@@ -55527,31 +55917,10 @@
                             "bottom": 0.0,
                             "bottom_sign": " "
                         },
-                        "media_action_end": 0,
-                        "media_action_start": 1,
-                        "next_move": "",
-                        "pos": {
-                            "x": 0.0,
-                            "x_sign": " ",
-                            "y": 0.0,
-                            "y_sign": " "
-                        },
-                        "rot": 0.0,
-                        "rot_sign": " ",
-                        "scale": {
-                            "x": 1,
-                            "x_sign": " ",
-                            "y": 1,
-                            "y_sign": " "
-                        },
-                        "source": "PlayLatestRecording",
-                        "start_delay": 0,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
-                        "duration": 200,
-                        "custom_duration": false,
+                        "duration": 0,
                         "transform": false,
-                        "easing_match": 3,
-                        "simultaneous_move": "RS2: ShowReplaySign"
+                        "change_visibility": 5,
+                        "start_trigger": 12
                     },
                     "mixers": 0,
                     "sync": 0,
@@ -55569,342 +55938,210 @@
                     "deinterlace_field_order": 0,
                     "monitoring_type": 0,
                     "private_settings": {}
-                },
-                {
-                    "prev_ver": 536870916,
-                    "name": "RS2: ShowReplaySign",
-                    "uuid": "0b814b3e-bc95-45ee-b40d-6edfc4cbfb8f",
-                    "id": "move_source_filter",
-                    "versioned_id": "move_source_filter",
-                    "settings": {
+                }
+            ]
+        },
+        {
+            "prev_ver": 536870916,
+            "name": "Replay Scene 3",
+            "uuid": "24697f9d-4ec0-4ceb-a2bf-96808bb0251b",
+            "id": "scene",
+            "versioned_id": "scene",
+            "settings": {
+                "id_counter": 2,
+                "custom_size": false,
+                "items": [
+                    {
+                        "name": "PlayLatestRecording",
+                        "source_uuid": "95fe9a6f-91a5-4b9b-93ea-d5faa07994fc",
+                        "visible": false,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 1,
+                        "group_item_backup": false,
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "pos_rel": {
+                            "x": -1.7777777910232544,
+                            "y": -1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "scale_rel": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
                         "bounds": {
                             "x": 0.0,
-                            "x_sign": " ",
-                            "y": 0.0,
-                            "y_sign": " "
+                            "y": 0.0
                         },
-                        "change_visibility": 1,
-                        "crop": {
-                            "left": 0.0,
-                            "left_sign": " ",
-                            "top": 0.0,
-                            "top_sign": " ",
-                            "right": 0.0,
-                            "right_sign": " ",
-                            "bottom": 0.0,
-                            "bottom_sign": " "
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
                         },
-                        "media_action_end": 0,
-                        "media_action_start": 1,
-                        "next_move": "",
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "id": "obs_stinger_transition",
+                            "versioned_id": "obs_stinger_transition",
+                            "name": "PlayLatestRecording Show Transition",
+                            "transition": {
+                                "transition_point": 700,
+                                "preload": true,
+                                "track_matte_enabled": false,
+                                "path": "C:/_Personal/OBSStudioData/Packages/New Diving Overlays/Media/Curtain_move_l_r.mov"
+                            },
+                            "duration": 800
+                        },
+                        "hide_transition": {
+                            "id": "obs_stinger_transition",
+                            "versioned_id": "obs_stinger_transition",
+                            "name": "PlayLatestRecording Hide Transition",
+                            "transition": {
+                                "transition_point": 700,
+                                "preload": true,
+                                "path": "C:/_Personal/OBSStudioData/Packages/New Diving Overlays/Media/Curtain_move_r_l.mov"
+                            },
+                            "duration": 800
+                        },
+                        "private_settings": {}
+                    },
+                    {
+                        "name": "ReplaySign",
+                        "source_uuid": "8ac73844-f196-43cc-8576-f781a870f68b",
+                        "visible": false,
+                        "locked": false,
+                        "rot": 0.0,
+                        "scale_ref": {
+                            "x": 1920.0,
+                            "y": 1080.0
+                        },
+                        "align": 5,
+                        "bounds_type": 0,
+                        "bounds_align": 0,
+                        "bounds_crop": false,
+                        "crop_left": 0,
+                        "crop_top": 0,
+                        "crop_right": 0,
+                        "crop_bottom": 0,
+                        "id": 2,
+                        "group_item_backup": false,
                         "pos": {
                             "x": 1746.0,
-                            "x_sign": " ",
-                            "y": 32.0,
-                            "y_sign": " "
+                            "y": 32.0
                         },
-                        "rot": 0.0,
-                        "rot_sign": " ",
+                        "pos_rel": {
+                            "x": 1.4555555582046509,
+                            "y": -0.9407407641410828
+                        },
                         "scale": {
                             "x": 0.5199999809265137,
-                            "x_sign": " ",
-                            "y": 0.5220000147819519,
-                            "y_sign": " "
+                            "y": 0.5220000147819519
                         },
-                        "source": "ReplaySign",
-                        "start_delay": 600,
-                        "duration": 0,
-                        "transform": false,
-                        "easing_match": 0,
-                        "transform_text": "pos: x 1746.0 y 32.0 rot: 0.0 scale: x 0.520 y 0.522 crop: l 0 t 0 r 0 b 0"
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                },
+                        "scale_rel": {
+                            "x": 0.5199999809265137,
+                            "y": 0.5220000147819519
+                        },
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_rel": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "scale_filter": "disable",
+                        "blend_method": "default",
+                        "blend_type": "normal",
+                        "show_transition": {
+                            "id": "fade_transition",
+                            "versioned_id": "fade_transition",
+                            "name": "ReplaySign Show Transition",
+                            "transition": {},
+                            "duration": 3000
+                        },
+                        "hide_transition": {
+                            "id": "fade_transition",
+                            "versioned_id": "fade_transition",
+                            "name": "ReplaySign Hide Transition",
+                            "transition": {},
+                            "duration": 300
+                        },
+                        "private_settings": {}
+                    }
+                ]
+            },
+            "mixers": 0,
+            "sync": 0,
+            "flags": 0,
+            "volume": 1.0,
+            "balance": 0.5,
+            "enabled": true,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "hotkeys": {
+                "OBSBasic.SelectScene": [],
+                "libobs.show_scene_item.1": [],
+                "libobs.hide_scene_item.1": [],
+                "libobs.show_scene_item.2": [],
+                "libobs.hide_scene_item.2": [],
+                "RS3: HideVideo on Finish": [],
+                "RS3: HideVideo on Finish Hold": []
+            },
+            "deinterlace_mode": 0,
+            "deinterlace_field_order": 0,
+            "monitoring_type": 0,
+            "canvas_uuid": "6c69626f-6273-4c00-9d88-c5136d61696e",
+            "private_settings": {},
+            "filters": [
                 {
                     "prev_ver": 536870916,
-                    "name": "RS2: TriggerExitSequence",
-                    "uuid": "869dc753-685d-48ae-b38e-df7759838fa0",
+                    "name": "RS3: HideVideo on Finish",
+                    "uuid": "c9ec89b6-68fa-4529-86b0-2e770218fab0",
                     "id": "move_source_filter",
                     "versioned_id": "move_source_filter",
                     "settings": {
-                        "bounds": {
-                            "x": 1920,
-                            "x_sign": " ",
-                            "y": 1080,
-                            "y_sign": " "
-                        },
-                        "change_visibility": 0,
-                        "crop": {
-                            "bottom": 0,
-                            "bottom_sign": " ",
-                            "left": 0,
-                            "left_sign": " ",
-                            "right": 0,
-                            "right_sign": " ",
-                            "top": 0,
-                            "top_sign": " "
-                        },
-                        "next_move": "RS2: Fade In End Transition Video",
-                        "pos": {
-                            "x": 0,
-                            "x_sign": " ",
-                            "y": 0,
-                            "y_sign": " "
-                        },
-                        "rot": 0,
-                        "rot_sign": " ",
-                        "scale": {
-                            "x": 1,
-                            "x_sign": " ",
-                            "y": 1,
-                            "y_sign": " "
-                        },
                         "source": "PlayLatestRecording",
-                        "start_trigger": 12,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
-                        "duration": 0,
-                        "custom_duration": false,
-                        "transform": false,
-                        "easing_match": 0
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                },
-                {
-                    "prev_ver": 536870916,
-                    "name": "RS2: HideVideo",
-                    "uuid": "2e13f6aa-0749-4473-8280-48f8e8d44cd5",
-                    "id": "move_source_filter",
-                    "versioned_id": "move_source_filter",
-                    "settings": {
-                        "bounds": {
-                            "x": 1920.0,
-                            "x_sign": " ",
-                            "y": 1080.0,
-                            "y_sign": " "
-                        },
-                        "change_visibility": 2,
-                        "crop": {
-                            "left": 0.0,
-                            "left_sign": " ",
-                            "top": 0.0,
-                            "top_sign": " ",
-                            "right": 0.0,
-                            "right_sign": " ",
-                            "bottom": 0.0,
-                            "bottom_sign": " "
-                        },
-                        "next_move": "",
+                        "rot": 0.0,
+                        "rot_sign": " ",
                         "pos": {
                             "x": 0.0,
                             "x_sign": " ",
                             "y": 0.0,
                             "y_sign": " "
                         },
-                        "rot": 0.0,
-                        "rot_sign": " ",
-                        "scale": {
-                            "x": 1,
-                            "x_sign": " ",
-                            "y": 1,
-                            "y_sign": " "
-                        },
-                        "source": "PlayLatestRecording",
-                        "start_delay": 500,
-                        "start_trigger": 12,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 bounds: x 1920.000 y 1080.000 crop: l 0 t 0 r 0 b 0",
-                        "duration": 500,
-                        "transform": false,
-                        "easing_match": 0,
-                        "simultaneous_move": "RS2: HideReplaySign"
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                },
-                {
-                    "prev_ver": 536870916,
-                    "name": "RS2: HideReplaySign",
-                    "uuid": "54f177e5-4110-4b18-b005-2bcf034b4548",
-                    "id": "move_source_filter",
-                    "versioned_id": "move_source_filter",
-                    "settings": {
-                        "bounds": {
-                            "x": 0,
-                            "x_sign": " ",
-                            "y": 0,
-                            "y_sign": " "
-                        },
-                        "change_visibility": 2,
-                        "crop": {
-                            "left": 0.0,
-                            "left_sign": " ",
-                            "top": 0.0,
-                            "top_sign": " ",
-                            "right": 0.0,
-                            "right_sign": " ",
-                            "bottom": 0.0,
-                            "bottom_sign": " "
-                        },
-                        "next_move": "",
-                        "pos": {
-                            "x": 1746.0,
-                            "x_sign": " ",
-                            "y": 32.0,
-                            "y_sign": " "
-                        },
-                        "rot": 0.0,
-                        "rot_sign": " ",
-                        "scale": {
-                            "x": 0.5199999809265137,
-                            "x_sign": " ",
-                            "y": 0.5220000147819519,
-                            "y_sign": " "
-                        },
-                        "simultaneous_move": "",
-                        "source": "ReplaySign",
-                        "start_delay": 0,
-                        "start_trigger": 12,
-                        "transform_text": "pos: x 1746.0 y 32.0 rot: 0.0 scale: x 0.520 y 0.522 crop: l 0 t 0 r 0 b 0",
-                        "duration": 0,
-                        "transform": false,
-                        "easing_match": 0
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                },
-                {
-                    "prev_ver": 536870916,
-                    "name": "RS2: Fade In End Transition Video",
-                    "uuid": "8d58d5dc-8320-4ee0-8d39-37c6e693033a",
-                    "id": "move_source_filter",
-                    "versioned_id": "move_source_filter",
-                    "settings": {
-                        "bounds": {
-                            "x": 0,
-                            "x_sign": " ",
-                            "y": 0,
-                            "y_sign": " "
-                        },
-                        "change_visibility": 1,
-                        "crop": {
-                            "left": 0.0,
-                            "left_sign": " ",
-                            "top": 0.0,
-                            "top_sign": " ",
-                            "right": 0.0,
-                            "right_sign": " ",
-                            "bottom": 0.0,
-                            "bottom_sign": " "
-                        },
-                        "next_move": "RS2: Fade out End Transition Video",
-                        "pos": {
-                            "x": 0.0,
-                            "x_sign": " ",
-                            "y": 0.0,
-                            "y_sign": " "
-                        },
-                        "rot": 0.0,
-                        "rot_sign": " ",
                         "scale": {
                             "x": 1.0,
                             "x_sign": " ",
                             "y": 1.0,
                             "y_sign": " "
                         },
-                        "simultaneous_move": "",
-                        "source": "RS2_Transition",
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
-                        "duration": 300,
-                        "easing_match": 1
-                    },
-                    "mixers": 0,
-                    "sync": 0,
-                    "flags": 0,
-                    "volume": 1.0,
-                    "balance": 0.5,
-                    "enabled": false,
-                    "muted": false,
-                    "push-to-mute": false,
-                    "push-to-mute-delay": 0,
-                    "push-to-talk": false,
-                    "push-to-talk-delay": 0,
-                    "hotkeys": {},
-                    "deinterlace_mode": 0,
-                    "deinterlace_field_order": 0,
-                    "monitoring_type": 0,
-                    "private_settings": {}
-                },
-                {
-                    "prev_ver": 536870916,
-                    "name": "RS2: Fade out End Transition Video",
-                    "uuid": "d34c852b-7619-40fa-adf8-ae8dd423f16a",
-                    "id": "move_source_filter",
-                    "versioned_id": "move_source_filter",
-                    "settings": {
                         "bounds": {
-                            "x": 0,
+                            "x": 0.0,
                             "x_sign": " ",
-                            "y": 0,
+                            "y": 0.0,
                             "y_sign": " "
                         },
-                        "change_visibility": 2,
                         "crop": {
                             "left": 0.0,
                             "left_sign": " ",
@@ -55915,27 +56152,12 @@
                             "bottom": 0.0,
                             "bottom_sign": " "
                         },
-                        "next_move": "",
-                        "pos": {
-                            "x": 0.0,
-                            "x_sign": " ",
-                            "y": 0.0,
-                            "y_sign": " "
-                        },
-                        "rot": 0.0,
-                        "rot_sign": " ",
-                        "scale": {
-                            "x": 1.0,
-                            "x_sign": " ",
-                            "y": 1.0,
-                            "y_sign": " "
-                        },
-                        "simultaneous_move": "",
-                        "source": "RS2_Transition",
-                        "start_delay": 300,
+                        "change_visibility": 5,
+                        "start_trigger": 12,
+                        "duration": 0,
+                        "transform": false,
                         "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
-                        "duration": 300,
-                        "easing_match": 2
+                        "simultaneous_move": ""
                     },
                     "mixers": 0,
                     "sync": 0,
@@ -56084,6 +56306,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": false,
+                "text": "Demo Event",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Bold",
@@ -56094,8 +56317,7 @@
                 "color": 4294967295,
                 "extents_wrap": false,
                 "extents_cx": 1300,
-                "extents_cy": 70,
-                "text": "Demo Event"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56188,6 +56410,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": false,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 1,
@@ -56198,8 +56421,7 @@
                 "color": 4294967295,
                 "extents_wrap": false,
                 "extents_cx": 1300,
-                "extents_cy": 70,
-                "text": "Start List"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56226,6 +56448,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": false,
+                "text": "Demo Meet",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "style": "Bold",
@@ -56236,8 +56459,7 @@
                 "color": 4294967295,
                 "extents_wrap": true,
                 "extents_cx": 950,
-                "extents_cy": 160,
-                "text": "Demo Meet"
+                "extents_cy": 160
             },
             "mixers": 0,
             "sync": 0,
@@ -56264,6 +56486,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": "Vardaite1 Pavardaite1",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56273,8 +56496,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 780,
-                "extents_cy": 70,
-                "text": "Vardaite1 Pavardaite1"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56338,6 +56560,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": "Vardaite3 Pavardaite3",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56347,8 +56570,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 780,
-                "extents_cy": 70,
-                "text": "Vardaite3 Pavardaite3"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56375,6 +56597,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": "Vardaite2 Pavardaite2",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56384,8 +56607,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 780,
-                "extents_cy": 70,
-                "text": "Vardaite2 Pavardaite2"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56412,6 +56634,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56421,8 +56644,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 780,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56449,6 +56671,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56458,8 +56681,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 780,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56486,6 +56708,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56495,8 +56718,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 780,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56523,6 +56745,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56532,8 +56755,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 780,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56560,6 +56782,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56569,8 +56792,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 780,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56716,6 +56938,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": "2",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56726,8 +56949,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 90,
-                "extents_cy": 70,
-                "text": "2"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56754,6 +56976,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": "3",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56764,8 +56987,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 90,
-                "extents_cy": 70,
-                "text": "3"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56792,6 +57014,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56802,8 +57025,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 90,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -56830,6 +57052,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -56840,8 +57063,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 90,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57020,6 +57242,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57029,8 +57252,7 @@
                 "align": "right",
                 "valign": "center",
                 "extents_cx": 170,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57094,6 +57316,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57103,8 +57326,7 @@
                 "align": "right",
                 "valign": "center",
                 "extents_cx": 170,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57131,6 +57353,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57140,8 +57363,7 @@
                 "align": "right",
                 "valign": "center",
                 "extents_cx": 170,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57168,6 +57390,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57177,8 +57400,7 @@
                 "align": "right",
                 "valign": "center",
                 "extents_cx": 170,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57205,6 +57427,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57214,8 +57437,7 @@
                 "align": "right",
                 "valign": "center",
                 "extents_cx": 170,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57242,6 +57464,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57251,8 +57474,7 @@
                 "align": "right",
                 "valign": "center",
                 "extents_cx": 170,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57279,6 +57501,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57288,8 +57511,7 @@
                 "align": "right",
                 "valign": "center",
                 "extents_cx": 170,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57316,6 +57538,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57325,8 +57548,7 @@
                 "align": "right",
                 "valign": "center",
                 "extents_cx": 170,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57390,6 +57612,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": "KPM",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57401,8 +57624,7 @@
                 "bk_opacity": 0,
                 "extents_wrap": false,
                 "extents_cx": 200,
-                "extents_cy": 70,
-                "text": "KPM"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57466,6 +57688,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": "KPM",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57475,8 +57698,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 200,
-                "extents_cy": 70,
-                "text": "KPM"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57503,6 +57725,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": "KPM",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57512,8 +57735,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 200,
-                "extents_cy": 70,
-                "text": "KPM"
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57540,6 +57762,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57549,8 +57772,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 200,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57577,6 +57799,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57586,8 +57809,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 200,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57614,6 +57836,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57623,8 +57846,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 200,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57651,6 +57873,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57660,8 +57883,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 200,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57688,6 +57910,7 @@
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": true,
+                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Mono",
                     "flags": 0,
@@ -57697,8 +57920,7 @@
                 "valign": "center",
                 "extents_wrap": false,
                 "extents_cx": 200,
-                "extents_cy": 70,
-                "text": " "
+                "extents_cy": 70
             },
             "mixers": 0,
             "sync": 0,
@@ -57749,44 +57971,6 @@
             "push-to-talk": false,
             "push-to-talk-delay": 0,
             "hotkeys": {},
-            "deinterlace_mode": 0,
-            "deinterlace_field_order": 0,
-            "monitoring_type": 0,
-            "private_settings": {}
-        },
-        {
-            "prev_ver": 536870916,
-            "name": "RS2_Transition",
-            "uuid": "2019d289-6df7-48ff-bf9a-5e845f14f7c7",
-            "id": "ffmpeg_source",
-            "versioned_id": "ffmpeg_source",
-            "settings": {
-                "close_when_inactive": true,
-                "hw_decode": false,
-                "clear_on_media_end": true,
-                "local_file": "C:/_Personal/OBSStudioData/Packages/New Diving Overlays/Media/Ripple_1.mov"
-            },
-            "mixers": 255,
-            "sync": 0,
-            "flags": 0,
-            "volume": 1.0,
-            "balance": 0.5,
-            "enabled": true,
-            "muted": false,
-            "push-to-mute": false,
-            "push-to-mute-delay": 0,
-            "push-to-talk": false,
-            "push-to-talk-delay": 0,
-            "hotkeys": {
-                "libobs.mute": [],
-                "libobs.unmute": [],
-                "libobs.push-to-mute": [],
-                "libobs.push-to-talk": [],
-                "MediaSource.Restart": [],
-                "MediaSource.Play": [],
-                "MediaSource.Pause": [],
-                "MediaSource.Stop": []
-            },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
             "monitoring_type": 0,
