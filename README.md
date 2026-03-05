@@ -17,9 +17,9 @@ Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
     - LiveStream - Rankings
     This setup makes it easier to use in Studio Mode. It allows you to verify what's going to appear on the screen. Previous, hotkey-based approach resulted in some surprises (e.g. list not ready, used wrong hotkey, etc.)
     F1-3 are still relevant. They swith the script to correct mode. They also switch to corresponding scenes:
-    - **F1**: LiveStream - Waiting for Event - Clean
-    - **F2**: LiveStream
-    - **F3**: LiveStream - Rankings - Clean
+        - **F1**: LiveStream - Waiting for Event - Clean
+        - **F2**: LiveStream
+        - **F3**: LiveStream - Rankings - Clean
 - Different score spacing for different judge numbers. Now, if there are 5 judges, scores aren't bunched up on one side, but evenly distributed.
 - Added group of scenes "Customizable Graphics". Scenes in the group contain references to design elements (e.g. overlay background gradients), so that it would be easier to modify all these in one place instead of searching for them in all scenes.
 - Added different Instant Replay options and created framework to make customizations/switching between them easier.
@@ -109,25 +109,25 @@ When there's new version of the script/scenes, keep in mind:
 
 ### Script settings
 
-Can set various parameters in script settings - most are self-explanatory.
-Regarding number of records in Rankings/Start List:
-Streaming scene would fit 10 records easily, but I found that on the Scoreboard font is too small to comfortably read, so it fits only 8. You can choose 10 in script settings, but it will mess up the scoreboard, so 8 is recommended.
+Can set various parameters in script settings - most are self-explanatory.  
+Regarding number of records in Rankings/Start List:  
+Streaming scene would fit 10 records easily, but I found that on the Scoreboard font is too small to comfortably read, so it fits only 8. You can choose 10 in script settings, but it will mess up the scoreboard, so 8 is recommended.  
 If you have bigger scoreboard, modify BoardRankings scene (it already has 10 lines prepared, but last two not positioned).
 
 ### Camera setup
 
-Most likely you will need to add and use your specific camera source(s).
-Up to 3 simultanous cameras are supported "out of the box" - to add more, you will need to change/add Advanced Scene Switcher macros.
-
-Add your camera source to one of *Camera1..2* scenes. Scene can contain multiple cameras, the one that is set to visible (or is "on top") will be shown when you select that camera number.
-
-One of Camera scenes contain Fake Camera media source, that you can point to, e.g. video recording of actual competition, enable it and use it to test and learn operations (Instant Replay will work too)
+Most likely you will need to add and use your specific camera source(s).  
+Up to 3 simultanous cameras are supported "out of the box" - to add more, you will need to change/add Advanced Scene Switcher macros.  
+  
+Add your camera source to one of *Camera1..2* scenes. Scene can contain multiple cameras, the one that is set to visible (or is "on top") will be shown when you select that camera number.  
+  
+One of Camera scenes contain Fake Camera media source, that you can point to, e.g. video recording of actual competition, enable it and use it to test and learn operations (Instant Replay will work too)  
 
 ### Instant replay setup
 
-To use currently active camera as a source for Instant Replay:
+To use currently active camera as a source for Instant Replay:  
     - Set *Video Source for Replay/Active Video Source* to visible, set *Video Source for Replay/Camera1..3* sources to NOT visible.
-To use specific camera:
+To use specific camera:  
     - Set corresponding source *Video Source for Replay/Camera1..3* to visible, set other sources to NOT visible
 
 This is convenient if you would like to stream dive in real time switching between various cameras, but always show dive repeat from specific camera. E.g some dives look good from the back, but side camera is more "technical".
@@ -165,8 +165,8 @@ Replace files with your art in Media/Art folder, do not change file names. If pi
 
 ### Scenes
 
-- use *LiveStream \** scenes for streaming.
-- use *ProjectorScreen Composite* for HD Video scoreboard (1920x1080): Right click on scene->Open Scene Projector->Select scoreboard display.
+- use *LiveStream \** scenes for streaming.  
+- use *ProjectorScreen Composite* for HD Video scoreboard (1920x1080): Right click on scene->Open Scene Projector->Select scoreboard display.  
 
 ### Countdown
 
@@ -176,58 +176,58 @@ Set the timer in Countdown Timers dock. Meet title will be populated only if you
 
 ## Pre-Event
 
-Start list will be populated only if you start Recording in Dive Recorder (and choose Use Scoreboards from menu). There's no need to enter scores, start list will be populated automatically.
-To show start list you need to be in Waiting for Event mode. Otherwise ranking list will be shown even if you switch to *LiveStream - Waiting for Event - Start List* scene.
-If there's more than one page in start list, it will scroll automatically (time each page is shown is managed in script settings)
-
-Use *LiveStream - Waiting for Event - \** scenes.
-
+Start list will be populated only if you start Recording in Dive Recorder (and choose Use Scoreboards from menu). There's no need to enter scores, start list will be populated automatically.  
+To show start list you need to be in Waiting for Event mode. Otherwise ranking list will be shown even if you switch to *LiveStream - Waiting for Event - Start List* scene.  
+If there's more than one page in start list, it will scroll automatically (time each page is shown is managed in script settings)  
+  
+Use *LiveStream - Waiting for Event - \** scenes.  
+  
 Scoreboard will switch to corresponding scene automatically.
 
 ## Event
 
-Once you start recording in Dive Recorder (do not forget to press **Use Scoreboards** in menu - otherwise overlays will not receive data!), switch to Event in Progress mode and *LiveStream* scene. You can manage overlay visibility/etc with **F5-9** keys.
+Once you start recording in Dive Recorder (do not forget to press **Use Scoreboards** in menu - otherwise overlays will not receive data!), switch to Event in Progress mode and *LiveStream* scene. You can manage overlay visibility/etc with **F5-9** keys.  
 In this scene/mode you can use hotkeys to record clips for Instant Replay
 
 ## Event Completed
 
 Once Event is completed, red square in "Event Completed" status board will show up (but you will have to switch to Event Completed mode manually).
-Use *LiveStream - Rankings \** scenes.
+Use *LiveStream - Rankings \** scenes.  
 In Dive Recorder you can go to *Results* menu, choose corresponding event and press Display to send results to OBS. Rankings list will be filled.
 
 
 ### Main Hotkeys
 
-**Scene controls:**
-**F1** - switch to Waiting for Event scene/mode
-**F2** - switch to Event in Progress scene/mode
-**F3** - switch to Event Completed scene/mode
-
-**Event controls:**
-**F4** - toggle between A and B events
-
-**Overlay controlls:**
-**F5** - hide overlays temporary, clear scoreboard screen until next update from DiveRecorder
-**F6** - redisplay top overlay, no effect in scoreboard
-**F7** - redisplay all overlays, redisplay scoreboard
-**F8** - disable overlays, clear scoreboard until re-enabled
-**F9** - turn off autohide, overlays shown permanently, no effect on scoreboard.
-**F10** - toggle position of top overlay
-
-**Num 0** - start recording for instant replay
-**Ctrl-Num 0** - stop recording and show instant replay
-**Ctrl-Alt-Num 0** - stop recording
-
-**Ctrl-Num 1** - switch livestream to Camera1
-**Ctrl-Num 2** - switch livestream to Camera2
-**Ctrl-Num 3** - switch livestream to Camera3
-
-**Num +** - show/hide instant replay
-**Num -** - show repeats (repeats are played until switched to different camera)
-
+**Scene controls:**  
+**F1** - switch to Waiting for Event scene/mode  
+**F2** - switch to Event in Progress scene/mode  
+**F3** - switch to Event Completed scene/mode  
+  
+**Event controls:**  
+**F4** - toggle between A and B events  
+  
+**Overlay controlls:**  
+**F5** - hide overlays temporary, clear scoreboard screen until next update from DiveRecorder  
+**F6** - redisplay top overlay, no effect in scoreboard  
+**F7** - redisplay all overlays, redisplay scoreboard  
+**F8** - disable overlays, clear scoreboard until re-enabled  
+**F9** - turn off autohide, overlays shown permanently, no effect on scoreboard.  
+**F10** - toggle position of top overlay  
+  
+**Num 0** - start recording for instant replay  
+**Ctrl-Num 0** - stop recording and show instant replay  
+**Ctrl-Alt-Num 0** - stop recording  
+  
+**Ctrl-Num 1** - switch livestream to Camera1  
+**Ctrl-Num 2** - switch livestream to Camera2  
+**Ctrl-Num 3** - switch livestream to Camera3  
+  
+**Num +** - show/hide instant replay  
+**Num -** - show repeats (repeats are played until switched to different camera)  
+  
 ### Notes
 
-Meet title/event title will not be populated unless DiveRecorder is in Recording or Results Display mode.
+Meet title/event title will not be populated unless DiveRecorder is in Recording or Results Display mode.  
 
 ## Screnshots
 
