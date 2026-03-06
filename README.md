@@ -1,7 +1,7 @@
 # Diving Overlays And Scoreboard
 
-[OBS studio](https://obsproject.com/) Python script/scenes to present springboard/platform diving competition information in overlays for live streaming and on scoreboard in venue.
-Python port and heavy refactoring from @andy5211d [Andy's DR2TVOverlay](https://github.com/andy5211d/DR2TVOverlay)
+[OBS studio](https://obsproject.com/) Python script/scenes to present springboard/platform diving competition information in overlays for live streaming and on scoreboard in venue.  
+Python port and heavy refactoring from @andy5211d [Andy's DR2TVOverlay](https://github.com/andy5211d/DR2TVOverlay)  
 Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
 
 ## Updates
@@ -15,7 +15,7 @@ Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
     - LiveStream
     - LiveStream - Rankings - Clean
     - LiveStream - Rankings
-    This setup makes it easier to use in Studio Mode. It allows you to verify what's going to appear on the screen. Previous, hotkey-based approach resulted in some surprises (e.g. list not ready, used wrong hotkey, etc.)
+    This setup makes it easier to use in Studio Mode. It allows you to verify what's going to appear on the screen. Previous, hotkey-based approach resulted in some surprises (e.g. list not ready, used wrong hotkey, etc.)  
     F1-3 are still relevant. They swith the script to correct mode. They also switch to corresponding scenes:
         - **F1**: LiveStream - Waiting for Event - Clean
         - **F2**: LiveStream
@@ -26,9 +26,9 @@ Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
 - Switched to Stinger transition for "Slide logo in/out, show repeat, slide logo in/out" Instant Repeat display. Still left old Move Source - based (Replay Scene 1), in case you want to have similar effect, but don't want to bother with your own video creation for Stinger transitions.
 
 ### For those who installed and still have 1.0.0 version
-!!! I accidently left Branch Output filters on two of the Video Capture Sources in _Camera 1..3_ scenes and one on _Active Camera Source_ scene. They silently recorded hours and hours of black until my drive run out of space (that's when I noticed it).
-Look for files CanonForReplay*.mp4 and ForReplay*.mp4 in your drive (default Recordings output folder I think) - if you started using these scene collections, most likely these filters are active on your machine too.
-Remove Branch Output filters from these camera sources and scene and delete files. There should NOT be any BO filters on camera sources in Camera1..3 (unless you put some there yourself for whatever reason).
+!!! I accidently left Branch Output filters on two of the Video Capture Sources in _Camera 1..3_ scenes and one on _Active Camera Source_ scene. They silently recorded hours and hours of black until my drive run out of space (that's when I noticed it).  
+Look for files CanonForReplay*.mp4 and ForReplay*.mp4 in your drive (default Recordings output folder I think) - if you started using these scene collections, most likely these filters are active on your machine too.  
+Remove Branch Output filters from these camera sources and scene and delete files. There should NOT be any BO filters on camera sources in Camera1..3 (unless you put some there yourself for whatever reason).  
 Sorry :(
 
 ## Functionality
@@ -191,7 +191,7 @@ In this scene/mode you can use hotkeys to record clips for Instant Replay
 
 ## Event Completed
 
-Once Event is completed, red square in "Event Completed" status board will show up (but you will have to switch to Event Completed mode manually).
+Once Event is completed, red square in "Event Completed" status board will show up (but you will have to switch to Event Completed mode manually).  
 Use *LiveStream - Rankings \** scenes.  
 In Dive Recorder you can go to *Results* menu, choose corresponding event and press Display to send results to OBS. Rankings list will be filled.
 
@@ -263,3 +263,6 @@ Meet title/event title will not be populated unless DiveRecorder is in Recording
 - Integration with *Divecalc*
 
 
+## Comments
+
+Please post comments/problems/suggestions under resource listing in [OBS forums](https://obsproject.com/forum/resources/diving-competition-streaming-overlays-and-scoreboard-display.2386/)
