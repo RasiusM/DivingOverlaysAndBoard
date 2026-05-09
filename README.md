@@ -6,6 +6,15 @@ Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk)
 
 ## Updates
 
+### Version 1.1.1: What's new?
+
+- Guest diver support and correct placement in the rankings list, option to include/exclude Guest divers
+- Some graphics changes
+- Updated Advanced Scene Switcher macros to switch event modes on scene switches and vica-versa.
+
+#### OBS version
+At least 32.1.2 required
+
 ### Version 1.1.0: What's new?
 - Instead of single LiveStream Composite scene (in 1.0.0) there are now separate scenes for different views.
     - LiveStream - Waiting for Event - Countdown
