@@ -348,7 +348,7 @@ def udp_timer_callback():
 
 # ---------- OBS script lifecycle ----------
 def script_description():
-    return "<center><h2>Display DiveRecorder Data as a Video Overlay or Overlays</h2></center><p>Display diver and scores from DiveRecorder for single individual or synchro diving event or simultaneous individual events. The appropriate OBS Source (.json) file must be imported into OBS for this overlay to function correctly. You must be connected to the same Class C sub-net as the DR computers.</p><p>Converted from divingoverlaysV4.0.0.lua</p>"
+    return "<center><h2>Display DiveRecorder Data as a Video Overlay or Overlays</h2></center><p>Display diver and scores from DiveRecorder for single individual or synchro diving event. OBS Scene Collection Diving_Streaming_and_Board.json must be imported into OBS for this overlay to function correctly. You must be connected to the same Class C sub-net as the DR computers.</p>"
 
 def script_properties():
     log_info_if_debug(debug, "------------------------------ script_properties() called")

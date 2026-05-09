@@ -1,26 +1,26 @@
-from enum import Enum
+from enum import Enum, StrEnum
 
 # Enums for source names and group names to avoid hardcoding strings throughout the codebase
 
 # Top Overlay and Board event info
-class EventInfo(str, Enum):
+class EventInfo(StrEnum):
     Info = "EventData"
     Title = "EventTitle"
     DiverNo = "EventDiverNo"
     RoundNo = "EventRoundNo"
 
 # TV Banner Scene (Bottom overlay). Some sources are shared with the board scene.
-class TVBannerGrp(str, Enum):
+class TVBannerGrp(StrEnum):
     GroupName = "TVBanner"
     Flag = "Flag"
     Total = "Total"
     Position = "Position_Rank"
     Diver = "Diver"
 
-class SynchroLabelsGrp(str, Enum):
+class SynchroLabelsGrp(StrEnum):
     GroupName = "SynchroLabels"
 
-class SynchroAwards(str, Enum):
+class SynchroAwards(StrEnum):
     JudgesGrp11 = "SynchroAwards11"
     JudgesGrp9 = "SynchroAwards9"
     JudgesGrp7 = "SynchroAwards7"
@@ -28,26 +28,26 @@ class SynchroAwards(str, Enum):
     JudgeExecPrefix = "JOE"
     JudgeSynchroPrefix = "JOS"
 
-class IndividualAwards(str, Enum):
+class IndividualAwards(StrEnum):
     JudgesGrp7 = "IndividualAwards7"
     JudgesGrp5 = "IndividualAwards5"
     JudgesGrp3 = "IndividualAwards3"
     JudgePrefix = "JOE"
 
-class DiveInfoGrp(str, Enum):
+class DiveInfoGrp(StrEnum):
     GroupName = "DiveInfo"
     Number = "Dive_Number"
     Difficulty = "Dive_Difficulty"
     Board = "Dive_Board"
     Description = "Dive_Description"
 
-class AwardsCommonGrp(str, Enum):
+class AwardsCommonGrp(StrEnum):
     GroupName = "AwardsCommon"
     Points = "Points"
     Penalty = "Penalty"
 
 # Main Board Scene (scene includes shared sources, source names defined in TVBanner scene enums).
-class MainBoardGrp(str, Enum):
+class MainBoardGrp(StrEnum):
     GroupName = "MainBoard"
     Flag1 = "Flag1"
     Flag2 = "Flag2"
@@ -55,21 +55,21 @@ class MainBoardGrp(str, Enum):
     Diver2 = "Diver2"
 
 # most of sources in this group are shared
-class DiveInfoBoardGrp(str, Enum):
+class DiveInfoBoardGrp(StrEnum):
     GroupName = "DiveInfoBoard"
 
 # most of sources in this group are shared, judge award sources are hardcoded
-class JudgeAwardsBoardGrp(str, Enum):
+class JudgeAwardsBoardGrp(StrEnum):
     GroupName = "JudgeAwardsBoard"
     JExecPrefix = "JE"
     JSynchroPrefix = "JS"
 
-class SynchroLabelsBoardGrp(str, Enum):
+class SynchroLabelsBoardGrp(StrEnum):
     GroupName = "SynchroLabelsBoard"
 
 
 # Rankings sources
-class RankingsSrc(str, Enum):
+class RankingsSrc(StrEnum):
     LinePrefix = "ListLine "
     BoardLinePrefix = "BoardListLine "
     NamePrefix = "Rnk_Name "
@@ -79,6 +79,7 @@ class RankingsSrc(str, Enum):
     HeaderMeet = "Rnk_MeetTitle"
     HeaderEvent = "Rnk_EventTitle"
     HeaderListType = "Rnk_ListType"
+    ScoreBackground = "Rnk_ScoreBackground"
     # not exactly rankings sources - used in rankings and pre-event scenes
     HeaderArt = "HeaderArt"
     HeaderArtFile = "header_art.png"
@@ -88,7 +89,7 @@ class RankingsSrc(str, Enum):
     ScheduleTextFile = "schedule.txt"
 
 # Instant Replay
-class InstantReplaySrc(str, Enum):
+class InstantReplaySrc(StrEnum):
     Curtain = "Curtain" # source used as curtain to move-in/move-out effect for replay video
     CurtainFile = "curtain.png"
     CurtainLogo = "CurtainLogo"
@@ -105,40 +106,40 @@ class InstantReplaySrc(str, Enum):
 
 
 # Status control sources
-class PreEventGrp(str, Enum):
+class PreEventGrp(StrEnum):
     GroupName = "PreEvent"
     Active = "PreEvent_Background_Active"
 
-class InProgrGrp(str, Enum):
+class InProgrGrp(StrEnum):
     GroupName = "InProgr"
     Active = "InProgr_Background_Active"
-class PostEventGrp(str, Enum):
+class PostEventGrp(StrEnum):
     GroupName = "PostEvent"
     Active = "PostEvent_Background_Active"
     EventCompleted = "PostEvent_Event_Completed"
 
-class EventABGrp(str, Enum):
+class EventABGrp(StrEnum):
     AActive = "EventAB_Background_A_Active"
     BActive = "EventAB_Background_B_Active"
 
-class EventInfoGrp(str, Enum):
+class EventInfoGrp(StrEnum):
     EventType = "Event_Type"
     NoOfJudges = "No_Of_Judges"
     Individual = "EventInfo_Background_Individual"
     Synchro = "EventInfo_Background_Synchro"
 
-class DisableOvrlGrp(str, Enum):
+class DisableOvrlGrp(StrEnum):
     Status = "DisableOvrl_Status"
     Disabled = "DisableOvrl_Background_Disabled"
 
-class AutoHideGrp(str, Enum):
+class AutoHideGrp(StrEnum):
     Status = "AutoHide_Status"
     Disabled = "AutoHide_Background_Disabled"
-class TopOvrlPosGrp(str, Enum):
+class TopOvrlPosGrp(StrEnum):
     Left = "TopOvrlPos_Left"
     Right = "TopOvrlPos_Right"
 
-class TopOverlayGrp(str, Enum):
+class TopOverlayGrp(StrEnum):
     Left = "TopLeft"
     Right = "TopRight"
 

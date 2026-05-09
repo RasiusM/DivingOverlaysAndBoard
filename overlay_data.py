@@ -332,25 +332,6 @@ def set_source_paths():
         do_source_exists_check = False
         obs.timer_remove(set_source_paths) # stop retrying, but still attempt to set source paths one last time (which will log warnings if sources don't exist)
 
-    # Curtain and curtain logo for instant replay scene
-    curtain_file = os.path.join(rootDir, f"Media\\Art\\{InstantReplaySrc.CurtainFile}")
-    if not os.path.isfile(curtain_file):
-        obs.script_log(obs.LOG_WARNING, f"Curtain file not found: {curtain_file}")
-        curtain_file = ""
-
-    if not is_source_available(InstantReplaySrc.Curtain) and do_source_exists_check:
-        return
-    set_source_file(InstantReplaySrc.Curtain, curtain_file)
-
-    curtain_logo_file = os.path.join(rootDir, f"Media\\Art\\{InstantReplaySrc.CurtainLogoFile}")
-    if not os.path.isfile(curtain_logo_file):
-        obs.script_log(obs.LOG_WARNING, f"Curtain logo file not found: {curtain_logo_file}")
-        curtain_logo_file = ""
-
-    if not is_source_available(InstantReplaySrc.CurtainLogo) and do_source_exists_check:
-        return
-    set_source_file(InstantReplaySrc.CurtainLogo, curtain_logo_file)
-
     # Recording and replay video path for Branch Output and Dir Watcher filters
     # Branch Output filter, when enabled, records video currently being played in the source
     # Dir Watcher filter watches the folder and updates the source with the latest video file (used for instant replay)

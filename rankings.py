@@ -9,7 +9,7 @@ else:
 from typing import List
 from datatypes import DiveListRecord, DiveMessage
 from enums import RankingsSrc, EventMode
-from obs_utils import get_source_string, is_source_available, set_source_file, set_source_string, set_source_visibility, log_info_if_debug
+from obs_utils import get_source_string, set_source_string, set_source_visibility, log_info_if_debug, set_color_source_color, set_color_source_alpha
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # --------- Rankings handling
@@ -28,6 +28,8 @@ debug = False
 root_dir = ""
 set_source_props_retries = 0
 SET_SOURCE_PROPS_RETRIES_MAX_RETRIES = 10
+
+show_guests = False
 
 # ---------------------------
 # Internal state
@@ -80,17 +82,28 @@ def sort_list():
     global ranking_rec_working_copy
     # Sort according to mode (when in Event, we might want to show intermediate rankings, therefore sort by rank)
     if EventMode.Rankings == mode or EventMode.Event == mode:
-        ranking_rec_working_copy.sort(key=lambda r: r.rank)  # sort by rank
+        ranking_rec_working_copy.sort(key=lambda r: abs(r.rank))  # sort by position number for startlist
         set_source_string(RankingsSrc.HeaderListType, " ")
+        set_color_source_alpha(RankingsSrc.ScoreBackground, 255)  # show score gradient for rankings/event mode
     else:
         ranking_rec_working_copy.sort(key=lambda r: r.start_position)  # sort by position number for startlist
         set_source_string(RankingsSrc.HeaderListType, "Start List")
+        set_color_source_alpha(RankingsSrc.ScoreBackground, 0)  # hide score gradient for start list mode
 
 
 def dvov_rank_set_divers(records: List[DiveListRecord], event_record: DiveMessage):
     global ranking_rec_working_copy, rankings_event_rec_working_copy
 
-    ranking_rec_working_copy = records.copy()
+    if show_guests:
+        ranking_rec_working_copy = records.copy()
+    else:
+        ranking_rec_working_copy = []
+        for record in records:
+            try:
+                if int(record.rank) > 0:
+                    ranking_rec_working_copy.append(record)
+            except (TypeError, ValueError):
+                continue
     rankings_event_rec_working_copy = event_record
 
     clear_data()
@@ -101,15 +114,31 @@ def dvov_rank_set_divers(records: List[DiveListRecord], event_record: DiveMessag
 
 def show_rank_line (diver: DiveListRecord, disp_no: int):
     # use rank or start position based on mode
-    # TODO: check Guest diver positioning (it looks like it should be possible to show Guest diver in correct ranking position)
 
     # Determine what the new values should be
+    is_guest = False
     if EventMode.Rankings == mode or EventMode.Event == mode:
-        rank = str(diver.rank) if int(diver.rank) > 0 else "G"
+        rank_value = int(diver.rank)
+        if rank_value < 0 and show_guests:
+            rank = str(abs(rank_value))
+            is_guest = True
+        elif rank_value > 0:
+            rank = str(rank_value)
+        else:
+            rank = "G"
         score = diver.points
+
+        # Show points background and points for rankings/event mode
+        set_source_visibility(RankingsSrc.ScoreBackground, True)
+        set_source_visibility(f"{RankingsSrc.ScorePrefix}{disp_no}", True)
     else:
         rank = str(diver.start_position)
         score = " "
+
+        # Hide points background and points for start list mode
+        set_source_visibility(RankingsSrc.ScoreBackground, False)
+        set_source_visibility(f"{RankingsSrc.ScorePrefix}{disp_no}", False)
+
 
     diver_name = diver.diver
     club_code = diver.club_code
@@ -137,6 +166,21 @@ def show_rank_line (diver: DiveListRecord, disp_no: int):
         set_source_string(f"{RankingsSrc.NamePrefix}{disp_no}", diver_name)
         set_source_string(f"{RankingsSrc.TeamPrefix}{disp_no}", club_code)
         set_source_string(f"{RankingsSrc.ScorePrefix}{disp_no}", score)
+
+        # Set text color to grey for guest divers, normal color for regular divers
+        if is_guest:
+            grey_color = 0x9a9a9a
+            set_color_source_color(f"{RankingsSrc.RankPrefix}{disp_no}", grey_color)
+            set_color_source_color(f"{RankingsSrc.NamePrefix}{disp_no}", grey_color)
+            set_color_source_color(f"{RankingsSrc.TeamPrefix}{disp_no}", grey_color)
+            set_color_source_color(f"{RankingsSrc.ScorePrefix}{disp_no}", grey_color)
+        else:
+            # Reset to default color (white) for non-guest divers
+            white_color = 0xffffff
+            set_color_source_color(f"{RankingsSrc.RankPrefix}{disp_no}", white_color)
+            set_color_source_color(f"{RankingsSrc.NamePrefix}{disp_no}", white_color)
+            set_color_source_color(f"{RankingsSrc.TeamPrefix}{disp_no}", white_color)
+            set_color_source_color(f"{RankingsSrc.ScorePrefix}{disp_no}", white_color)
 
     # set sources to visible even if data didn't change - e.g. first page contained 8 divers, next 3,
     # so when we get back to first page, last 5 lines will have unchanged data but will be invisible
@@ -247,75 +291,29 @@ def on_rankings_hotkey_stop(pressed):
 # -------
 # script lifecycle functions
 # ------
-def set_source_paths():
-    global set_source_props_retries
-
-    do_source_exists_check=True
-
-    # set any source paths that depend on root directory here
-
-    # logic here looks too complicated because we need to deal with the fact that on script load,
-    # sources might not be available yet, so we have a timer to keep retrying until sources are available,
-    # but we also want to avoid infinite loop in case sources are really missing,
-    # so we stop retrying after several attempts and log warnings if sources don't exist.
-    set_source_props_retries += 1
-
-    if set_source_props_retries > SET_SOURCE_PROPS_RETRIES_MAX_RETRIES:
-        do_source_exists_check = False
-        obs.timer_remove(set_source_paths) # stop retrying, but still attempt to set source paths one last time (which will log warnings if sources don't exist)
-
-    pic_file = os.path.join(root_dir, f"Media\\Art\\{RankingsSrc.HeaderArtFile}")
-    if not os.path.isfile(pic_file):
-        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.HeaderArtFile} file does not exist: {pic_file}")
-
-    if not is_source_available(RankingsSrc.HeaderArt) and do_source_exists_check:
-        return
-    set_source_file(RankingsSrc.HeaderArt, pic_file)
-
-    pic_file = os.path.join(root_dir, f"Media\\Art\\{RankingsSrc.HeaderLogoFile}")
-    if not os.path.isfile(pic_file):
-        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.HeaderLogoFile} file does not exist: {pic_file}")
-
-    if not is_source_available(RankingsSrc.HeaderLogo) and do_source_exists_check:
-        return
-    set_source_file(RankingsSrc.HeaderLogo, pic_file)
-
-    # Set Schedule text to file content
-    schedule_file = os.path.join(root_dir, f"data\\{RankingsSrc.ScheduleTextFile}")
-    if not os.path.isfile(schedule_file):
-        obs.script_log(obs.LOG_WARNING, f"{RankingsSrc.ScheduleTextFile} file does not exist: {schedule_file}")
-
-    if not is_source_available(RankingsSrc.ScheduleText) and do_source_exists_check:
-        return
-    set_source_file(RankingsSrc.ScheduleText, schedule_file)
-
-    # if we're here, it means we succeeded in setting source paths or we failed (and reported) because sources don't exist and we want to stop retrying
-    obs.timer_remove(set_source_paths)
-
-
 def dvov_rank_add_properties(props):
     obs.obs_properties_add_int(props, "rnk_num_per_page", "Rankings: Divers per page", 1, RANKINGS_MAX_LINES, 1)
     obs.obs_properties_add_int(props, "rnk_display_duration", "Rankings: Seconds per page", 1, 20, 1)
+    obs.obs_properties_add_bool(props, "rnk_show_guests", "Rankings: Show Guests")
 
 
 def dvov_rank_script_defaults(settings):
     obs.obs_data_set_default_int(settings, "rnk_num_per_page", 8)
     obs.obs_data_set_default_int(settings, "rnk_display_duration", 10)
+    obs.obs_data_set_default_bool(settings, "rnk_show_guests", False)
 
 
 def dvov_rank_script_update(settings):
     # Rankings settings
-    global debug, rankings_no_lines_per_page, rankings_page_display_duration, root_dir
+    global debug, rankings_no_lines_per_page, rankings_page_display_duration, root_dir, show_guests
 
     debug = obs.obs_data_get_bool(settings, "debug")
     rankings_no_lines_per_page = obs.obs_data_get_int(settings, "rnk_num_per_page")
     rankings_page_display_duration = obs.obs_data_get_int(settings, "rnk_display_duration")
+    show_guests = obs.obs_data_get_bool(settings, "rnk_show_guests")
 
     # Set Header picture source files
     root_dir = obs.obs_data_get_string(settings, "rootDir")
-
-    # need to do this by timer, because on script load, sources aren't available yet
-    obs.timer_add(set_source_paths, 3000)
 
 
 def dvov_rank_script_load(settings):
