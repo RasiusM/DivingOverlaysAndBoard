@@ -35,7 +35,7 @@ At least 32.1.2 required
 - Switched to Stinger transition for "Slide logo in/out, show repeat, slide logo in/out" Instant Repeat display. Still left old Move Source - based (Replay Scene 1), in case you want to have similar effect, but don't want to bother with your own video creation for Stinger transitions.
 
 ### For those who installed and still have 1.0.0 version
-!!! I accidently left Branch Output filters on two of the Video Capture Sources in _Camera 1..3_ scenes and one on _Active Camera Source_ scene. They silently recorded hours and hours of black until my drive run out of space (that's when I noticed it).  
+!!! I accidently left Branch Output filters on two of the Video Capture Sources in _Camera 1..3_ scenes and one on _Active Camera Source_ scene. They silently recorded hours and hours of black until my drive ran out of space (that's when I noticed it).  
 Look for files CanonForReplay*.mp4 and ForReplay*.mp4 in your drive (default Recordings output folder I think) - if you started using these scene collections, most likely these filters are active on your machine too.  
 Remove Branch Output filters from these camera sources and scene and delete files. There should NOT be any BO filters on camera sources in Camera1..3 (unless you put some there yourself for whatever reason).  
 Sorry :(
@@ -58,7 +58,7 @@ Sorry :(
         - Instant dive replay (OBS hotkeys)
     - Event results
         - Rankings (UDP/TCP communication with DiveRecorder)
-        - Reveal/Show All modes (managed from DiveRecorder)
+        - Reveal/Show All modes (managed from DiveRecorder), Medal mode NOT supported. 
         - Dive replays from recorded Instant Replay clips (in development)
 
 - Streaming:
@@ -95,7 +95,7 @@ Download and install two monotype fonts: **'DejaVu Sans Mono Book' and 'Monofont
 
 ### Python
 
-Python 3.10 (latest supported by OBS). Set the path in OBS script settings.
+Python 3.12 (latest supported by OBS). Set the path in OBS script settings.
 
 ### Script/scene installation
 
