@@ -103,7 +103,10 @@ Python 3.12 (latest supported by OBS). Set the path in OBS script settings.
 2. Unzip into local folder. Folders will contain imports for following items.
 3. Import Scene Collection (Scenes/Diving_Streaming_and_Board.json). You will get "missing files" dialog, press "Search folder" and point it to the folder from step 2.
 4. Import Profile (Profile/DivingStreamingAndBoard)
-5. Add script dive_recorder_overlays.py
+5. Set OBS to use script *dive_recorder_overlays.py*. Open Tools/Scripts. You will see that *dive_recorder_overlays.py* is already there, you need to **remove** it and add the one from where you unzipped DivingOverlaysAndBoard package.
+   <br> It happens because Scenes JSON contains absolute reference to script file, which will be incorrect unless you use exactly same location as I did.
+   <br> **Note:** You don't need to copy the script file(s) to OBS script folder.
+7. Restart OBS.
 
 **Note:** After you install the script, cycle all F1 hotkeys several times. Do the same if you remove and re-install the script.
 
