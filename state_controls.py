@@ -10,7 +10,7 @@ if typing.TYPE_CHECKING:
 else:
     import obspython as obs   # real runtime module
 
-from typing import Union
+from typing import Dict, Set, Union
 
 from obs_utils import set_source_string, set_color_source_alpha, set_source_visibility, log_info_if_debug
 from enums import (
@@ -36,14 +36,18 @@ from enums import (
     TopOverlayGrp,
 )
 
-from overlay_data import dvov_act_single_event_referee_update, dvov_act_set_event_ab, dvov_act_set_display_enabled
+from overlay_data import dvov_act_render_dive, dvov_act_set_event_ab, dvov_act_set_display_enabled, dvov_act_set_event_complete
 from rankings import dvov_rank_set_event_ab
 
-from datatypes import DiveMessage
+from datatypes import DivePhase, DiveUpdate
 
 debug = False
 
-referee_message: Union[DiveMessage, None] = None
+# F7 redisplays this normalized snapshot without rerunning transport parsing.
+current_dive: Union[DiveUpdate, None] = None
+# Kept for both A/B slots so switching restores F7 content and completion status.
+latest_dives: Dict[str, DiveUpdate] = {}
+completed_slots: Set[str] = set()
 
 synchro = False
 
@@ -62,31 +66,42 @@ def dvov_state_set_event_complete(is_event_complete: bool):
     set_color_source_alpha(PostEventGrp.EventCompleted, 255 if event_complete else 0)
 
 
-# responsible for updating visibility/overlay removal logic
-def dvov_state_on_message(msg: DiveMessage):
-    global referee_message, synchro, event_complete
+def dvov_state_is_selected_event(slot: str):
+    return slot == ("a" if event_ab_is_a else "b")
 
-    referee_message = msg
 
-    # If not "our" event, ignore message (e.g. if Event A message received but currently displaying Event B)
-    if ((referee_message.event_ab == "a" and not event_ab_is_a)
-        or
-        (referee_message.event_ab == "b" and event_ab_is_a)):
+def dvov_state_store_dive(update: DiveUpdate):
+    latest_dives[update.event.slot] = update
+
+
+def dvov_state_store_completion(slot: str, is_event_complete: bool):
+    if is_event_complete:
+        completed_slots.add(slot)
+    else:
+        completed_slots.discard(slot)
+
+
+def dvov_state_on_dive(update: DiveUpdate):
+    global current_dive, synchro
+
+    # Ignore inactive events before replacing the snapshot used by F7.
+    if not dvov_state_is_selected_event(update.event.slot):
         return
 
-    # Judges count
-    set_judges_count(int(msg.number_of_judges) if msg.number_of_judges.isdigit() else 0)
+    current_dive = update
+    set_judges_count(update.judge_count)
 
-    # Set hide timer only if pre-dive message was received
-    # TODO: should not depend on j1 being set. Find a better way.
-    if referee_message.j1.strip() == "":
-        obs.timer_add(lambda: tv_banner_remove_callback(), display_duration)
+    if update.phase == DivePhase.Upcoming:
+        # A named callback can be cancelled on event switch or unload. Replacing
+        # the previous deadline avoids multiple hide callbacks for one banner.
+        obs.timer_remove(tv_banner_remove_callback)
+        obs.timer_add(tv_banner_remove_callback, display_duration)
 
-    synchro = (referee_message.synchro_event == "True")
+    synchro = update.synchro
 
     # Show warning if Synchro Event is true but it's B event (not sure if this is supported in diving software - original script did not handle this case)
     # TODO: test synchro B event
-    if synchro and referee_message.event_ab == "b":
+    if synchro and update.event.slot == "b":
         obs.script_log(obs.LOG_WARNING, "Received message with Synchro Event = True but it's B event. Is this supported?")
 
     # Event type (Synchro / Individual)
@@ -212,13 +227,13 @@ def redisplay_overlays(pressed):
     # re-display top overlay
     display_overlays(True)
 
-    if referee_message is None:
+    if current_dive is None:
         log_info_if_debug(debug, "No parsed message available for redisplay.")
         return
 
     # information is available, re-display tv banner
     display_tv_banner()
-    dvov_act_single_event_referee_update(referee_message, synchro)
+    dvov_act_render_dive(current_dive)
 
 
 def set_display_enabled(is_enabled):
@@ -242,13 +257,26 @@ def toggle_display_disable(pressed):
 
 
 def set_event_a(is_a: bool):
+    global current_dive, synchro, event_ab_is_a
+    # F7 and completion follow the new slot's own data; the old hide deadline does not.
+    event_ab_is_a = is_a
+    slot = "a" if is_a else "b"
+    current_dive = latest_dives.get(slot)
+    synchro = current_dive.synchro if current_dive else False
+    obs.timer_remove(tv_banner_remove_callback)
+
     set_color_source_alpha(EventABGrp.AActive, 255 if is_a else 0)
     set_color_source_alpha(EventABGrp.BActive, 0 if is_a else 255)
 
-    dvov_act_set_event_ab(is_a)
+    dvov_act_set_event_ab(is_a, current_dive.event.name if current_dive else "")
     dvov_rank_set_event_ab(is_a)
 
     remove_overlays(True)
+
+    is_complete = slot in completed_slots
+    dvov_state_set_event_complete(is_complete)
+    if is_complete:
+        dvov_act_set_event_complete(True)
 
 
 def toggle_event_a_or_b(pressed):

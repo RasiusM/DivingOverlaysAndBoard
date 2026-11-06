@@ -5,8 +5,6 @@ Version 1.0.0
 # Converted from divingoverlaysV4.0.0.lua (Andy)
 import typing
 
-from overlay_data import dvov_act_set_event_complete, dvov_act_single_event_referee_update, dvov_act_single_event_referee_update
-
 if typing.TYPE_CHECKING:
     import _obspython as obs  # full symbol set for IDE
 else:
@@ -15,13 +13,13 @@ else:
 import socket
 import threading
 import os
-from typing import List, Union
+from typing import Dict, Union
 
 # local imports
-from datatypes import DiveMessage, DiveListRecord
-from state_controls import dvov_state_on_message, dvov_state_set_event_complete
-from rankings import dvov_rank_set_divers
-from overlay_script_common import dvov_script_properties, dvov_script_defaults, dvov_script_update, dvov_script_load
+from datatypes import DiveMessage, DiveListRecord, RankingsUpdate
+from diverecorder_adapter import adapt_dive, adapt_rankings
+from overlay_controller import apply_dive, apply_rankings, complete_event
+from overlay_script_common import dvov_script_properties, dvov_script_defaults, dvov_script_update, dvov_script_load, dvov_script_unload
 from obs_utils import log_info_if_debug
 
 # ---------- Globals
@@ -37,9 +35,6 @@ debug = False
 # internal state
 activeId = 0
 id_ = 0
-
-# Update message hash to detect changes
-update_message_hash = ""
 
 # flag to indicate if rankings retrieval and update is enabled (script setting)
 rankings_enabled = False
@@ -66,17 +61,13 @@ def parse_dive_message(parts):
 
 tcp_receive_timeout = 1.0  # seconds per recv
 
-# ---- global variable to hold parsed structures ----
-referee_message: Union[DiveMessage, None] = None
-
-ranking_records: List[DiveListRecord] = []
-rankings_event_record: DiveMessage
-
-# need to ensure thread-safe access to rankings_records
+# TCP workers publish complete snapshots; the OBS timer removes them under this
+# lock and applies them after releasing it. Keep the latest completed fetch per
+# A/B slot so one event cannot replace another event's pending data.
 ranking_records_lock: threading.Lock = threading.Lock()
-
-# Pending rankings update (processed on main thread to avoid OBS crashes)
-pending_rankings_update = False
+pending_rankings_updates: Dict[str, RankingsUpdate] = {}
+# Workers retain their starting generation so unload can reject late results.
+transport_generation = 0
 
 # ---- parser helper: converts UPDATE message → List[RankingRecord] ----
 def parse_update_message(msg: str):
@@ -97,7 +88,7 @@ def parse_update_message(msg: str):
     start_idx = start_field - 1
 
     if start_idx >= len(fields):
-        return []
+        return [], rankings_event_rec
 
     remaining = fields[start_idx:]
     records = []
@@ -141,15 +132,16 @@ def fetch_update_file_async(ip_address: str, message_file_name: str):
     """
     Starts a background thread to fetch the update file from DiveRecorder.
     """
-    thread = threading.Thread(target=_fetch_update_file, args=(ip_address, message_file_name))
+    # Capture the generation before starting the worker, not when it finishes.
+    thread = threading.Thread(target=_fetch_update_file, args=(ip_address, message_file_name, transport_generation))
     thread.daemon = True  # thread will exit when OBS exits
     thread.start()
 
 # Initiate TCP connection to fetch file (most likely Update.txt)
-def _fetch_update_file(ip_address: str, message_file_name: str):
+def _fetch_update_file(ip_address: str, message_file_name: str, generation=None):
     """
     Connects to DiveRecorder TCP port, requests given remote file,
-    parses the response, and updates global rankings_records.
+    parses the response, and publishes an immutable rankings update.
 
     ip_address: str - IP from UDP message
     message_file_name: str - file path received in UDP message (e.g., Update.txt)
@@ -164,7 +156,10 @@ def _fetch_update_file(ip_address: str, message_file_name: str):
             buf += chunk
         return buf
 
-    global tcp_port, rankings_records, rankings_event_record, tcp_receive_timeout
+    global tcp_port, tcp_receive_timeout
+
+    if generation is None:
+        generation = transport_generation
 
     try:
         HOST = ip_address
@@ -172,7 +167,7 @@ def _fetch_update_file(ip_address: str, message_file_name: str):
 
         log_info_if_debug(debug, f"Initiating TCP connection to {ip_address}:{tcp_port} for file {message_file_name}")
 
-        with socket.create_connection((HOST, PORT)) as s:
+        with socket.create_connection((HOST, PORT), timeout=tcp_receive_timeout) as s:
             request_text = f"XFER|{message_file_name}\n"
             s.sendall(request_text.encode('utf-8'))
 
@@ -211,27 +206,15 @@ def _fetch_update_file(ip_address: str, message_file_name: str):
         message_file_contents = data.decode('utf-16le')
         log_info_if_debug(debug, f"Message File Contents:\n{message_file_contents}")
 
-        # check if contents have changed and skip parsing/events if same
-        global update_message_hash
-
-        log_info_if_debug(debug, "Calculating UPDATE message hash.")
-
-        current_hash = hash(message_file_contents)
-
-        if current_hash != update_message_hash:
-            update_message_hash = current_hash
-
-            log_info_if_debug(debug, "NEW UPDATE Message!")
-
-            parsed_records, parsed_event_record = parse_update_message(message_file_contents)
-
-            # Update shared data with minimal lock time
-            global pending_rankings_update
-            with ranking_records_lock:
-                rankings_records = parsed_records
-                rankings_event_record = parsed_event_record
-                pending_rankings_update = True
-            obs.script_log(obs.LOG_INFO, "Rankings data updated, flagged for main thread processing.")
+        parsed_records, parsed_event_record = parse_update_message(message_file_contents)
+        update = adapt_rankings(parsed_records, parsed_event_record)
+        # Publish only data here. Source updates and pagination belong to the
+        # OBS timer; an in-flight fetch must not repopulate state after unload.
+        with ranking_records_lock:
+            if generation != transport_generation:
+                return False
+            pending_rankings_updates[update.event.slot] = update
+        obs.script_log(obs.LOG_INFO, "Rankings data updated, flagged for main thread processing.")
 
         return True
 
@@ -241,8 +224,6 @@ def _fetch_update_file(ip_address: str, message_file_name: str):
 
 # ---------- Process incoming UDP messages ----------
 def process_udp_message(k: str):
-    global synchro, resultK, referee_message
-
     log_info_if_debug(debug, "process_udp_message()")
 
     if not k:
@@ -252,25 +233,17 @@ def process_udp_message(k: str):
     parts = k.split("|")
     if parts and parts[-1].endswith("\r"):
         parts[-1] = parts[-1][:-1]
-    resultK = parts
-
     if parts:
         log_info_if_debug(debug, f"UDP message: {parts}")
 
     # --- parse into dataclass ---
     if (parts[0] == "REFEREE"):
-        referee_message = parse_dive_message(parts)
-        synchro = (referee_message.synchro_event == "True" and referee_message.event_ab == "a")
-
-        dvov_state_on_message(referee_message)
-        dvov_act_single_event_referee_update(referee_message, synchro)
-
-        dvov_state_set_event_complete(False)
+        # Only the parser/adapter sees wire fields; downstream code gets an
+        # explicit phase, formatted names, and provider-independent event data.
+        apply_dive(adapt_dive(parse_dive_message(parts)))
 
 
     elif parts[0] == "UPDATE" and rankings_enabled:
-        referee_message = None
-
         if rankings_enabled:
             # Example: UPDATE|a|DIVING_CONTUPER|1|192.168.1.1|C:\ProgramData\MDT\DiveRecorder\Xfer\Update.txt|^
             if len(parts) >= 6:
@@ -287,8 +260,7 @@ def process_udp_message(k: str):
         if len(parts) >= 5:
             if parts[4] == "ENDOFEVENT":
                 log_info_if_debug(debug, "AVIDEO ENDOFEVENT received, marking event complete.")
-                dvov_act_set_event_complete(True)
-                dvov_state_set_event_complete(True)
+                complete_event(parts[1])
 
     elif parts[0] == "AWARD":
         # TODO: dive recorder sends AWARD(s) message after each judge score is entered. So it is possible to implement "live" display of scores after a dive
@@ -299,7 +271,6 @@ def process_udp_message(k: str):
 #---------- UDP polling (called on OBS timer) ----------
 def udp_timer_callback():
     global id_, activeId, udp_sock, last_message_text
-    global pending_rankings_update, rankings_records, rankings_event_record
 
     # If script reloaded, stop old timer
     if id_ < activeId:
@@ -309,15 +280,18 @@ def udp_timer_callback():
             pass
         return
 
-    # Process pending rankings update on main thread (thread-safe for OBS API)
-    if pending_rankings_update:
+    # Take ownership of pending snapshots atomically. Do not hold the worker
+    # lock while invoking OBS helpers or restarting list pagination.
+    with ranking_records_lock:
+        updates = list(pending_rankings_updates.values())
+        pending_rankings_updates.clear()
+
+    for update in updates:
         try:
             log_info_if_debug(debug, "Processing rankings on main thread...")
-            dvov_rank_set_divers(rankings_records, rankings_event_record)
-            pending_rankings_update = False
+            apply_rankings(update)
         except Exception as e:
             obs.script_log(obs.LOG_ERROR, f"Error processing rankings: {e}")
-            pending_rankings_update = False
 
     # Non-blocking socket recv
     try:
@@ -327,6 +301,12 @@ def udp_timer_callback():
                     obs.script_log(obs.LOG_ERROR, "UDP socket is not initialized.")
                     break
                 data, addr = udp_sock.recvfrom(8192)
+                # Log the received UDP packet for debugging purposes (had a situation where OBS would not react to DiveRecorder actions at all)
+                # obs.script_log(
+                #     obs.LOG_INFO,
+                #     f"UDP received: sender={addr}, bytes={len(data)}, "
+                #     f"local={udp_sock.getsockname()}, preview={data[:100]!r}"
+                # )
             except BlockingIOError:
                 break
 
@@ -433,13 +413,15 @@ def script_load(settings):
 
 
 def script_unload():
-    global udp_sock
+    global udp_sock, transport_generation
 
-    # cleanup
-    try:
-        obs.remove_current_callback()
-    except Exception:
-        pass
+    # Stop consumers and invalidate publishers before clearing shared state.
+    # Common cleanup also removes timers registered by the helper modules.
+    obs.timer_remove(udp_timer_callback)
+    with ranking_records_lock:
+        transport_generation += 1
+        pending_rankings_updates.clear()
+    dvov_script_unload()
     if udp_sock:
         try:
             udp_sock.close()

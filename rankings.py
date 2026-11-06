@@ -6,8 +6,8 @@ if typing.TYPE_CHECKING:
 else:
     import obspython as obs   # real runtime module
 
-from typing import List
-from datatypes import DiveListRecord, DiveMessage
+from typing import List, Optional
+from datatypes import EventDetails, RankingEntry, RankingsUpdate
 from enums import RankingsSrc, EventMode
 from obs_utils import get_source_string, set_source_string, set_source_visibility, log_info_if_debug, set_color_source_color, set_color_source_alpha
 
@@ -19,8 +19,11 @@ RANKINGS_MAX_LINES = 10  # max number of lines supported in the scene
 rankings_no_lines_per_page = RANKINGS_MAX_LINES
 rankings_page_display_duration = 10  # seconds per page
 
-ranking_rec_working_copy: List[DiveListRecord] = []
-rankings_event_rec_working_copy: DiveMessage
+ranking_rec_working_copy: List[RankingEntry] = []
+rankings_event_rec_working_copy: EventDetails
+# Compare accepted snapshots here, not in the transport: an inactive event's
+# data must still be eligible for display after the operator switches to it.
+last_update: Optional[RankingsUpdate] = None
 
 mode: EventMode = EventMode.Undefined  # Initialize with default mode
 
@@ -69,8 +72,10 @@ def dvov_rank_set_mode(eventMode: EventMode):
 
 
 def dvov_rank_set_event_ab(event_is_a: bool):
-    global event_ab_is_a
+    global event_ab_is_a, last_update
     event_ab_is_a = event_is_a
+    # The next snapshot must repopulate the cleared sources even if unchanged.
+    last_update = None
 
     # event changed, all data is invalid
     ranking_rec_working_copy.clear()
@@ -91,36 +96,44 @@ def sort_list():
         set_color_source_alpha(RankingsSrc.ScoreBackground, 0)  # hide score gradient for start list mode
 
 
-def dvov_rank_set_divers(records: List[DiveListRecord], event_record: DiveMessage):
-    global ranking_rec_working_copy, rankings_event_rec_working_copy
+def dvov_rank_set_divers(update: RankingsUpdate):
+    global ranking_rec_working_copy, rankings_event_rec_working_copy, last_update
+
+    # Repeated network snapshots must not continually return a multi-page list
+    # to page one. The working copy remains sortable without mutating the input.
+    if update == last_update:
+        return
 
     if show_guests:
-        ranking_rec_working_copy = records.copy()
+        ranking_rec_working_copy = list(update.entries)
     else:
+        # Guest classification is supplied by the adapter, not inferred from
+        # rank signs in the provider-independent display layer.
         ranking_rec_working_copy = []
-        for record in records:
+        for record in update.entries:
             try:
-                if int(record.rank) > 0:
+                if not record.is_guest:
                     ranking_rec_working_copy.append(record)
             except (TypeError, ValueError):
                 continue
-    rankings_event_rec_working_copy = event_record
+    rankings_event_rec_working_copy = update.event
 
     clear_data()
     reset_pagination()
+    last_update = update
 
     log_info_if_debug(debug, f"Set Divers event: Got ranking records for {len(ranking_rec_working_copy)} divers.")
 
 
-def show_rank_line (diver: DiveListRecord, disp_no: int):
+def show_rank_line (diver: RankingEntry, disp_no: int):
     # use rank or start position based on mode
 
     # Determine what the new values should be
     is_guest = False
     if EventMode.Rankings == mode or EventMode.Event == mode:
         rank_value = int(diver.rank)
-        if rank_value < 0 and show_guests:
-            rank = str(abs(rank_value))
+        if diver.is_guest and rank_value > 0 and show_guests:
+            rank = str(rank_value)
             is_guest = True
         elif rank_value > 0:
             rank = str(rank_value)
@@ -191,9 +204,9 @@ def show_rank_line (diver: DiveListRecord, disp_no: int):
 # ---------------------------
 # Pagination (show each page)
 # ---------------------------
-def show_page(ranking_rec: List[DiveListRecord], rankings_event_rec: DiveMessage, page_index):
+def show_page(ranking_rec: List[RankingEntry], rankings_event_rec: EventDetails, page_index):
     set_source_string(RankingsSrc.HeaderMeet, rankings_event_rec.meet_title)
-    set_source_string(RankingsSrc.HeaderEvent, rankings_event_rec.long_event_name)
+    set_source_string(RankingsSrc.HeaderEvent, rankings_event_rec.name)
 
     start = page_index * rankings_no_lines_per_page
     chunk = ranking_rec[start:start + rankings_no_lines_per_page]
@@ -305,12 +318,13 @@ def dvov_rank_script_defaults(settings):
 
 def dvov_rank_script_update(settings):
     # Rankings settings
-    global debug, rankings_no_lines_per_page, rankings_page_display_duration, root_dir, show_guests
+    global debug, rankings_no_lines_per_page, rankings_page_display_duration, root_dir, show_guests, last_update
 
     debug = obs.obs_data_get_bool(settings, "debug")
     rankings_no_lines_per_page = obs.obs_data_get_int(settings, "rnk_num_per_page")
     rankings_page_display_duration = obs.obs_data_get_int(settings, "rnk_display_duration")
     show_guests = obs.obs_data_get_bool(settings, "rnk_show_guests")
+    last_update = None
 
     # Set Header picture source files
     root_dir = obs.obs_data_get_string(settings, "rootDir")

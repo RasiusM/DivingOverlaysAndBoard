@@ -7,8 +7,8 @@ if typing.TYPE_CHECKING:
 else:
     import obspython as obs   # real runtime module
 
-from state_controls import dvov_state_script_properties, dvov_state_script_defaults, dvov_state_script_update, dvov_state_script_load, dvov_status_register_hotkeys_force
-from overlay_data import dvov_act_script_update, dvov_act_script_load #, dvov_act_script_properties, dvov_act_script_defaults
+from state_controls import dvov_state_script_properties, dvov_state_script_defaults, dvov_state_script_update, dvov_state_script_load, dvov_status_register_hotkeys_force, tv_banner_remove_callback
+from overlay_data import dvov_act_script_update, dvov_act_script_load, set_source_paths #, dvov_act_script_properties, dvov_act_script_defaults
 from rankings import dvov_rank_add_properties, dvov_rank_script_defaults, dvov_rank_script_update, dvov_rank_script_load, dvov_rank_register_hotkeys, on_rankings_hotkey_stop
 
 # ---------- OBS script lifecycle ----------
@@ -54,5 +54,9 @@ def dvov_script_load(settings):
     dvov_act_script_load(settings)
 
 def dvov_script_unload():
+    # Helper modules register their own callbacks; stopping UDP polling alone
+    # would leave pagination, banner hiding, and source-path retries active.
     on_rankings_hotkey_stop(True)
+    obs.timer_remove(tv_banner_remove_callback)
+    obs.timer_remove(set_source_paths)
 

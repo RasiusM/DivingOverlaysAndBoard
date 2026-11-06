@@ -5,7 +5,7 @@ if typing.TYPE_CHECKING:
 else:
     import obspython as obs   # real runtime module
 
-from datatypes import DiveMessage
+from datatypes import DivePhase, DiveUpdate
 from obs_utils import center_score, set_filter_path, set_source_string, set_source_file, set_source_visibility, log_info_if_debug, set_vlc_playlist, is_source_available
 from enums import (DiveInfoBoardGrp, EventInfo, IndividualAwards, InstantReplaySrc, JudgeAwardsBoardGrp, MainBoardGrp, SynchroLabelsBoardGrp,
                    TVBannerGrp, SynchroAwards, SynchroLabelsGrp, DiveInfoGrp, AwardsCommonGrp)
@@ -28,14 +28,6 @@ positionText = {
     "B": "Pike",
     "C": "Tuck",
     "D": "Free"
-}
-
-penaltyText = {
-    "0": " ",
-    "1": "Failed Dive",
-    "2": "Restarted (-2 points)",
-    "3": "Flight or Danger (Max 2 points)",
-    "4": "Arm position (Max 4½ points)"
 }
 
 def clear_data():
@@ -119,9 +111,11 @@ def dvov_act_set_event_complete(is_event_complete: bool):
         set_source_string(EventInfo.RoundNo, " ")
 
 
-def dvov_act_set_event_ab(event_is_a: bool):
-    global event_ab_is_a
+def dvov_act_set_event_ab(event_is_a: bool, selected_event_name: str = ""):
+    global event_ab_is_a, event_name
     event_ab_is_a = event_is_a
+    # Completion text for the newly selected slot needs its own event name.
+    event_name = selected_event_name
 
     # event changed, all data is invalid
     clear_data()
@@ -132,27 +126,22 @@ def dvov_act_set_display_enabled(enabled: bool):
     overlays_enabled = enabled
 
 
-def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
+def dvov_act_render_dive(update: DiveUpdate):
+    """Render normalized content; the controller owns selected-event routing."""
+
     global event_name
 
-    log_info_if_debug(debug, f"start single_update(), Message Type: {msg.packet_id}")
-
-    if msg.packet_id != "REFEREE":
-        return
-
-    # Not "our" event, ignore message (e.g. if Event A message received but currently displaying Event B)
-    if (event_ab_is_a and msg.event_ab != "a") or (not event_ab_is_a and msg.event_ab != "b"):
-        return
+    synchro = update.synchro
 
     #----------------------------------------------------------
     # Event info
     #----------------------------------------------------------
-    event_name = msg.long_event_name
+    event_name = update.event.name
 
     diverLabel = "Divers" if synchro else "Diver"
 
-    diverNo = f"{diverLabel} {msg.start_no}/{msg.divers_in_event} "
-    roundNo = f"Round {msg.round}/{msg.rounds_in_event} "
+    diverNo = f"{diverLabel} {update.start_number}/{update.event.diver_count} "
+    roundNo = f"Round {update.event.round_number}/{update.event.round_count} "
     event_info = (
         f" {event_name} \n "
         f" {diverNo}"
@@ -183,35 +172,23 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
 
         return flag_file
 
-    set_source_file(TVBannerGrp.Flag, get_flag_path(msg.d1_team_code))
-    set_source_file(MainBoardGrp.Flag1, get_flag_path(msg.d1_team_code))
-    set_source_file(MainBoardGrp.Flag2, get_flag_path(msg.d2_team_code))
+    set_source_file(TVBannerGrp.Flag, get_flag_path(update.team1_code))
+    set_source_file(MainBoardGrp.Flag1, get_flag_path(update.team1_code))
+    set_source_file(MainBoardGrp.Flag2, get_flag_path(update.team2_code))
 
     #----------------------------------------------------------
     # Diver name
     #----------------------------------------------------------
-    if synchro:
-        displayName = (
-            f"{msg.d1_first_name} {msg.d1_family_name} + "
-            f"{msg.d2_first_name} {msg.d2_family_name} "
-            f"{msg.d1_team_code}/{msg.d2_team_code}"
-        )
-        set_source_string(MainBoardGrp.Diver1, f"{msg.d1_first_name} {msg.d1_family_name} - {msg.d1_team_code}")
-        set_source_string(MainBoardGrp.Diver2, f"{msg.d2_first_name} {msg.d2_family_name} - {msg.d2_team_code}")
-    else:
-        displayName = msg.d1_full_name_team
-        set_source_string(MainBoardGrp.Diver1, displayName)
-        set_source_string(MainBoardGrp.Diver2, " ")
-
-    set_source_string(TVBannerGrp.Diver, displayName)
+    set_source_string(MainBoardGrp.Diver1, update.diver1_name)
+    set_source_string(MainBoardGrp.Diver2, update.diver2_name)
+    set_source_string(TVBannerGrp.Diver, update.banner_name)
 
     #----------------------------------------------------------
     # Awards?
-    # Awards exist if J1 is not blank
+    # Presentation phase is supplied by the scoring adapter. Historical scores
+    # can exist on an upcoming-dive snapshot without selecting the awards view.
     #----------------------------------------------------------
-    awards_present = (msg.j1.strip() != "")
-
-    log_info_if_debug(debug, f"J1 contents: [{msg.j1}]")
+    awards_present = update.phase == DivePhase.Awards
 
     set_source_string(AwardsCommonGrp.Penalty, "")
 
@@ -226,27 +203,23 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
 
         # ----- Rank
         # Ensure rank is 3 characters wide for display alignment (text source is buggy with alignment)
-        rank = msg.rank
+        rank = update.rank
         rank = rank.rjust(3)
         set_source_string(TVBannerGrp.Position, rank)
 
         # ----- Judge lists -----
-        count_j =  int(msg.number_of_judges)
+        count_j = update.judge_count
 
         if synchro:
             # Populate Execution Judge sources JE1..JE6, JOE1..JOE6
-            judge_values = [
-                    msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6
-                ]
+            judge_values = update.awards[:6]
 
             for i, val in enumerate(judge_values, start=1):
                 set_source_string(f"{SynchroAwards.JudgeExecPrefix}{i}", val.rjust(3))
                 set_source_string(f"{JudgeAwardsBoardGrp.JExecPrefix}{i}", center_score(val))
 
             # Populate Synchro Judge sources JS1..JS5, JOS1..JOS5
-            judge_values = [
-                    msg.j7, msg.j8, msg.j9, msg.j10, msg.j11
-                ]
+            judge_values = update.awards[6:11]
 
             for i, val in enumerate(judge_values, start=1):
                 set_source_string(f"{SynchroAwards.JudgeSynchroPrefix}{i}", val.rjust(3))
@@ -254,9 +227,7 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
 
         else:
             # Fill in Execution judge values for overlay and board JE1..JE7, JOE1..JOE7
-            judge_values = [
-                    msg.j1, msg.j2, msg.j3, msg.j4, msg.j5, msg.j6, msg.j7
-                ]
+            judge_values = update.awards[:7]
 
             for i, val in enumerate(judge_values, start=1):
                 set_source_string(f"{IndividualAwards.JudgePrefix}{i}", val.rjust(3))
@@ -269,11 +240,9 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
                 set_source_string(f"{JudgeAwardsBoardGrp.JSynchroPrefix}{i}", val)
 
         # Penalty text
-        penalty = penaltyText.get(msg.penalty_code, " ")
-
-        set_source_string(AwardsCommonGrp.Points, msg.points)
-        set_source_string(AwardsCommonGrp.Penalty, penalty)
-        set_source_string(TVBannerGrp.Total, msg.total)
+        set_source_string(AwardsCommonGrp.Points, update.points)
+        set_source_string(AwardsCommonGrp.Penalty, update.penalty_text)
+        set_source_string(TVBannerGrp.Total, update.total)
 
         # show awards sources
         if overlays_enabled:
@@ -293,21 +262,21 @@ def dvov_act_single_event_referee_update(msg: DiveMessage, synchro: bool):
 
         # ----- Start No
         # Ensure start number is 3 characters wide for display alignment (text source is buggy with alignment)
-        start_no = msg.start_no
+        start_no = update.start_number
         start_no = start_no.rjust(3)
 
         set_source_string(TVBannerGrp.Position, start_no)
         log_info_if_debug(debug, "Pre-dive info branch")
-        position = positionText.get(msg.pos_code, "")
+        position = positionText.get(update.position_code, "")
 
         # set Total points for the next diver
-        set_source_string(TVBannerGrp.Total, msg.total)
+        set_source_string(TVBannerGrp.Total, update.total)
 
         # Fill in dive info
-        set_source_string(DiveInfoGrp.Number, f"{msg.dive_no}{msg.pos_code}")
-        set_source_string(DiveInfoGrp.Difficulty, msg.dd)
-        set_source_string(DiveInfoGrp.Board, f"{msg.board}m" if msg.board else " ")
-        set_source_string(DiveInfoGrp.Description, f"{msg.dive_description}, {position}")
+        set_source_string(DiveInfoGrp.Number, f"{update.dive_number}{update.position_code}")
+        set_source_string(DiveInfoGrp.Difficulty, update.difficulty)
+        set_source_string(DiveInfoGrp.Board, f"{update.height}m" if update.height else " ")
+        set_source_string(DiveInfoGrp.Description, f"{update.description}, {position}")
 
         # TODO: Consider moving show/hide logics to state_controls and only keep source updates here in overlay_data
         if overlays_enabled:

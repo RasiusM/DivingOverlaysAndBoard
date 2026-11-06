@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from enum import Enum
+from typing import Tuple
 
 # ---- Class to store REFEREE message contents ----
 @dataclass
@@ -86,4 +88,75 @@ class DiveListRecord:
     diver: str
     start_position: int
     club_code: str
+
+
+# Below this boundary, records describe overlay data rather than wire fields.
+# Frozen records and tuple collections can be shared with the OBS timer without
+# a background worker changing data while it is being displayed.
+class DivePhase(Enum):
+    """Display intent, independent of whether historical awards are available."""
+
+    Upcoming = "upcoming"
+    Awards = "awards"
+
+
+@dataclass(frozen=True)
+class EventDetails:
+    """Event context shared by dive displays and paginated lists."""
+
+    # A/B identifies the selected display slot, not a unique competition event.
+    slot: str
+    meet_title: str
+    name: str
+    round_number: str = ""
+    round_count: str = ""
+    diver_count: str = ""
+
+
+@dataclass(frozen=True)
+class DiveUpdate:
+    """One display-ready dive snapshot; scores retain the provider's formatting."""
+
+    event: EventDetails
+    phase: DivePhase
+    synchro: bool
+    start_number: str
+    banner_name: str
+    diver1_name: str
+    diver2_name: str
+    team1_code: str
+    team2_code: str
+    dive_number: str
+    position_code: str
+    difficulty: str
+    height: str
+    description: str
+    # Fixed display slots: six execution awards followed by five synchro awards.
+    # Individual displays use the first seven slots instead.
+    awards: Tuple[str, ...]
+    judge_count: int
+    penalty_text: str
+    points: str
+    total: str
+    rank: str
+
+
+@dataclass(frozen=True)
+class RankingEntry:
+    """A list row with guest status separated from its nonnegative rank."""
+
+    rank: int
+    points: str
+    diver: str
+    start_position: int
+    club_code: str
+    is_guest: bool
+
+
+@dataclass(frozen=True)
+class RankingsUpdate:
+    """An event header and its complete list, delivered as one snapshot."""
+
+    event: EventDetails
+    entries: Tuple[RankingEntry, ...]
 
