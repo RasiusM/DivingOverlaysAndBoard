@@ -1,7 +1,7 @@
 import unittest
 from dataclasses import replace
 import sys
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, mock_open, patch
 
 from datatypes import DiveListRecord, DiveMessage, DivePhase
 from diverecorder_adapter import adapt_dive, adapt_rankings
@@ -12,7 +12,7 @@ import overlay_controller
 import overlay_data
 import rankings
 import state_controls
-import dive_recorder_overlays
+import diving_overlays
 from enums import AwardsCommonGrp, DiveInfoGrp, EventMode, RankingsSrc, TVBannerGrp
 
 
@@ -27,6 +27,74 @@ def make_message(**values):
     )
     fields.update(values)
     return DiveMessage(**fields)
+
+
+class ScriptPropertiesTests(unittest.TestCase):
+    def test_script_update_tracks_selected_source_before_transport_starts(self):
+        settings = {"scoring_source": "divecalc", "divecalc_path": "/divecalc",
+                    "divecalc_allowed_ip": "", "rootDir": "."}
+        with patch.object(diving_overlays, "script_loaded", False), \
+             patch.object(diving_overlays, "selected_scoring_source", "diverecorder"), \
+             patch.object(diving_overlays, "dvov_script_update"), \
+             patch.object(diving_overlays, "parse_descriptions", return_value={}), \
+             patch("builtins.open", mock_open(read_data="")), \
+             patch.object(diving_overlays.obs, "obs_data_get_string", side_effect=lambda data, key: data[key]), \
+             patch.object(diving_overlays.obs, "obs_data_get_bool", return_value=True), \
+             patch.object(diving_overlays.obs, "obs_data_get_int", return_value=8765):
+            diving_overlays.script_update(settings)
+            self.assertEqual(diving_overlays.selected_scoring_source, "divecalc")
+
+    def test_scoring_source_controls_visibility_without_changing_settings(self):
+        props = object()
+        properties = {}
+        callbacks = {}
+        visibility = {}
+
+        def add_property(parent, name, *args):
+            self.assertIs(parent, props)
+            properties[name] = name
+            return name
+
+        def set_callback(prop, callback):
+            callbacks[prop] = callback
+
+        settings = {"scoring_source": "divecalc", "divecalc_port": 9000,
+                    "divecalc_path": "/custom", "divecalc_allowed_ip": "127.0.0.1",
+                    "udp_polling_enabled": False}
+        original_settings = settings.copy()
+        with patch.object(diving_overlays, "selected_scoring_source", "divecalc"), \
+             patch.object(diving_overlays, "dvov_script_properties"), \
+             patch.multiple(
+                 diving_overlays.obs,
+                 obs_properties_create=MagicMock(return_value=props),
+                 obs_properties_add_list=MagicMock(side_effect=add_property),
+                 obs_properties_add_bool=MagicMock(side_effect=add_property),
+                 obs_properties_add_int=MagicMock(side_effect=add_property),
+                 obs_properties_add_text=MagicMock(side_effect=add_property),
+                 obs_property_set_modified_callback=MagicMock(side_effect=set_callback),
+                 obs_properties_get=MagicMock(side_effect=lambda parent, name: properties[name]),
+                 obs_property_set_visible=MagicMock(side_effect=lambda prop, visible: visibility.update({prop: visible})),
+                 obs_data_get_string=MagicMock(side_effect=lambda data, name: data[name]),
+             ):
+            self.assertIs(diving_overlays.script_properties(), props)
+            self.assertEqual(visibility, {
+                "udp_polling_enabled": False,
+                "divecalc_port": True,
+                "divecalc_path": True,
+                "divecalc_allowed_ip": True,
+            })
+            callback = callbacks["scoring_source"]
+            for source in ("divecalc", "diverecorder", "", "divecalc"):
+                with self.subTest(source=source):
+                    settings["scoring_source"] = source
+                    self.assertTrue(callback(props, properties["scoring_source"], settings))
+                    self.assertEqual(visibility, {
+                        "udp_polling_enabled": source in ("diverecorder", ""),
+                        "divecalc_port": source == "divecalc",
+                        "divecalc_path": source == "divecalc",
+                        "divecalc_allowed_ip": source == "divecalc",
+                    })
+            self.assertEqual(settings, original_settings)
 
 
 class AdapterTests(unittest.TestCase):
@@ -76,6 +144,47 @@ class ControllerTests(unittest.TestCase):
         state_controls.event_complete = False
         state_controls.latest_dives.clear()
         state_controls.completed_slots.clear()
+        state_controls.event_names.clear()
+
+    def test_overlay_visibility_defaults_to_enabled(self):
+        settings = object()
+        with patch.object(state_controls.obs, "obs_data_set_default_int"), \
+             patch.object(state_controls.obs, "obs_data_set_default_bool") as set_default:
+            state_controls.dvov_state_script_defaults(settings)
+            set_default.assert_called_once_with(settings, "overlays_enabled", True)
+
+    def test_overlay_visibility_setting_is_shared_with_renderer(self):
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled), \
+                 patch.object(state_controls.obs, "obs_data_get_bool", side_effect=lambda settings, key: enabled if key == "overlays_enabled" else False), \
+                 patch.object(state_controls.obs, "obs_data_get_int", return_value=5000), \
+                 patch.object(state_controls, "overlays_enabled", True), \
+                 patch.object(overlay_data, "overlays_enabled", True):
+                state_controls.dvov_state_script_update(object())
+                self.assertEqual(state_controls.overlays_enabled, enabled)
+                self.assertEqual(overlay_data.overlays_enabled, enabled)
+
+    def test_awards_visibility_follows_shared_setting(self):
+        update = adapt_dive(make_message(j1="5"))
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled), \
+                 patch.object(state_controls, "overlays_enabled", enabled), \
+                 patch.object(overlay_data, "overlays_enabled", enabled), \
+                 patch.object(state_controls, "set_source_visibility") as state_visibility, \
+                 patch.object(overlay_data, "set_source_visibility") as render_visibility, \
+                 patch.object(state_controls, "set_source_string"), \
+                 patch.object(state_controls, "set_color_source_alpha"), \
+                 patch.object(overlay_data, "set_source_string"), \
+                 patch.object(overlay_data, "set_source_file"):
+                overlay_controller.apply_dive(update)
+                self.assertEqual(
+                    any(call.args == (TVBannerGrp.GroupName, True) for call in state_visibility.call_args_list),
+                    enabled,
+                )
+                self.assertEqual(
+                    any(call.args == (AwardsCommonGrp.GroupName, True) for call in render_visibility.call_args_list),
+                    enabled,
+                )
 
     def switch_event(self, is_a):
         with patch.object(state_controls, "dvov_act_set_event_ab") as set_ab, \
@@ -93,7 +202,23 @@ class ControllerTests(unittest.TestCase):
             overlay_controller.apply_dive(update)
             overlay_controller.dvov_state_on_dive.assert_called_once_with(update)
             overlay_controller.dvov_act_render_dive.assert_called_once_with(update)
-            overlay_controller.dvov_state_set_event_complete.assert_called_once_with(False)
+            overlay_controller.dvov_state_set_event_complete.assert_not_called()
+
+    def test_finished_dive_and_rankings_preserve_completion(self):
+        dive = adapt_dive(make_message())
+        finished_dive = replace(dive, event=replace(dive.event, finished=True))
+        ranking = adapt_rankings([], make_message())
+        ranking = replace(ranking, event=replace(ranking.event, finished=True))
+        with patch.object(overlay_controller, "dvov_state_on_dive"), \
+             patch.object(overlay_controller, "dvov_act_render_dive"), \
+             patch.object(overlay_controller, "dvov_act_set_event_complete") as text, \
+             patch.object(overlay_controller, "dvov_state_set_event_complete") as status, \
+             patch.object(overlay_controller, "dvov_rank_set_divers"):
+            overlay_controller.apply_rankings(ranking)
+            overlay_controller.apply_dive(finished_dive)
+            self.assertIn("a", state_controls.completed_slots)
+            status.assert_called_once_with(True)
+            self.assertEqual(text.call_count, 2)
 
     def test_other_event_cannot_change_display_or_completion(self):
         with patch.object(overlay_controller, "dvov_act_render_dive") as render, \
@@ -115,6 +240,14 @@ class ControllerTests(unittest.TestCase):
             visibility.assert_any_call(DiveInfoGrp.GroupName, True)
             visibility.assert_any_call(AwardsCommonGrp.GroupName, False)
             text.assert_any_call(TVBannerGrp.Position, "  2")
+
+    def test_blank_description_displays_only_position(self):
+        update = adapt_dive(make_message(pos_code="B", dive_description=""))
+        with patch.object(overlay_data, "set_source_string") as text, \
+             patch.object(overlay_data, "set_source_file"), \
+             patch.object(overlay_data, "set_source_visibility"):
+            overlay_data.dvov_act_render_dive(update)
+            text.assert_any_call(DiveInfoGrp.Description, "Pike")
 
     def test_other_event_does_not_replace_redisplay_cache(self):
         selected = adapt_dive(make_message())
@@ -175,6 +308,25 @@ class ControllerTests(unittest.TestCase):
             overlay_controller.apply_dive(adapt_dive(make_message()))
             self.assertFalse(state_controls.event_complete)
 
+    def test_completion_from_rankings_without_rankings_display(self):
+        update = adapt_rankings([], make_message(long_event_name="Final"))
+        update = replace(update, event=replace(update.event, finished=True))
+        with patch.object(overlay_controller, "dvov_act_set_event_complete") as text, \
+             patch.object(overlay_controller, "dvov_state_set_event_complete") as status, \
+             patch.object(overlay_controller, "dvov_rank_set_divers") as rank_update:
+            overlay_controller.apply_rankings(update, show_rankings=False)
+            text.assert_called_once_with(True, "Final")
+            status.assert_called_once_with(True)
+            rank_update.assert_not_called()
+
+    def test_inactive_rankings_completion_restores_event_name(self):
+        update = adapt_rankings([], make_message(event_ab="b", long_event_name="Final B"))
+        update = replace(update, event=replace(update.event, finished=True))
+        overlay_controller.apply_rankings(update)
+        set_ab, text = self.switch_event(False)
+        set_ab.assert_called_once_with(False, "Final B")
+        text.assert_called_once_with(True)
+
     def test_redisplay_uses_normalized_cache(self):
         update = adapt_dive(make_message(j1="5"))
         state_controls.current_dive = update
@@ -184,28 +336,41 @@ class ControllerTests(unittest.TestCase):
             state_controls.redisplay_overlays(True)
             render.assert_called_once_with(update)
 
+    def test_redisplay_restores_completion_text(self):
+        state_controls.current_dive = adapt_dive(make_message())
+        state_controls.event_complete = True
+        with patch.object(state_controls, "display_overlays"), \
+             patch.object(state_controls, "display_tv_banner"), \
+             patch.object(state_controls, "dvov_act_render_dive"), \
+             patch.object(state_controls, "dvov_act_set_event_complete") as text:
+            state_controls.redisplay_overlays(True)
+            text.assert_called_once_with(True)
+
 
 class TransportTests(unittest.TestCase):
     def setUp(self):
-        dive_recorder_overlays.pending_rankings_updates.clear()
-        dive_recorder_overlays.transport_generation = 0
+        diving_overlays.mailbox = diving_overlays.UpdateMailbox()
+        diving_overlays.transport_generation = 0
+        diving_overlays.rankings_enabled = True
+        diving_overlays.startup_reset_pending = False
+        diving_overlays.startup_reset_attempts = 0
 
     def test_referee_packet_is_normalized_before_dispatch(self):
         message = make_message(j1="5", points="21.00")
         packet = "|".join(vars(message).values())
-        with patch.object(dive_recorder_overlays, "apply_dive") as apply_update:
-            dive_recorder_overlays.process_udp_message(packet)
+        with patch.object(diving_overlays, "apply_dive") as apply_update:
+            diving_overlays.process_udp_message(packet)
             update = apply_update.call_args.args[0]
             self.assertEqual(update.phase, DivePhase.Awards)
             self.assertEqual(update.points, "21.00")
 
     def test_completion_carries_event_slot(self):
-        with patch.object(dive_recorder_overlays, "complete_event") as complete:
-            dive_recorder_overlays.process_udp_message("AVIDEO|b|computer|1|ENDOFEVENT|^")
+        with patch.object(diving_overlays, "complete_event") as complete:
+            diving_overlays.process_udp_message("AVIDEO|b|computer|1|ENDOFEVENT|^")
             complete.assert_called_once_with("b")
 
     def test_empty_update_has_consistent_result(self):
-        records, event = dive_recorder_overlays.parse_update_message("UPDATE|a")
+        records, event = diving_overlays.parse_update_message("UPDATE|a")
         self.assertEqual(records, [])
         self.assertEqual(event.event_ab, "a")
 
@@ -215,37 +380,126 @@ class TransportTests(unittest.TestCase):
         payload = text.encode("utf-16le")
         connection = MagicMock()
         connection.recv.side_effect = [len(payload).to_bytes(4, "big"), payload, b""]
-        with patch.object(dive_recorder_overlays.socket, "create_connection") as connect:
+        with patch.object(diving_overlays.socket, "create_connection") as connect:
             connect.return_value.__enter__.return_value = connection
-            return dive_recorder_overlays._fetch_update_file("127.0.0.1", "Update.txt", generation)
+            return diving_overlays._fetch_update_file("127.0.0.1", "Update.txt", generation)
 
     def test_tcp_fetch_defers_obs_update_until_timer(self):
-        with patch.object(dive_recorder_overlays, "apply_rankings") as apply_update:
+        with patch.object(diving_overlays, "apply_rankings") as apply_update:
             self.assertTrue(self.fetch_rankings())
             apply_update.assert_not_called()
-            self.assertEqual(dive_recorder_overlays.pending_rankings_updates["a"].entries[0].points, "42.00")
             udp_socket = MagicMock()
             udp_socket.recvfrom.side_effect = BlockingIOError
-            with patch.object(dive_recorder_overlays, "udp_sock", udp_socket):
-                dive_recorder_overlays.udp_timer_callback()
+            with patch.object(diving_overlays, "udp_sock", udp_socket):
+                diving_overlays.udp_timer_callback()
             apply_update.assert_called_once()
-            self.assertEqual(dive_recorder_overlays.pending_rankings_updates, {})
+            self.assertEqual(diving_overlays.mailbox.drain(), ([], 0))
 
     def test_unloaded_worker_cannot_publish(self):
-        dive_recorder_overlays.transport_generation = 1
+        diving_overlays.transport_generation = diving_overlays.mailbox.new_token()
         self.assertFalse(self.fetch_rankings(generation=0))
-        self.assertEqual(dive_recorder_overlays.pending_rankings_updates, {})
+        self.assertEqual(diving_overlays.mailbox.drain(), ([], 0))
         self.assertTrue(self.fetch_rankings(generation=1))
-        self.assertIn("a", dive_recorder_overlays.pending_rankings_updates)
+        self.assertEqual(diving_overlays.mailbox.drain()[0][0].event.slot, "a")
 
     def test_unload_stops_transport_and_common_timers(self):
         udp_socket = MagicMock()
-        with patch.object(dive_recorder_overlays, "udp_sock", udp_socket), \
-             patch.object(dive_recorder_overlays, "dvov_script_unload") as common_unload:
-            dive_recorder_overlays.script_unload()
+        diving_overlays.startup_reset_pending = True
+        with patch.object(diving_overlays, "udp_sock", udp_socket), \
+             patch.object(diving_overlays, "dvov_script_unload") as common_unload:
+            diving_overlays.script_unload()
             udp_socket.close.assert_called_once()
             common_unload.assert_called_once()
-            self.assertEqual(dive_recorder_overlays.transport_generation, 1)
+            self.assertEqual(diving_overlays.transport_generation, 1)
+            self.assertFalse(diving_overlays.startup_reset_pending)
+
+    def test_switch_sources_clears_state_and_stops_receiver(self):
+        state_controls.latest_dives["a"] = adapt_dive(make_message())
+        state_controls.completed_slots.add("a")
+        state_controls.event_names["a"] = "Old event"
+        fake_receiver = MagicMock()
+        fake_socket = MagicMock()
+        with patch.object(diving_overlays, "scoring_source", "diverecorder"), \
+               patch.object(diving_overlays, "transport_config", ("diverecorder", 0, "", "")), \
+             patch.object(diving_overlays, "udp_sock", fake_socket), \
+             patch.object(diving_overlays, "receiver", None), \
+             patch.object(diving_overlays, "DiveCalcReceiver", return_value=fake_receiver), \
+             patch.object(state_controls, "set_event_a") as clear_display:
+            diving_overlays._restart_transport(("divecalc", 8765, "/divecalc", ""))
+            fake_socket.close.assert_called_once()
+            clear_display.assert_called_once()
+            self.assertEqual(state_controls.latest_dives, {})
+            self.assertEqual(state_controls.completed_slots, set())
+            self.assertEqual(state_controls.event_names, {})
+            with patch.object(diving_overlays.socket, "socket", return_value=MagicMock()):
+                diving_overlays._restart_transport(("diverecorder", 0, "", ""))
+            fake_receiver.stop.assert_called_once()
+
+    def test_startup_reset_waits_for_sources_before_processing_updates(self):
+        update = adapt_dive(make_message())
+        fake_receiver = MagicMock()
+        operations = []
+        with patch.object(diving_overlays, "scoring_source", "diverecorder"), \
+             patch.object(diving_overlays, "transport_config", None), \
+             patch.object(diving_overlays, "receiver", None), \
+             patch.object(diving_overlays, "udp_sock", None), \
+             patch.object(diving_overlays, "DiveCalcReceiver", return_value=fake_receiver), \
+             patch.object(diving_overlays, "is_source_available", return_value=False) as available, \
+             patch.object(state_controls, "set_event_a") as clear_display, \
+             patch.object(diving_overlays, "apply_dive") as apply_update:
+            clear_display.side_effect = lambda selected: operations.append("reset")
+            apply_update.side_effect = lambda item: operations.append("update")
+            diving_overlays._restart_transport(("divecalc", 8765, "/divecalc", ""))
+            self.assertTrue(diving_overlays.mailbox.publish(update, diving_overlays.transport_generation))
+            clear_display.assert_not_called()
+            diving_overlays.udp_timer_callback()
+            clear_display.assert_not_called()
+            apply_update.assert_not_called()
+            available.side_effect = lambda name: name != "Rnk_Score 10"
+            diving_overlays.udp_timer_callback()
+            clear_display.assert_not_called()
+            apply_update.assert_not_called()
+            available.side_effect = None
+            available.return_value = True
+            diving_overlays.udp_timer_callback()
+            clear_display.assert_called_once()
+            apply_update.assert_called_once_with(update)
+            self.assertEqual(operations, ["reset", "update"])
+            self.assertFalse(diving_overlays.startup_reset_pending)
+
+    def test_startup_reset_eventually_reports_missing_sources(self):
+        diving_overlays.startup_reset_pending = True
+        diving_overlays.startup_reset_attempts = diving_overlays.STARTUP_RESET_MAX_ATTEMPTS - 1
+        with patch.object(diving_overlays, "scoring_source", "divecalc"), \
+             patch.object(diving_overlays, "is_source_available", return_value=False), \
+             patch.object(state_controls, "set_event_a") as clear_display:
+            diving_overlays.udp_timer_callback()
+            clear_display.assert_called_once()
+            self.assertFalse(diving_overlays.startup_reset_pending)
+
+    def test_load_starts_only_selected_divecalc_transport(self):
+        settings = object()
+        values = {"scoring_source": "divecalc", "divecalc_path": "/divecalc",
+                  "divecalc_allowed_ip": "", "rootDir": "."}
+        fake_receiver = MagicMock()
+        with patch.object(diving_overlays, "script_loaded", False), \
+             patch.object(diving_overlays, "transport_config", None), \
+             patch.object(diving_overlays, "scoring_source", "diverecorder"), \
+             patch.object(diving_overlays, "receiver", None), \
+             patch.object(diving_overlays, "udp_sock", None), \
+             patch.object(diving_overlays, "dvov_script_load"), \
+             patch.object(diving_overlays, "dvov_script_update"), \
+             patch.object(state_controls, "set_event_a"), \
+             patch.object(diving_overlays, "DiveCalcReceiver", return_value=fake_receiver) as create_receiver, \
+             patch.object(diving_overlays.socket, "socket") as create_udp, \
+             patch.object(diving_overlays.obs, "obs_data_get_string", side_effect=lambda data, key: values[key]), \
+             patch.object(diving_overlays.obs, "obs_data_get_bool", return_value=True), \
+             patch.object(diving_overlays.obs, "obs_data_get_int", return_value=8765):
+            diving_overlays.script_load(settings)
+            create_receiver.assert_called_once()
+            create_udp.assert_not_called()
+            diving_overlays.script_unload()
+            fake_receiver.stop.assert_called_once()
 
 
 class RankingsTests(unittest.TestCase):

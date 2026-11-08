@@ -48,6 +48,7 @@ current_dive: Union[DiveUpdate, None] = None
 # Kept for both A/B slots so switching restores F7 content and completion status.
 latest_dives: Dict[str, DiveUpdate] = {}
 completed_slots: Set[str] = set()
+event_names: Dict[str, str] = {}
 
 synchro = False
 
@@ -72,6 +73,11 @@ def dvov_state_is_selected_event(slot: str):
 
 def dvov_state_store_dive(update: DiveUpdate):
     latest_dives[update.event.slot] = update
+    event_names[update.event.slot] = update.event.name
+
+
+def dvov_state_store_event(slot: str, name: str):
+    event_names[slot] = name
 
 
 def dvov_state_store_completion(slot: str, is_event_complete: bool):
@@ -234,6 +240,8 @@ def redisplay_overlays(pressed):
     # information is available, re-display tv banner
     display_tv_banner()
     dvov_act_render_dive(current_dive)
+    if event_complete:
+        dvov_act_set_event_complete(True)
 
 
 def set_display_enabled(is_enabled):
@@ -268,7 +276,7 @@ def set_event_a(is_a: bool):
     set_color_source_alpha(EventABGrp.AActive, 255 if is_a else 0)
     set_color_source_alpha(EventABGrp.BActive, 0 if is_a else 255)
 
-    dvov_act_set_event_ab(is_a, current_dive.event.name if current_dive else "")
+    dvov_act_set_event_ab(is_a, event_names.get(slot, ""))
     dvov_rank_set_event_ab(is_a)
 
     remove_overlays(True)
@@ -436,6 +444,7 @@ def dvov_state_script_properties(props):
 
 def dvov_state_script_defaults(settings):
     obs.obs_data_set_default_int(settings, "dinterval", 5000)
+    obs.obs_data_set_default_bool(settings, "overlays_enabled", True)
 
 
 # load state values from persisted script settings
@@ -448,6 +457,7 @@ def dvov_state_script_update(settings):
     top_overlay_pos_left = obs.obs_data_get_bool(settings, "single_event_pos_left")
     overlays_enabled = obs.obs_data_get_bool(settings, "overlays_enabled")
     hide_disable = obs.obs_data_get_bool(settings, "hide_disable")
+    dvov_act_set_display_enabled(overlays_enabled)
 
 
 def dvov_state_script_load(settings):

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Tuple
+from typing import Optional, Tuple
 
 # ---- Class to store REFEREE message contents ----
 @dataclass
@@ -111,6 +111,7 @@ class EventDetails:
     round_number: str = ""
     round_count: str = ""
     diver_count: str = ""
+    finished: Optional[bool] = None
 
 
 @dataclass(frozen=True)

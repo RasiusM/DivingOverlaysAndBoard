@@ -13,14 +13,15 @@ else:
 import socket
 import threading
 import os
-from typing import Dict, Union
+from typing import Union
 
 # local imports
-from datatypes import DiveMessage, DiveListRecord, RankingsUpdate
+from datatypes import DiveMessage, DiveListRecord, DiveUpdate, RankingsUpdate
 from diverecorder_adapter import adapt_dive, adapt_rankings
 from overlay_controller import apply_dive, apply_rankings, complete_event
 from overlay_script_common import dvov_script_properties, dvov_script_defaults, dvov_script_update, dvov_script_load, dvov_script_unload
 from obs_utils import log_info_if_debug
+from update_mailbox import UpdateMailbox
 
 # ---------- Globals
 portClient = 58091  # main port for DR broadcast data
@@ -64,9 +65,7 @@ tcp_receive_timeout = 1.0  # seconds per recv
 # TCP workers publish complete snapshots; the OBS timer removes them under this
 # lock and applies them after releasing it. Keep the latest completed fetch per
 # A/B slot so one event cannot replace another event's pending data.
-ranking_records_lock: threading.Lock = threading.Lock()
-pending_rankings_updates: Dict[str, RankingsUpdate] = {}
-# Workers retain their starting generation so unload can reject late results.
+mailbox = UpdateMailbox()
 transport_generation = 0
 
 # ---- parser helper: converts UPDATE message → List[RankingRecord] ----
@@ -210,10 +209,8 @@ def _fetch_update_file(ip_address: str, message_file_name: str, generation=None)
         update = adapt_rankings(parsed_records, parsed_event_record)
         # Publish only data here. Source updates and pagination belong to the
         # OBS timer; an in-flight fetch must not repopulate state after unload.
-        with ranking_records_lock:
-            if generation != transport_generation:
-                return False
-            pending_rankings_updates[update.event.slot] = update
+        if not mailbox.publish(update, generation):
+            return False
         obs.script_log(obs.LOG_INFO, "Rankings data updated, flagged for main thread processing.")
 
         return True
@@ -282,14 +279,17 @@ def udp_timer_callback():
 
     # Take ownership of pending snapshots atomically. Do not hold the worker
     # lock while invoking OBS helpers or restarting list pagination.
-    with ranking_records_lock:
-        updates = list(pending_rankings_updates.values())
-        pending_rankings_updates.clear()
+    updates, dropped = mailbox.drain()
+    if dropped:
+        obs.script_log(obs.LOG_WARNING, f"Dropped {dropped} incoming updates because the mailbox was full.")
 
     for update in updates:
         try:
             log_info_if_debug(debug, "Processing rankings on main thread...")
-            apply_rankings(update)
+            if isinstance(update, DiveUpdate):
+                apply_dive(update)
+            elif isinstance(update, RankingsUpdate) and rankings_enabled:
+                apply_rankings(update)
         except Exception as e:
             obs.script_log(obs.LOG_ERROR, f"Error processing rankings: {e}")
 
@@ -418,9 +418,7 @@ def script_unload():
     # Stop consumers and invalidate publishers before clearing shared state.
     # Common cleanup also removes timers registered by the helper modules.
     obs.timer_remove(udp_timer_callback)
-    with ranking_records_lock:
-        transport_generation += 1
-        pending_rankings_updates.clear()
+    transport_generation = mailbox.new_token()
     dvov_script_unload()
     if udp_sock:
         try:

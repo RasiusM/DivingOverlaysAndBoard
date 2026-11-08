@@ -1,5 +1,6 @@
 """Translate DiveRecorder protocol records into overlay updates."""
 
+from dataclasses import replace
 from typing import Sequence
 
 from datatypes import (
@@ -54,7 +55,7 @@ def adapt_dive(message: DiveMessage) -> DiveUpdate:
     # DiveRecorder distinguishes pre-dive information from accepted awards by
     # leaving J1 blank. Translate that convention once, not in each OBS layer.
     return DiveUpdate(
-        event=event_details(message),
+        event=replace(event_details(message), finished=False),
         phase=DivePhase.Awards if message.j1.strip() else DivePhase.Upcoming,
         synchro=synchro,
         start_number=message.start_no,

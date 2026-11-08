@@ -100,7 +100,10 @@ def set_individual_judge_number(count_judges: int):
     set_source_visibility(JudgeAwardsBoardGrp.GroupName, (count_judges > 0))
 
 
-def dvov_act_set_event_complete(is_event_complete: bool):
+def dvov_act_set_event_complete(is_event_complete: bool, selected_event_name=None):
+    global event_name
+    if selected_event_name is not None:
+        event_name = selected_event_name
     if is_event_complete:
         set_source_string(EventInfo.Info, f" {event_name} \n Completed")
         set_source_string(EventInfo.DiverNo, " ")
@@ -276,7 +279,8 @@ def dvov_act_render_dive(update: DiveUpdate):
         set_source_string(DiveInfoGrp.Number, f"{update.dive_number}{update.position_code}")
         set_source_string(DiveInfoGrp.Difficulty, update.difficulty)
         set_source_string(DiveInfoGrp.Board, f"{update.height}m" if update.height else " ")
-        set_source_string(DiveInfoGrp.Description, f"{update.description}, {position}")
+        description = f"{update.description}, {position}" if update.description else position
+        set_source_string(DiveInfoGrp.Description, description)
 
         # TODO: Consider moving show/hide logics to state_controls and only keep source updates here in overlay_data
         if overlays_enabled:
