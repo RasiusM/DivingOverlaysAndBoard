@@ -1,6 +1,5 @@
 '''
-Dive Recorder OBS Overlays/Board Script
-Version 1.0.0
+Diving Overlays/Board OBS Script for DiveRecorder and DiveCalc
 '''
 # Converted from divingoverlaysV4.0.0.lua (Andy)
 import typing
@@ -17,11 +16,11 @@ import ipaddress
 from typing import Union
 
 # local imports
-from datatypes import DiveMessage, DiveListRecord, DiveUpdate, RankingsUpdate
+from datatypes import DiveMessage, DiveListRecord, DiveUpdate, EventStartUpdate, RankingsUpdate
 from diverecorder_adapter import adapt_dive, adapt_rankings
 from overlay_controller import apply_dive, apply_rankings, complete_event
 from overlay_script_common import dvov_script_properties, dvov_script_defaults, dvov_script_update, dvov_script_load, dvov_script_unload
-from obs_utils import is_source_available, log_info_if_debug
+from obs_utils import is_source_available, log_info_if_debug, update_event_countdown
 from enums import (EventABGrp, EventInfo, IndividualAwards, JudgeAwardsBoardGrp,
                    MainBoardGrp, PostEventGrp, RankingsSrc, SynchroAwards, TVBannerGrp)
 from update_mailbox import UpdateMailbox
@@ -50,7 +49,7 @@ STARTUP_RESET_MAX_ATTEMPTS = 50  # 200 ms timer intervals, approximately 10 seco
 STARTUP_RESET_SOURCES = (
     EventABGrp.AActive, EventABGrp.BActive, PostEventGrp.EventCompleted,
     EventInfo.Info, EventInfo.Title, EventInfo.DiverNo, EventInfo.RoundNo,
-    TVBannerGrp.Diver, TVBannerGrp.Flag, TVBannerGrp.Position, TVBannerGrp.Total,
+    TVBannerGrp.Diver, TVBannerGrp.Flag, TVBannerGrp.Rank, TVBannerGrp.Total,
     MainBoardGrp.Flag1, MainBoardGrp.Flag2, MainBoardGrp.Diver1, MainBoardGrp.Diver2,
     RankingsSrc.HeaderMeet, RankingsSrc.HeaderEvent, RankingsSrc.HeaderListType,
 ) + tuple(
@@ -75,12 +74,9 @@ id_ = 0
 
 # flag to indicate if rankings retrieval and update is enabled (script setting)
 rankings_enabled = False
-rankings_mode = False
-event_complete = False
 
 # UDP socket and polling
 udp_sock: Union[socket.socket, None] = None
-udp_lock = threading.Lock()
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # ---------- Parsing and message processing ----------
@@ -250,7 +246,9 @@ def _fetch_update_file(ip_address: str, message_file_name: str, generation=None)
         return True
 
     except Exception as e:
-        obs.script_log(obs.LOG_ERROR, f"Failed to fetch update file from {ip_address}:{tcp_port} - {e}")
+        # A worker outliving script unload must not call into OBS.
+        if generation == transport_generation:
+            obs.script_log(obs.LOG_ERROR, f"Failed to fetch update file from {ip_address}:{tcp_port} - {e}")
         return False
 
 # ---------- Process incoming UDP messages ----------
@@ -301,7 +299,7 @@ def process_udp_message(k: str):
 
 #---------- UDP polling (called on OBS timer) ----------
 def udp_timer_callback():
-    global id_, activeId, udp_sock, last_message_text, startup_reset_pending, startup_reset_attempts
+    global id_, activeId, udp_sock, last_message_text, startup_reset_pending, startup_reset_attempts, warned_inactive
 
     # If script reloaded, stop old timer
     if id_ < activeId:
@@ -330,7 +328,6 @@ def udp_timer_callback():
 
     for update in updates:
         try:
-            global warned_inactive
             if scoring_source == "divecalc" and not state_controls.event_ab_is_a and not warned_inactive:
                 obs.script_log(obs.LOG_WARNING, "DiveCalc data is assigned to event A; event B is selected.")
                 warned_inactive = True
@@ -344,6 +341,9 @@ def udp_timer_callback():
                     apply_rankings(update)
                 else:
                     apply_rankings(update, show_rankings=False)
+            elif isinstance(update, EventStartUpdate):
+                # Browser updates belong on the OBS thread, including Present Event.
+                update_event_countdown(update.start_time, debug_enabled=debug)
         except Exception as e:
             obs.script_log(obs.LOG_ERROR, f"Error processing incoming update: {e}")
 
@@ -385,7 +385,7 @@ def udp_timer_callback():
 
 # ---------- OBS script lifecycle ----------
 def script_description():
-    return "<center><h2>Diving Overlays</h2></center><p>Display competition data from DiveRecorder or DiveCalc using the Diving Streaming and Board scene collection.</p>"
+    return "<center><h2>Diving Overlays v1.2.0 (beta)</h2></center><p>Display competition data from DiveRecorder or DiveCalc using the Diving Streaming and Board scene collection.</p>"
 
 
 def set_scoring_source_visibility(props, source):
@@ -451,6 +451,8 @@ def script_update(settings):
     path = obs.obs_data_get_string(settings, "divecalc_path") or "/divecalc"
     port = obs.obs_data_get_int(settings, "divecalc_port")
     allowed_ip = obs.obs_data_get_string(settings, "divecalc_allowed_ip").strip()
+
+    # Load dive descriptions if the scoring source is divecalc
     if source == "divecalc":
         try:
             filename = os.path.join(obs.obs_data_get_string(settings, "rootDir"), "Data", "dive_descriptions.csv")
@@ -459,7 +461,9 @@ def script_update(settings):
         except (OSError, UnicodeError) as error:
             descriptions = {}
             obs.script_log(obs.LOG_WARNING, f"Could not load dive descriptions: {error}")
+
     config = (source, port, path, allowed_ip) if source == "divecalc" else (source, 0, "", "")
+
     if script_loaded:
         if config != transport_config or (source == "divecalc" and receiver is None):
             _restart_transport(config)
@@ -470,11 +474,9 @@ def script_update(settings):
 
 def script_load(settings):
     global script_loaded
-    log_info_if_debug(debug, "------------------------------ script_update() called")
+    log_info_if_debug(debug, "------------------------------ script_load() called")
 
     dvov_script_load(settings)
-
-    log_info_if_debug(debug, "script_load()")
 
     script_loaded = True
     script_update(settings)

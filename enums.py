@@ -14,7 +14,7 @@ class TVBannerGrp(StrEnum):
     GroupName = "TVBanner"
     Flag = "Flag"
     Total = "Total"
-    Position = "Position_Rank"
+    Rank = "Position_Rank"
     Diver = "Diver"
 
 class SynchroLabelsGrp(StrEnum):
@@ -53,6 +53,7 @@ class MainBoardGrp(StrEnum):
     Flag2 = "Flag2"
     Diver1 = "Diver1"
     Diver2 = "Diver2"
+    Rank = "BoardRank"
 
 # most of sources in this group are shared
 class DiveInfoBoardGrp(StrEnum):
@@ -63,6 +64,7 @@ class JudgeAwardsBoardGrp(StrEnum):
     GroupName = "JudgeAwardsBoard"
     JExecPrefix = "JE"
     JSynchroPrefix = "JS"
+    BoardPenalty = "BoardPenalty"
 
 class SynchroLabelsBoardGrp(StrEnum):
     GroupName = "SynchroLabelsBoard"

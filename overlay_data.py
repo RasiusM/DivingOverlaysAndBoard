@@ -6,7 +6,7 @@ else:
     import obspython as obs   # real runtime module
 
 from datatypes import DivePhase, DiveUpdate
-from obs_utils import center_score, set_filter_path, set_source_string, set_source_file, set_source_visibility, log_info_if_debug, set_vlc_playlist, is_source_available
+from obs_utils import compact_award, center_score, set_filter_path, set_source_string, set_source_file, set_source_visibility, log_info_if_debug, set_vlc_playlist, is_source_available
 from enums import (DiveInfoBoardGrp, EventInfo, IndividualAwards, InstantReplaySrc, JudgeAwardsBoardGrp, MainBoardGrp, SynchroLabelsBoardGrp,
                    TVBannerGrp, SynchroAwards, SynchroLabelsGrp, DiveInfoGrp, AwardsCommonGrp)
 
@@ -40,19 +40,21 @@ def clear_data():
 
     set_source_string(TVBannerGrp.Diver, " ")
     set_source_file(TVBannerGrp.Flag, "")
-    set_source_string(TVBannerGrp.Position, " ")
+    set_source_string(TVBannerGrp.Rank, " ")
     set_source_string(TVBannerGrp.Total, " ")
 
     set_source_file(MainBoardGrp.Flag1, "")
     set_source_file(MainBoardGrp.Flag2, "")
     set_source_string(MainBoardGrp.Diver1, " ")
     set_source_string(MainBoardGrp.Diver2, " ")
+    set_source_string(MainBoardGrp.Rank, " ")
+
 
     set_source_visibility(IndividualAwards.JudgesGrp7, False)
     set_source_visibility(IndividualAwards.JudgesGrp5, False)
     set_source_visibility(IndividualAwards.JudgesGrp3, False)
 
-    set_source_visibility(SynchroLabelsGrp.GroupName, False)
+    # set_source_visibility(SynchroLabelsGrp.GroupName, False)
 
     set_source_visibility(SynchroAwards.JudgesGrp11, False)
     set_source_visibility(SynchroAwards.JudgesGrp9, False)
@@ -78,7 +80,7 @@ def clear_data():
 
 def set_synchro_judge_number(count_judges: int):
     # overlay synchro judge awards and labels visibility
-    set_source_visibility(SynchroLabelsGrp.GroupName, (count_judges > 0))
+    # set_source_visibility(SynchroLabelsGrp.GroupName, (count_judges > 0))
     set_source_visibility(SynchroAwards.JudgesGrp11, (count_judges == 11))
     set_source_visibility(SynchroAwards.JudgesGrp9, (count_judges == 9))
     set_source_visibility(SynchroAwards.JudgesGrp7, (count_judges == 7))
@@ -194,6 +196,7 @@ def dvov_act_render_dive(update: DiveUpdate):
     awards_present = update.phase == DivePhase.Awards
 
     set_source_string(AwardsCommonGrp.Penalty, "")
+    set_source_string(JudgeAwardsBoardGrp.BoardPenalty, "")
 
     # always hide synchro labels initially
     set_synchro_judge_number(0)
@@ -208,21 +211,22 @@ def dvov_act_render_dive(update: DiveUpdate):
         # Ensure rank is 3 characters wide for display alignment (text source is buggy with alignment)
         rank = update.rank
         rank = rank.rjust(3)
-        set_source_string(TVBannerGrp.Position, rank)
+        set_source_string(TVBannerGrp.Rank, rank)
+        set_source_string(MainBoardGrp.Rank, rank)
 
         # ----- Judge lists -----
         count_j = update.judge_count
 
         if synchro:
             # Populate Execution Judge sources JE1..JE6, JOE1..JOE6
-            judge_values = update.awards[:6]
+            judge_values = [compact_award(value) for value in update.awards[:6]]
 
             for i, val in enumerate(judge_values, start=1):
                 set_source_string(f"{SynchroAwards.JudgeExecPrefix}{i}", val.rjust(3))
                 set_source_string(f"{JudgeAwardsBoardGrp.JExecPrefix}{i}", center_score(val))
 
             # Populate Synchro Judge sources JS1..JS5, JOS1..JOS5
-            judge_values = update.awards[6:11]
+            judge_values = [compact_award(value) for value in update.awards[6:11]]
 
             for i, val in enumerate(judge_values, start=1):
                 set_source_string(f"{SynchroAwards.JudgeSynchroPrefix}{i}", val.rjust(3))
@@ -230,7 +234,7 @@ def dvov_act_render_dive(update: DiveUpdate):
 
         else:
             # Fill in Execution judge values for overlay and board JE1..JE7, JOE1..JOE7
-            judge_values = update.awards[:7]
+            judge_values = [compact_award(value) for value in update.awards[:7]]
 
             for i, val in enumerate(judge_values, start=1):
                 set_source_string(f"{IndividualAwards.JudgePrefix}{i}", val.rjust(3))
@@ -250,6 +254,7 @@ def dvov_act_render_dive(update: DiveUpdate):
         # show awards sources
         if overlays_enabled:
             set_source_visibility(AwardsCommonGrp.GroupName, True)
+            set_source_visibility(JudgeAwardsBoardGrp.GroupName, True)
 
             if synchro:
                 set_synchro_judge_number(count_j)
@@ -259,21 +264,25 @@ def dvov_act_render_dive(update: DiveUpdate):
         #------------------------------------------------------
         # Pre dive info
         #------------------------------------------------------
+        log_info_if_debug(debug, "Pre-dive info branch")
+
         set_source_visibility(AwardsCommonGrp.GroupName, False)
         set_source_visibility(JudgeAwardsBoardGrp.GroupName, False)
         set_source_visibility(SynchroLabelsBoardGrp.GroupName, False)
 
-        # ----- Start No
-        # Ensure start number is 3 characters wide for display alignment (text source is buggy with alignment)
-        start_no = update.start_number
-        start_no = start_no.rjust(3)
+        # Rank
+        # Ensure Rank text is 3 characters wide for display alignment (text source is buggy with alignment)
+        rank_value = update.rank
+        rank_value = rank_value.rjust(3)
 
-        set_source_string(TVBannerGrp.Position, start_no)
-        log_info_if_debug(debug, "Pre-dive info branch")
-        position = positionText.get(update.position_code, "")
+        set_source_string(TVBannerGrp.Rank, rank_value)
+        set_source_string(MainBoardGrp.Rank, rank_value)
 
-        # set Total points for the next diver
+        # Total points for the next diver
         set_source_string(TVBannerGrp.Total, update.total)
+
+        # Get dive position text
+        position = positionText.get(update.position_code, update.position_code)
 
         # Fill in dive info
         set_source_string(DiveInfoGrp.Number, f"{update.dive_number}{update.position_code}")

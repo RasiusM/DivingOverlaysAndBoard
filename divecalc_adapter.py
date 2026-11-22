@@ -2,8 +2,10 @@
 
 import math
 import re
+from dataclasses import replace
+from datetime import datetime, timezone
 
-from datatypes import DivePhase, DiveUpdate, EventDetails, RankingEntry, RankingsUpdate
+from datatypes import DivePhase, DiveUpdate, EventDetails, EventStartUpdate, EventType, RankingEntry, RankingsUpdate, RankingStatus
 from diverecorder_adapter import PENALTY_TEXT
 
 
@@ -22,20 +24,89 @@ def parse_descriptions(text, warn=lambda message: None):
     return descriptions
 
 
+def adapt_event_start(payload, warn=lambda message: None):
+    """Read DiveCalc's Unix-millisecond start independently of the action."""
+    event = payload.get("event")
+    if not isinstance(event, dict) or event.get("startTime") is None:
+        return None
+    value = event["startTime"]
+    try:
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise ValueError("startTime must be a number")
+        return EventStartUpdate(datetime.fromtimestamp(value / 1000, timezone.utc))
+    except (ValueError, OverflowError, OSError):
+        warn("Invalid DiveCalc event startTime")
+        return None
+
+
 def _text(value):
     return "" if value is None else str(value)
 
 
 def _integer(value):
-    # Start lists may have no rank or start position yet.
-    return int(value) if value not in (None, "") else 0
+    # rank format is undocumented; a non-numeric value must not reject the whole list.
+    match = re.search(r"\d+", _text(value))
+    return int(match.group()) if match else 0
+
+
+def _ranking_status(entry):
+    result = _text(entry.get("result")).strip().upper()
+    for status in (RankingStatus.DNS, RankingStatus.DNF, RankingStatus.DQ):
+        if result == status.value:
+            return status
+    return RankingStatus.Unranked if _integer(entry.get("rank")) == 0 else None
+
+
+def _is_guest(entry, status):
+    # Outside-competition captures omit rank and pending but retain numeric scores.
+    if status != RankingStatus.Unranked or "pending" in entry or entry.get("rank") not in (None, "", 0, "0"):
+        return False
+    try:
+        score = float(entry.get("result"))
+    except (TypeError, ValueError):
+        return False
+    return math.isfinite(score) and score >= 0
+
+
+def _ranking_entry(entry, event_type):
+    status = _ranking_status(entry)
+    return RankingEntry(
+        rank=0 if status is not None else _integer(entry.get("rank")),
+        points=status.value if status not in (None, RankingStatus.Unranked) else _text(entry.get("result")),
+        diver=_display_name(entry, event_type), start_position=_integer(entry.get("position")),
+        club_code=_ranking_club_code(entry, event_type), is_guest=_is_guest(entry, status),
+        status=status,
+    )
+
+
+def _display_name(entry, event_type):
+    # DiveCalc supplies formatted short names, not separate given/family names.
+    if event_type in ("SYNCRO", "TEAM"):
+        short_name = _text(entry.get("shortName"))
+        if short_name.strip():
+            return short_name
+    return _text(entry.get("name"))
+
+
+def _ranking_club_code(entry, event_type):
+    # Pair/team entries can represent divers from different clubs; the entry's
+    # nationality is not a substitute for the individual participant codes.
+    if event_type == "TEAM" or (event_type == "SYNCRO" and not _text(entry.get("team")).strip()):
+        codes = [_text(participant.get("team")).strip() for participant in (entry.get("participants") or [])]
+        codes = [code for code in codes if code]
+        if codes:
+            return "/".join(codes)
+    return _text(entry.get("team") or (entry.get("nationality") if event_type == "TEAM" else ""))
 
 
 def _penalty(dive, suffix, warn):
     """Translate feed penalty fields to existing overlay text without rescoring."""
     try:
-        penalty = float(dive.get("penalty" + suffix, 0) or 0)
-        maximum = float(dive.get("maxAward" + suffix, 10) or 0)
+        penalty = dive.get("penalty" + suffix)
+        maximum = dive.get("maxAward" + suffix)
+        # Empty values mean no penalty and no limit; a real 0 maxAward is a failed dive.
+        penalty = 0.0 if penalty in (None, "") else float(penalty)
+        maximum = 10.0 if maximum in (None, "") else float(maximum)
         if not math.isfinite(penalty) or not math.isfinite(maximum):
             raise ValueError("non-finite penalty")
     except (TypeError, ValueError):
@@ -71,15 +142,15 @@ def _dive_people(event_type, diver, dive):
     synchro = event_type == "SYNCRO"
     first = participants[0] if participants else diver
     second = participants[1] if len(participants) > 1 else {}
-    first_name = _text(first.get("name") or diver.get("name"))
-    second_name = _text(second.get("name"))
+    first_name = _display_name(first, event_type) or _display_name(diver, event_type)
+    second_name = _display_name(second, event_type)
     team1 = _text(first.get("team") or diver.get("team"))
     team2 = _text(second.get("team"))
     if synchro and not second_name:
         raise ValueError("synchro participants missing")
     if event_type == "TEAM":
-        banner = " + ".join(_text(participant.get("name")) for participant in participants)
-        if not all(participant.get("name") for participant in participants):
+        banner = " + ".join(_display_name(participant, event_type) for participant in participants)
+        if not all(_display_name(participant, event_type) for participant in participants):
             raise ValueError("team dive participant name missing")
         team2 = ""
     else:
@@ -130,7 +201,7 @@ def adapt_payload(payload, descriptions=None, warn=lambda message: None):
         event_type = event["type"]
         # Multiple dives per round have not been mapped to the overlay model.
         if int(event.get("divesPerRound", 1)) > 1:
-            warn("Unsupported DiveCalc team event")
+            warn("Unsupported DiveCalc dives per round")
             return []
         if event_type not in ("NORMAL", "SYNCRO", "TEAM"):
             raise ValueError("unknown event type")
@@ -147,6 +218,7 @@ def adapt_payload(payload, descriptions=None, warn=lambda message: None):
             round_count=_text(event.get("rounds")),
             diver_count=_text(len(results)) if results is not None else "",
             finished=finished,
+            event_type={"NORMAL": EventType.Individual, "SYNCRO": EventType.Synchro, "TEAM": EventType.Team}[event_type],
         )
         updates = []
         if action in ("dive", "awards"):
@@ -177,16 +249,32 @@ def adapt_payload(payload, descriptions=None, warn=lambda message: None):
                         awards = (execution + [""] * 6)[:6] + (synchronization + [""] * 5)[:5]
                     else:
                         warn("Unknown DiveCalc synchro judge layout; using award order")
-                # Synchro penalties can differ for A and B; show distinct texts once.
+                # Retain the reason labels but identify whose penalty is applied.
                 penalties = [_penalty(dive, suffix, warn) for suffix in (("A", "B") if synchro else ("",))]
-                penalty = "; ".join(dict.fromkeys(value for value in penalties if value.strip())) or " "
+                if synchro:
+                    if penalties[0] == penalties[1]:
+                        penalty = f"A/B: {penalties[0]}" if penalties[0].strip() else " "
+                    else:
+                        penalty = "; ".join(
+                            f"{suffix}: {value}" for suffix, value in zip(("A", "B"), penalties) if value.strip()
+                        )
+                else:
+                    penalty = penalties[0]
             else:
                 # Upcoming snapshots may contain old awards; do not display them.
                 judge_count = len(judges)
                 penalty = " "
             # Stage 4: build the dive update from the normalized values.
             # The displayed dive position can differ from the event's current round.
-            dive_details = EventDetails(**{**vars(details), "round_number": _text(dive["position"])})
+            dive_details = replace(details, round_number=_text(dive["position"]))
+            status = _ranking_status(diver)
+            total = _text(dive.get("total")) if action == "awards" else _text(diver.get("result"))
+            rank = _text(diver.get("rank"))
+            if status not in (None, RankingStatus.Unranked):
+                total = status.value
+                rank = ""
+            elif status == RankingStatus.Unranked:
+                rank = "G" if _is_guest(diver, status) else ""
             updates.append(DiveUpdate(
                 event=dive_details, phase=DivePhase.Awards if action == "awards" else DivePhase.Upcoming,
                 synchro=synchro, start_number=_text(diver.get("position")), banner_name=banner,
@@ -197,17 +285,12 @@ def adapt_payload(payload, descriptions=None, warn=lambda message: None):
                 height=_text(dive.get("height")), description=descriptions.get(match.group(1), ""),
                 awards=tuple((awards + [""] * 11)[:11]), judge_count=judge_count,
                 penalty_text=penalty, points=_text(dive.get("result")) if action == "awards" else "",
-                total=_text(dive.get("total")) if action == "awards" else _text(diver.get("result")),
-                rank=_text(diver.get("rank")),
+                total=total, rank=rank,
             ))
         if results is not None:
             # Stage 5: append standings after the dive update, when present.
             # A snapshot may carry standings alongside the dive, including an empty list.
-            entries = tuple(RankingEntry(
-                rank=_integer(row.get("rank")), points=_text(row.get("result")),
-                diver=_text(row.get("name")), start_position=_integer(row.get("position")),
-                club_code=_text(row.get("team") or (row.get("nationality") if event_type == "TEAM" else "")), is_guest=False,
-            ) for row in results)
+            entries = tuple(_ranking_entry(row, event_type) for row in results)
             updates.append(RankingsUpdate(event=details, entries=entries))
         return updates
     except (KeyError, TypeError, ValueError, AttributeError, OverflowError):

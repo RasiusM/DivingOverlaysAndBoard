@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
 from typing import Optional, Tuple
 
@@ -100,6 +101,19 @@ class DivePhase(Enum):
     Awards = "awards"
 
 
+class EventType(Enum):
+    Individual = "individual"
+    Synchro = "synchro"
+    Team = "team"
+
+
+class RankingStatus(Enum):
+    Unranked = "unranked"
+    DNS = "DNS"
+    DNF = "DNF"
+    DQ = "DQ"
+
+
 @dataclass(frozen=True)
 class EventDetails:
     """Event context shared by dive displays and paginated lists."""
@@ -112,6 +126,14 @@ class EventDetails:
     round_count: str = ""
     diver_count: str = ""
     finished: Optional[bool] = None
+    event_type: Optional[EventType] = None
+
+
+@dataclass(frozen=True)
+class EventStartUpdate:
+    """Scheduled start received independently of overlay presentation support."""
+
+    start_time: datetime
 
 
 @dataclass(frozen=True)
@@ -144,7 +166,7 @@ class DiveUpdate:
 
 @dataclass(frozen=True)
 class RankingEntry:
-    """A list row with guest status separated from its nonnegative rank."""
+    """A list row with guest/result status separated from its nonnegative rank."""
 
     rank: int
     points: str
@@ -152,6 +174,8 @@ class RankingEntry:
     start_position: int
     club_code: str
     is_guest: bool
+    # None preserves the provider's existing rank ordering.
+    status: Optional[RankingStatus] = None
 
 
 @dataclass(frozen=True)

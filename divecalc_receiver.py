@@ -5,7 +5,7 @@ import socket
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-from divecalc_adapter import adapt_payload
+from divecalc_adapter import adapt_event_start, adapt_payload
 
 MAX_BODY = 2 * 1024 * 1024
 READ_TIMEOUT = 5
@@ -121,7 +121,9 @@ class Handler(BaseHTTPRequestHandler):
             event = payload.get("event")
             event_id = str(event.get("pk", ""))[:100] if isinstance(event, dict) else ""
             def warn(message):
-                if message in ("Unsupported DiveCalc team event", "Unsupported DiveCalc team judge layout"):
+                if not self.server.active:
+                    return
+                if message in ("Unsupported DiveCalc dives per round", "Unsupported DiveCalc team judge layout"):
                     warning_key = (event_id, message)
                     if warning_key in self.server.warned_team_events:
                         return
@@ -130,18 +132,21 @@ class Handler(BaseHTTPRequestHandler):
                     self.server.warned_team_events.add(warning_key)
                 self.server.warn(message)
             updates = adapt_payload(payload, self.server.descriptions, warn)
+            event_start = adapt_event_start(payload, warn)
+            if event_start is not None:
+                updates.append(event_start)
             self.server.mailbox.publish_many(updates, self.server.token)
-        if self.server.debug:
-            action = payload.get("action")
-            if action not in ("dive", "awards", "startlist", "results", "event", "judges"):
-                action = "unknown"
-            self.server.log(f"DiveCalc request: action={action}, bytes={len(body)}")
+            if self.server.debug and self.server.active:
+                action = payload.get("action")
+                if action not in ("dive", "awards", "startlist", "results", "event", "judges"):
+                    action = "unknown"
+                ignored = (" (countdown only)" if event_start is not None else
+                           " (ignored: presentation not supported)") if action in ("event", "judges") else ""
+                self.server.log(f"DiveCalc request: action={action}, bytes={len(body)}{ignored}")
         self._reply(200)
 
     def _other_method(self):
         self._reply(self._check() or 405)
-
-    do_GET = do_PUT = do_DELETE = do_PATCH = do_HEAD = do_OPTIONS = _other_method
 
 
 class DiveCalcReceiver:
@@ -158,6 +163,8 @@ class DiveCalcReceiver:
         self.server.log = log
         self.server.debug = debug
         self.server.publish_lock = threading.Lock()
+        # Cleared under publish_lock by stop() so handlers cannot log into an unloaded script.
+        self.server.active = True
         self.server.warned_team_events = set()
         self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.1}, daemon=True)
         self.thread.start()
@@ -167,6 +174,8 @@ class DiveCalcReceiver:
         return self.server.server_address[1]
 
     def stop(self):
+        with self.server.publish_lock:
+            self.server.active = False
         self.server.mailbox.new_token()
         self.server.shutdown()
         self.server.server_close()

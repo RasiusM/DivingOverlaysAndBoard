@@ -1,0 +1,62 @@
+# Dive number,description. Edit descriptions to match your preferred wording.
+101,Forward Dive
+102,Forward Somersault
+103,Forward 1 1/2 Somersaults
+104,Forward 2 Somersaults
+105,Forward 2 1/2 Somersaults
+106,Forward 3 Somersaults
+107,Forward 3 1/2 Somersaults
+108,Forward 4 Somersaults
+109,Forward 4 1/2 Somersaults
+201,Back Dive
+202,Back Somersault
+203,Back 1 1/2 Somersaults
+204,Back 2 Somersaults
+205,Back 2 1/2 Somersaults
+207,Back 3 1/2 Somersaults
+301,Reverse Dive
+302,Reverse Somersault
+303,Reverse 1 1/2 Somersaults
+304,Reverse 2 Somersaults
+305,Reverse 2 1/2 Somersaults
+307,Reverse 3 1/2 Somersaults
+401,Inward Dive
+402,Inward Somersault
+403,Inward 1 1/2 Somersaults
+404,Inward 2 Somersaults
+405,Inward 2 1/2 Somersaults
+407,Inward 3 1/2 Somersaults
+5121,Forward 1 Somersault 1/2 Twist
+5122,Forward 1 Somersault 1 Twist
+5123,Forward 1 Somersault 1 1/2 Twists
+5132,Forward 1 1/2 Somersaults 1 Twist
+5133,Forward 1 1/2 Somersaults 1 1/2 Twists
+5134,Forward 1 1/2 Somersaults 2 Twists
+5152,Forward 2 1/2 Somersaults 1 Twist
+5154,Forward 2 1/2 Somersaults 2 Twists
+5211,Back 1/2 Twist
+5212,Back 1 Twist
+5213,Back 1 1/2 Twists
+5221,Back 1 Somersault 1/2 Twist
+5222,Back 1 Somersault 1 Twist
+5231,Back 1 1/2 Somersaults 1/2 Twist
+5233,Back 1 1/2 Somersaults 1 1/2 Twists
+5235,Back 1 1/2 Somersaults 2 1/2 Twists
+5251,Back 2 1/2 Somersaults 1/2 Twist
+5252,Back 2 1/2 Somersaults 1 Twist
+5253,Back 2 1/2 Somersaults 1 1/2 Twists
+5311,Reverse 1/2 Twist
+5312,Reverse 1 Twist
+5313,Reverse 1 1/2 Twists
+5321,Reverse 1 Somersault 1/2 Twist
+5322,Reverse 1 Somersault 1 Twist
+5323,Reverse 1 Somersault 1 1/2 Twists
+5323,Reverse 1 Somersault 1 1/2 Twists
+5331,Reverse 1 1/2 Somersaults 1/2 Twist
+5333,Reverse 1 1/2 Somersaults 1 1/2 Twists
+5353,Reverse 2 1/2 Somersaults 1 1/2 Twists
+612,Armstand Forward Somersault
+614,Armstand Forward 2 Somersaults
+621,Armstand Back Dive
+624,Armstand Back 2 Somersaults
+6243,Armstand Back 2 Somersaults 1 1/2 Twists

@@ -3,6 +3,8 @@
 Developer notes for the OBS Python scripts. For installation and operation, see
 [README.md](README.md).
 
+AI generated.
+
 ## Modules
 
 | Module | Responsibility |
@@ -117,21 +119,89 @@ the firewall and optional source-IP restriction are essential deployment control
 
 The adapter treats `dive` and `awards` as display phases, uses the displayed dive's
 position for its round, and takes scores and totals directly from the feed. Rankings
-are emitted from snapshots with results, with no DiveRecorder guest convention.
+are emitted from supported snapshots with results. DiveCalc guest/status
+classification is separate from DiveRecorder's signed-rank convention.
+For `SYNCRO` and `TEAM`, DiveCalc's `shortName` is used when available: active
+participants for dive displays and the entry's short name for list rows. Individual
+names retain their existing formatting. Synchro list rows use the entry's team
+when present, otherwise participant club codes joined in participant order.
 `event.finished` explicitly controls completion; DiveRecorder REFEREE sets it false,
 and its ENDOFEVENT message sets completion separately. The editable descriptions
 are loaded from `Data/dive_descriptions.csv` under the configured root.
 
+Every DiveCalc action can also publish an independent `EventStartUpdate` from
+`event.startTime` (Unix milliseconds), including Present Event and otherwise
+unsupported overlay presentations. On the OBS timer, starts later today in the
+computer's local timezone update the `EventStartCountdown` browser source.
+The helper replaces all `date` query parameters with one ISO datetime, preserving
+other URL options and the fragment. An equivalent existing target is not reloaded.
+Missing starts are ignored; invalid supplied starts are logged without rejecting
+otherwise usable overlay data.
+
+### Rankings And Result Status
+
+`RankingEntry.status` separates explicit unranked/result statuses from rank and
+guest classification. Its default `None` retains the provider's existing rank
+ordering, including DiveRecorder signed-rank normalization and zero-rank guests.
+
+- Captured Aborted and Disqualified entries remain in results with `result` equal
+  to `DNF` and `DQ`, respectively, and no rank. `DNS` is also recognized, but has
+  not been verified in a live capture.
+- These entries normalize to rank zero, the corresponding `RankingStatus`, and
+  `is_guest=False`. Their rank column is blank and their score contains the status.
+- Other zero/missing ranks receive `RankingStatus.Unranked`. A finite nonnegative
+  numeric result with no `pending` key and missing/zero rank is classified as
+  Guest, matching the captured outside-competition pattern. Blank/unknown results,
+  malformed ranks, and any present `pending` key do not establish Guest status.
+- Ranked entries sort by rank. Explicit unranked/guest entries follow in start
+  order, then DNS/DNF/DQ entries in start order. Start-list mode ignores these
+  groups and sorts all included entries by start position.
+- Only `is_guest` controls guest filtering and gray coloring; terminal result
+  statuses are never treated as guests.
+
+The outside-competition mapping is a feed-pattern inference; a future capture
+with the same pattern but different semantics will require revisiting it. Do not
+infer Guest from missing rank alone.
+
+### Awards And Deferred Presentation
+
+The adapter displays `actualAwards`, not `effectiveAwards`, and never rescores
+deductions/caps. Synchro awards are ordered into execution slots followed by
+synchronization slots using the selected panel's judge types/positions. Captured
+nine-judge panels (two A, two B, five SYNCRO) map without warnings; the on-screen
+layout and eleven-judge panels still need manual verification.
+
+Penalty reason labels remain shared with DiveRecorder by choice. Synchro text
+prefixes a penalty with `A:`, `B:`, or `A/B:` when both texts match. This identifies
+the affected diver(s), but the deduction/cap fields alone do not prove the reason.
+
+For DNS/DNF/DQ active entries, both upcoming and awards snapshots put the status
+in the running-total field and clear the awards rank. Numeric dive points and
+original awards remain available. A captured final dive after DNF retained DNF
+standings despite supplying numeric dive points/total. Next Diver can wrap to the
+first dive after completion; completion still follows `event.finished`, not the
+action, status, or dive position.
+
+`event` and `judges` actions intentionally produce no updates. Debug receiver
+logging explicitly identifies them as ignored presentations; dedicated event/judge
+presentation is deferred. `needAwards`, `effectiveAwards`, and per-participant
+`dives`/`heights` are not displayed; `pending` is used only for guest classification.
+
 For captured `TEAM` events with one dive per round, the adapter uses the active
 `diver.dive.participants` for the banner and team standings from `event.results`.
+Team list codes are joined from the entry's participants in order; when none are
+available, the entry's team and then nationality are used as fallbacks. The fixed
+width of the scene's club field may clip longer combined codes and needs OBS testing.
 The captured team feed had five untyped judges for one- and two-person dives. The
 adapter uses the individual award slots; this layout is not yet verified in OBS.
-Typed team judges, unsupported judge
-counts and multiple dives per round are rejected. Shared display models are
-unchanged, so team events retain the individual-event status and diver label.
+Typed team judges, unsupported judge counts and multiple dives per round are
+rejected. Team events display a team event status but retain the diver count label.
 
-Synchro judge layout, penalties, pre-event values, DNS/DNF/DQ and two-machine LAN
-behavior need live capture and verification. The receiver
+Pre-event rank/guest edge cases, DNS, additional synchro layouts, Aborted before
+the final round, and two-machine LAN behavior still need live verification. DNF,
+DQ, outside competition, A-only deductions, 4.5 caps and zero caps have captured
+feed evidence and focused adapter/rendering tests, not full live OBS certification.
+The receiver
 uses the standard threaded HTTP server, so simultaneous slow clients consume worker
 threads until their read timeout; deploy on a trusted/restricted network.
 
@@ -146,3 +216,5 @@ python -m unittest discover -s tests -p "test_*.py" -v
 Loopback tests cover the receiver but not real OBS timers, source lookups, hotkeys,
 live DiveRecorder/DiveCalc connections or LAN deployment. Before a competition,
 verify the manual matrix in the integration brief, including overlay and scoreboard.
+Additional DiveRecorder cases to test include team events and events where divers
+carry points over from a previous event.

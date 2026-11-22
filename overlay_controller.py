@@ -1,13 +1,13 @@
 """Apply provider-neutral updates on the OBS timer thread."""
 
-from datatypes import DiveUpdate, RankingsUpdate
+from datatypes import DiveUpdate, EventType, RankingsUpdate
 from overlay_data import dvov_act_render_dive, dvov_act_set_event_complete
 from rankings import dvov_rank_set_divers
 from state_controls import (
     completed_slots, event_names,
     dvov_state_is_selected_event, dvov_state_on_dive,
     dvov_state_set_event_complete, dvov_state_store_completion,
-    dvov_state_store_dive, dvov_state_store_event,
+    dvov_state_store_dive, dvov_state_store_event, set_event_type,
 )
 
 
@@ -40,6 +40,9 @@ def apply_rankings(update: RankingsUpdate, show_rankings=True):
     if update.event.finished is not None:
         dvov_state_store_completion(update.event.slot, update.event.finished)
     if dvov_state_is_selected_event(update.event.slot):
+        if update.event.event_type is not None:
+            set_event_type(update.event.event_type == EventType.Synchro,
+                           update.event.event_type == EventType.Team)
         if show_rankings:
             dvov_rank_set_divers(update)
         is_complete = update.event.slot in completed_slots

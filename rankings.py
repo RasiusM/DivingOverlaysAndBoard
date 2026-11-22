@@ -7,7 +7,7 @@ else:
     import obspython as obs   # real runtime module
 
 from typing import List, Optional
-from datatypes import EventDetails, RankingEntry, RankingsUpdate
+from datatypes import EventDetails, RankingEntry, RankingsUpdate, RankingStatus
 from enums import RankingsSrc, EventMode
 from obs_utils import get_source_string, set_source_string, set_source_visibility, log_info_if_debug, set_color_source_color, set_color_source_alpha
 
@@ -83,11 +83,22 @@ def dvov_rank_set_event_ab(event_is_a: bool):
     reset_pagination()
 
 
+def _ranking_order(entry: RankingEntry):
+    # Sort by (group, position): ranked/legacy entries by absolute rank first,
+    # explicit unranked entries next, then DNS/DNF/DQ; the latter groups use
+    # start position. Status None preserves DiveRecorder's legacy rank ordering.
+    if entry.status == RankingStatus.Unranked:
+        return 1, entry.start_position
+    if entry.status is not None:
+        return 2, entry.start_position
+    return 0, abs(entry.rank)
+
+
 def sort_list():
     global ranking_rec_working_copy
     # Sort according to mode (when in Event, we might want to show intermediate rankings, therefore sort by rank)
     if EventMode.Rankings == mode or EventMode.Event == mode:
-        ranking_rec_working_copy.sort(key=lambda r: abs(r.rank))  # sort by position number for startlist
+        ranking_rec_working_copy.sort(key=_ranking_order)
         set_source_string(RankingsSrc.HeaderListType, " ")
         set_color_source_alpha(RankingsSrc.ScoreBackground, 255)  # show score gradient for rankings/event mode
     else:
@@ -132,13 +143,14 @@ def show_rank_line (diver: RankingEntry, disp_no: int):
     is_guest = False
     if EventMode.Rankings == mode or EventMode.Event == mode:
         rank_value = int(diver.rank)
-        if diver.is_guest and rank_value > 0 and show_guests:
-            rank = str(rank_value)
-            is_guest = True
-        elif rank_value > 0:
+        # Hidden guests are filtered before rendering; this flag controls gray text.
+        # Guests retain a positive rank when supplied, otherwise show G. Non-guests
+        # without a rank (including DNS/DNF/DQ) stay blank, never labelled G.
+        is_guest = diver.is_guest and show_guests
+        if rank_value > 0:
             rank = str(rank_value)
         else:
-            rank = "G"
+            rank = "G" if diver.is_guest else ""
         score = diver.points
 
         # Show points background and points for rankings/event mode
@@ -151,7 +163,6 @@ def show_rank_line (diver: RankingEntry, disp_no: int):
         # Hide points background and points for start list mode
         set_source_visibility(RankingsSrc.ScoreBackground, False)
         set_source_visibility(f"{RankingsSrc.ScorePrefix}{disp_no}", False)
-
 
     diver_name = diver.diver
     club_code = diver.club_code
@@ -220,6 +231,7 @@ def show_page(ranking_rec: List[RankingEntry], rankings_event_rec: EventDetails,
             log_info_if_debug(debug, f"Clearing line {i+1} for page {page_index+1} (line not used on this page)")
             set_source_visibility(f"{RankingsSrc.LinePrefix}{i + 1}", False)
             set_source_visibility(f"{RankingsSrc.BoardLinePrefix}{i + 1}", False)
+
 
 # ---------------------------
 # Pagination control

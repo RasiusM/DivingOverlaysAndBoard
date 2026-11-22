@@ -2,8 +2,10 @@ import http.client
 import json
 import socket
 import unittest
+from datetime import datetime, timezone
+from unittest.mock import patch
 
-from datatypes import DivePhase
+from datatypes import DivePhase, EventType, RankingStatus
 from divecalc_adapter import adapt_payload, parse_descriptions
 from divecalc_receiver import DiveCalcReceiver, MAX_BODY
 from update_mailbox import UpdateMailbox
@@ -25,6 +27,20 @@ def snapshot(action="awards"):
 
 
 class DiveCalcAdapterTests(unittest.TestCase):
+    def test_event_type_is_preserved_in_dive_and_list_updates(self):
+        for feed_type, expected in (("NORMAL", EventType.Individual),
+                                    ("SYNCRO", EventType.Synchro),
+                                    ("TEAM", EventType.Team)):
+            with self.subTest(feed_type=feed_type):
+                payload = snapshot("startlist")
+                payload["event"]["type"] = feed_type
+                self.assertEqual(adapt_payload(payload)[0].event.event_type, expected)
+        payload = snapshot()
+        payload["event"]["type"] = "TEAM"
+        payload["diver"]["dive"]["participants"] = [{"name": "First", "team": "AAA"}]
+        dive, ranking = adapt_payload(payload)
+        self.assertEqual((dive.event.event_type, ranking.event.event_type), (EventType.Team, EventType.Team))
+
     def test_awards_and_rankings(self):
         dive, ranking = adapt_payload(snapshot(), {"101": "Forward Dive"})
         self.assertEqual((dive.phase, dive.event.round_number, dive.description), (DivePhase.Awards, "1", "Forward Dive"))
@@ -45,13 +61,117 @@ class DiveCalcAdapterTests(unittest.TestCase):
     def test_penalties_correction_and_results(self):
         payload = snapshot()
         dive = payload["diver"]["dive"]
-        for penalty, maximum, expected in [("2", "10", "Restarted (-2 points)"), ("0", "0", "Failed Dive"), ("0", "4", "Max 4 points"), ("1", "10", "Penalty (-1 points)")]:
+        for penalty, maximum, expected in [("2", "10", "Restarted (-2 points)"), ("0", "0", "Failed Dive"), (0, 0, "Failed Dive"), (None, None, " "), ("", "", " "), ("0", "4", "Max 4 points"), ("1", "10", "Penalty (-1 points)")]:
             dive.update(penalty=penalty, maxAward=maximum, result="87.75")
             update = adapt_payload(payload)[0]
             self.assertEqual((update.penalty_text, update.points), (expected, "87.75"))
         payload["action"] = "results"
         payload["event"]["results"][0].update(rank=None, result="DNS")
         self.assertEqual((adapt_payload(payload)[0].entries[0].rank, adapt_payload(payload)[0].entries[0].points), (0, "DNS"))
+        for status in ("DNS", "DNF", "DQ"):
+            payload["event"]["results"][0].update(rank="", result=status)
+            entry = adapt_payload(payload)[0].entries[0]
+            self.assertEqual((entry.rank, entry.points), (0, status))
+            self.assertEqual(entry.status, RankingStatus(status))
+            self.assertFalse(entry.is_guest)
+
+    def test_outside_competition_classification_does_not_include_pending_or_unknown_results(self):
+        cases = [
+            ({}, "37.80", True),
+            ({"rank": 0}, "0.00", True),
+            ({"rank": "0"}, "37.80", True),
+            ({"pending": True}, "37.80", False),
+            ({"pending": False}, "37.80", False),
+            ({"pending": None}, "37.80", False),
+            ({"rank": 1}, "37.80", False),
+            ({"rank": "unknown"}, "37.80", False),
+            ({}, "", False),
+            ({}, None, False),
+            ({}, "DNF", False),
+            ({}, "DQ", False),
+        ]
+        for action in ("awards", "startlist", "results"):
+            for fields, result, expected in cases:
+                with self.subTest(action=action, fields=fields, result=result):
+                    payload = snapshot(action)
+                    row = payload["event"]["results"][0]
+                    row.pop("rank")
+                    row.update(fields, result=result)
+                    entry = adapt_payload(payload)[-1].entries[0]
+                    self.assertEqual(entry.is_guest, expected)
+                    if expected:
+                        self.assertEqual(entry.status, RankingStatus.Unranked)
+
+    def test_status_banner_keeps_dive_points_and_original_awards(self):
+        for action in ("awards", "dive"):
+            for status in ("DNF", "DQ"):
+                with self.subTest(action=action, status=status):
+                    payload = snapshot(action)
+                    payload["diver"].update(rank=0, result=status)
+                    payload["diver"]["dive"].update(result="26.40", total="118.80",
+                                                   effectiveAwards=["0.0"] * 5)
+                    payload["event"]["results"][0].update(rank=None, result=status)
+                    dive, ranking = adapt_payload(payload)
+                    self.assertEqual((dive.total, dive.rank), (status, ""))
+                    self.assertEqual(dive.event.finished, False)
+                    self.assertEqual((ranking.entries[0].status, ranking.entries[0].is_guest),
+                                     (RankingStatus(status), False))
+                    self.assertEqual(dive.points, "26.40" if action == "awards" else "")
+                    self.assertEqual(dive.awards[:5], tuple(payload["diver"]["dive"]["actualAwards"])
+                                     if action == "awards" else ("",) * 5)
+
+    def test_synchro_penalties_identify_affected_divers(self):
+        payload = snapshot()
+        payload["event"]["type"] = "SYNCRO"
+        payload["diver"]["participants"].append({"name": "Second", "team": "BBB"})
+        types = ["A", "A", "B", "B"] + ["SYNCRO"] * 5
+        payload["event"]["judges"]["panels"][0]["judges"] = [
+            {"type": judge_type, "position": index} for index, judge_type in enumerate(types)
+        ]
+        dive = payload["diver"]["dive"]
+        dive.update(actualAwards=["7.0"] * 9, effectiveAwards=["4.5"] * 4 + ["7.0"] * 5)
+        cases = [
+            ("2.0", "0.0", "10", "10", "A: Restarted (-2 points)"),
+            ("0.0", "2.0", "10", "10", "B: Restarted (-2 points)"),
+            ("0.0", "0.0", "4.5", "4.5", "A/B: Arm position (Max 4\u00bd points)"),
+            ("2.0", "0.0", "10", "4.5", "A: Restarted (-2 points); B: Arm position (Max 4\u00bd points)"),
+            ("0.0", "0.0", "0.0", "10", "A: Failed Dive"),
+            ("0.0", "0.0", "10", "10", " "),
+        ]
+        for penalty_a, penalty_b, maximum_a, maximum_b, expected in cases:
+            with self.subTest(expected=expected):
+                dive.update(penaltyA=penalty_a, penaltyB=penalty_b,
+                            maxAwardA=maximum_a, maxAwardB=maximum_b)
+                warnings = []
+                update = adapt_payload(payload, warn=warnings.append)[0]
+                self.assertEqual(update.penalty_text, expected)
+                self.assertEqual(update.awards, ("7.0",) * 4 + ("",) * 2 + ("7.0",) * 5)
+                self.assertEqual(warnings, [])
+
+    def test_failed_dive_preserves_original_marks_and_supplied_zero_score(self):
+        payload = snapshot()
+        payload["diver"]["dive"].update(maxAward="0.0", result="0.00", total="29.40",
+                                       effectiveAwards=["0.0"] * 5)
+        dive = adapt_payload(payload)[0]
+        self.assertEqual((dive.penalty_text, dive.points, dive.total), ("Failed Dive", "0.00", "29.40"))
+        self.assertEqual(dive.awards[:5], tuple(payload["diver"]["dive"]["actualAwards"]))
+
+    def test_synchro_ranking_club_falls_back_to_participants(self):
+        payload = snapshot("results")
+        payload["event"]["type"] = "SYNCRO"
+        row = payload["event"]["results"][0]
+        row.update(nationality="LTU", participants=[{"team": "AAA"}, {"team": "BBB"}])
+        for team, expected in ((None, "AAA/BBB"), ("", "AAA/BBB"), ("PAIR", "PAIR")):
+            with self.subTest(team=team):
+                row["team"] = team
+                self.assertEqual(adapt_payload(payload)[0].entries[0].club_code, expected)
+
+    def test_presentation_actions_do_not_produce_dive_or_ranking_updates(self):
+        for action in ("event", "judges"):
+            with self.subTest(action=action):
+                warnings = []
+                self.assertEqual(adapt_payload(snapshot(action), warn=warnings.append), [])
+                self.assertEqual(warnings, [])
 
     def test_invalid_and_multiple_dives_per_round_are_ignored(self):
         warnings = []
@@ -76,6 +196,30 @@ class DiveCalcAdapterTests(unittest.TestCase):
         self.assertEqual((dive.event.round_number, dive.total), ("1", "21.00"))
         self.assertEqual((ranking.entries[0].diver, ranking.entries[0].club_code), ("Test Team", "LTU"))
 
+    def test_team_list_uses_participant_clubs(self):
+        for action in ("startlist", "results"):
+            for clubs, expected in ((["AAA", "BBB"], "AAA/BBB"),
+                                    (["AAA", "AAA"], "AAA/AAA"),
+                                    (["AAA", ""], "AAA"),
+                                    (["AAA", "BBB", "CCC", "DDD"], "AAA/BBB/CCC/DDD"),
+                                    (["", ""], "LTU")):
+                with self.subTest(action=action, clubs=clubs):
+                    payload = snapshot(action)
+                    payload["event"]["type"] = "TEAM"
+                    row = payload["event"]["results"][0]
+                    row.update(team=None, nationality="LTU",
+                               participants=[{"team": club} for club in clubs])
+                    self.assertEqual(adapt_payload(payload)[0].entries[0].club_code, expected)
+
+    def test_team_list_prefers_participant_clubs_then_entry_team(self):
+        payload = snapshot("results")
+        payload["event"]["type"] = "TEAM"
+        row = payload["event"]["results"][0]
+        row.update(team="TEAM", nationality="LTU", participants=[{"team": "AAA"}, {"team": "BBB"}])
+        self.assertEqual(adapt_payload(payload)[0].entries[0].club_code, "AAA/BBB")
+        row["participants"] = []
+        self.assertEqual(adapt_payload(payload)[0].entries[0].club_code, "TEAM")
+
     def test_team_pair_preserves_ordinary_award_slots(self):
         payload = snapshot()
         payload["event"].update(type="TEAM", finished=True)
@@ -88,6 +232,35 @@ class DiveCalcAdapterTests(unittest.TestCase):
         self.assertTrue(dive.event.finished)
         self.assertTrue(ranking.event.finished)
         self.assertEqual(warnings, [])
+
+    def test_short_names_for_team_and_synchro(self):
+        for event_type in ("TEAM", "SYNCRO"):
+            with self.subTest(event_type=event_type):
+                payload = snapshot()
+                payload["event"]["type"] = event_type
+                payload["event"]["results"][0].update(name="Full pair", shortName="A. First/B. Second")
+                participants = [{"name": "Alice First", "shortName": "A. First", "team": "AAA"},
+                                {"name": "Bob Second", "shortName": "B. Second", "team": "BBB"}]
+                payload["diver"]["participants"] = participants
+                payload["diver"]["dive"]["participants"] = participants
+                dive, ranking = adapt_payload(payload)
+                self.assertIn("A. First + B. Second", dive.banner_name)
+                self.assertEqual(dive.banner_name, "A. First + B. Second AAA/BBB" if event_type == "SYNCRO" else "A. First + B. Second")
+                self.assertEqual((dive.team1_code, dive.team2_code), ("AAA", "BBB" if event_type == "SYNCRO" else ""))
+                self.assertEqual(ranking.entries[0].diver, "A. First/B. Second")
+                del participants[1]["shortName"]
+                payload["event"]["results"][0]["shortName"] = "  "
+                dive, ranking = adapt_payload(payload)
+                self.assertIn("A. First + Bob Second", dive.banner_name)
+                self.assertEqual(ranking.entries[0].diver, "Full pair")
+
+    def test_individual_keeps_full_name(self):
+        payload = snapshot()
+        payload["diver"]["participants"][0]["shortName"] = "A."
+        payload["event"]["results"][0]["shortName"] = "A."
+        dive, ranking = adapt_payload(payload)
+        self.assertIn("\u0104sta", dive.banner_name)
+        self.assertEqual(ranking.entries[0].diver, "\u0104sta")
 
     def test_team_upcoming_correction_and_startlist(self):
         payload = snapshot("dive")
@@ -155,7 +328,7 @@ class DiveCalcAdapterTests(unittest.TestCase):
         self.assertEqual(result, {"101": "Forward, dive", "203": "\u0104"})
         self.assertEqual(len(warnings), 1)
 
-    def test_provisional_synchro_slots(self):
+    def test_synchro_slots(self):
         for execution_count, synchro_count in ((4, 5), (6, 5)):
             payload = snapshot()
             payload["event"]["type"] = "SYNCRO"
@@ -218,6 +391,49 @@ class ReceiverTests(unittest.TestCase):
         self.assertEqual(dropped, 0)
         self.assertEqual([updates[0].phase, updates[2].phase], [DivePhase.Awards, DivePhase.Upcoming])
 
+    def test_event_start_is_published_from_any_action_independently_of_overlay_support(self):
+        expected = datetime(2026, 11, 16, 20, 20, tzinfo=timezone.utc)
+        for action in ("event", "judges", "dive", "awards", "startlist", "results", "other"):
+            with self.subTest(action=action):
+                payload = {"action": action, "event": {"startTime": expected.timestamp() * 1000}}
+                self.assertEqual(self.request(body=json.dumps(payload).encode()), (200, b""))
+                updates, dropped = self.mailbox.drain()
+                self.assertEqual(dropped, 0)
+                self.assertEqual(len(updates), 1)
+                self.assertEqual(updates[0].start_time, expected)
+
+    def test_invalid_start_time_warns_without_losing_overlay_updates(self):
+        warnings = []
+        self.receiver.server.warn = warnings.append
+        for value in ("invalid", True, float("inf"), 10 ** 30):
+            with self.subTest(value=value):
+                payload = snapshot()
+                payload["event"]["startTime"] = value
+                self.assertEqual(self.request(body=json.dumps(payload).encode()), (200, b""))
+                self.assertEqual(len(self.mailbox.drain()[0]), 2)
+        self.assertEqual(warnings.count("Invalid DiveCalc event startTime"), 4)
+
+    def test_ignored_presentation_actions_are_diagnosed_only_in_debug_mode(self):
+        logs = []
+        warnings = []
+        receiver = self.receiver
+        assert receiver is not None
+        with patch.object(receiver.server, "log", logs.append), patch.object(receiver.server, "warn", warnings.append):
+            for debug in (False, True):
+                with patch.object(receiver.server, "debug", debug):
+                    logs.clear()
+                    for action in ("judges", "event"):
+                        self.assertEqual(self.request(body=json.dumps(snapshot(action)).encode()), (200, b""))
+                    self.assertEqual(self.mailbox.drain(), ([], 0))
+                    self.assertEqual(warnings, [])
+                    if debug:
+                        self.assertEqual(len(logs), 2)
+                        self.assertIn("action=judges", logs[0])
+                        self.assertIn("action=event", logs[1])
+                        self.assertTrue(all("ignored: presentation not supported" in message for message in logs))
+                    else:
+                        self.assertEqual(logs, [])
+
     def test_validation(self):
         self.assertEqual(self.request("GET")[0], 405)
         self.assertEqual(self.request("TRACE")[0], 405)
@@ -249,7 +465,7 @@ class ReceiverTests(unittest.TestCase):
         payload["event"]["divesPerRound"] = 2
         for _ in range(2):
             self.assertEqual(self.request(body=json.dumps(payload).encode())[0], 200)
-        self.assertEqual(warnings, ["Unsupported DiveCalc team event"])
+        self.assertEqual(warnings, ["Unsupported DiveCalc dives per round"])
 
     def test_team_layout_warning_is_once_per_event(self):
         warnings = []

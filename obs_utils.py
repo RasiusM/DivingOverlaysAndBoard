@@ -1,4 +1,7 @@
 import typing
+import re
+from datetime import datetime
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 
 if typing.TYPE_CHECKING:
@@ -69,6 +72,53 @@ def log_info_if_debug(debug_enabled, message):
         obs.script_log(obs.LOG_INFO, message)
 
 # ---------- Helpers for OBS source updates ----------
+def update_event_countdown(start_time: datetime, debug_enabled: bool = False):
+    """Update the browser target only for a changed start later today (local)."""
+    # Compare local calendar dates, not the feed's UTC date near midnight.
+    start_time = start_time.astimezone()
+    now = datetime.now().astimezone()
+    if start_time.date() != now.date() or start_time <= now:
+        log_info_if_debug(debug_enabled, "EventStartCountdown unchanged: start is not today or already past ")
+        return
+
+    source_name = "EventStartCountdown"
+    source = obs.obs_get_source_by_name(source_name)
+    if source is None:
+        obs.script_log(obs.LOG_WARNING, f"Source not found: {source_name}")
+        return
+    try:
+        settings = obs.obs_source_get_settings(source)
+        try:
+            url = obs.obs_data_get_string(settings, "url")
+            parts = urlsplit(url)
+            if not parts.scheme or not parts.netloc:
+                obs.script_log(obs.LOG_WARNING, f"Invalid countdown URL: {source_name}")
+                return
+            parameters = parse_qsl(parts.query, keep_blank_values=True)
+            dates = [value for key, value in parameters if key == "date"]
+            if len(dates) == 1:
+                try:
+                    # Different offsets or URL encodings can represent the same instant.
+                    existing = datetime.fromisoformat(dates[0]).astimezone()
+                except ValueError:
+                    existing = None
+                if existing == start_time:
+                    log_info_if_debug(debug_enabled,
+                                      f"EventStartCountdown unchanged: target already matches "
+                                      f"(start={start_time.isoformat()}).")
+                    return
+            # Remove duplicate targets too, without discarding display options.
+            parameters = [(key, value) for key, value in parameters if key != "date"]
+            parameters.append(("date", start_time.isoformat()))
+            url = urlunsplit(parts._replace(query=urlencode(parameters)))
+            obs.obs_data_set_string(settings, "url", url)
+            obs.obs_source_update(source, settings)
+        finally:
+            obs.obs_data_release(settings)
+    finally:
+        obs.obs_source_release(source)
+
+
 def get_source_string(source_name):
     src = obs.obs_get_source_by_name(source_name)
     if src is not None:
@@ -206,6 +256,21 @@ def is_source_available(source_name) -> bool:
         obs.obs_source_release(src)
         return True
     return False
+
+def compact_award(score_str: str) -> str:
+    """Render whole and half marks compactly, preserving other score text."""
+    value = score_str.strip()
+    if value.endswith("½"):
+        return value
+    separator = "." if "." in value else ","
+    whole, found_separator, fraction = value.partition(separator)
+    if found_separator and whole.isdigit():
+        if fraction and not fraction.strip("0"):
+            return whole
+        if fraction.rstrip("0") == "5":
+            return f"{whole}½"
+    return score_str
+
 
 def center_score(score_str: str, width: int = 3) -> str:
     """

@@ -39,7 +39,7 @@ from enums import (
 from overlay_data import dvov_act_render_dive, dvov_act_set_event_ab, dvov_act_set_display_enabled, dvov_act_set_event_complete
 from rankings import dvov_rank_set_event_ab
 
-from datatypes import DivePhase, DiveUpdate
+from datatypes import DivePhase, DiveUpdate, EventType
 
 debug = False
 
@@ -110,20 +110,19 @@ def dvov_state_on_dive(update: DiveUpdate):
     if synchro and update.event.slot == "b":
         obs.script_log(obs.LOG_WARNING, "Received message with Synchro Event = True but it's B event. Is this supported?")
 
-    # Event type (Synchro / Individual)
-    set_synchro_event(synchro)
+    set_event_type(synchro, update.event.event_type == EventType.Team)
 
     display_top_overlay(top_overlay_pos_left)
     display_tv_banner()
 
 
-def set_synchro_event(synchro: bool):
+def set_event_type(synchro: bool, team_event: bool = False):
     if synchro:
         set_source_string(EventInfoGrp.EventType, "Synchro Event")
         set_color_source_alpha(EventInfoGrp.Synchro, 255)
         set_color_source_alpha(EventInfoGrp.Individual, 0)
     else:
-        set_source_string(EventInfoGrp.EventType, "Individual Event")
+        set_source_string(EventInfoGrp.EventType, "Team Event" if team_event else "Individual Event")
         set_color_source_alpha(EventInfoGrp.Individual, 255)
         set_color_source_alpha(EventInfoGrp.Synchro, 0)
 
@@ -214,7 +213,8 @@ def remove_overlays(pressed):
                  TVBannerGrp.GroupName, AwardsCommonGrp.GroupName, DiveInfoGrp.GroupName,
                  MainBoardGrp.GroupName, JudgeAwardsBoardGrp.GroupName, DiveInfoBoardGrp.GroupName, SynchroLabelsBoardGrp.GroupName,
                  IndividualAwards.JudgesGrp7, IndividualAwards.JudgesGrp5, IndividualAwards.JudgesGrp3,
-                 SynchroLabelsGrp.GroupName, SynchroAwards.JudgesGrp11, SynchroAwards.JudgesGrp9, SynchroAwards.JudgesGrp7, SynchroAwards.JudgesGrp5
+                 # SynchroLabelsGrp.GroupName,
+                 SynchroAwards.JudgesGrp11, SynchroAwards.JudgesGrp9, SynchroAwards.JudgesGrp7, SynchroAwards.JudgesGrp5
                  ]:
         set_source_visibility(name, False)
 
