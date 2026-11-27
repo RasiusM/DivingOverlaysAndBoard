@@ -3,12 +3,14 @@
 import json
 import socket
 import threading
+from time import monotonic
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from divecalc_adapter import adapt_event_start, adapt_payload
 
 MAX_BODY = 2 * 1024 * 1024
 READ_TIMEOUT = 5
+REPLAY_TRIGGER_MAX_AGE = 2
 
 
 class BodyError(Exception):
@@ -97,7 +99,7 @@ class Handler(BaseHTTPRequestHandler):
     def _check(self):
         if self.server.allowed_ip and self.client_address[0] != self.server.allowed_ip:
             return 403
-        if self.path != self.server.path:
+        if self.path not in (self.server.path, self.server.replay_path):
             return 404
         return None
 
@@ -116,6 +118,11 @@ class Handler(BaseHTTPRequestHandler):
             return
         except (ValueError, UnicodeError, OSError, socket.timeout, RecursionError):
             self._reply(400)
+            return
+        if self.path != self.server.path:
+            with self.server.publish_lock:
+                status = self._receive_replay_request(payload)
+            self._reply(status)
             return
         with self.server.publish_lock:
             event = payload.get("event")
@@ -145,6 +152,23 @@ class Handler(BaseHTTPRequestHandler):
                 self.server.log(f"DiveCalc request: action={action}, bytes={len(body)}{ignored}")
         self._reply(200)
 
+    def _receive_replay_request(self, payload):
+        if not self.server.active or self.path != self.server.replay_path:
+            return 404
+        if payload.get("action") != "judges":
+            self.server.warn("DiveCalc replay endpoint expects the Present Judges action.")
+            return 400
+        now = monotonic()
+        previous = self.server.last_replay_request
+        accepted = previous is None or now - previous >= self.server.replay_cooldown
+        if accepted:
+            self.server.last_replay_request = now
+            self.server.pending_replay_request = now
+        if self.server.debug:
+            result = "accepted" if accepted else "ignored during cooldown"
+            self.server.log(f"DiveCalc replay request: {result}")
+        return 200
+
     def _other_method(self):
         self._reply(self._check() or 405)
 
@@ -163,6 +187,10 @@ class DiveCalcReceiver:
         self.server.log = log
         self.server.debug = debug
         self.server.publish_lock = threading.Lock()
+        self.server.replay_path = None
+        self.server.replay_cooldown = 0
+        self.server.last_replay_request = None
+        self.server.pending_replay_request = None
         # Cleared under publish_lock by stop() so handlers cannot log into an unloaded script.
         self.server.active = True
         self.server.warned_team_events = set()
@@ -173,9 +201,32 @@ class DiveCalcReceiver:
     def port(self):
         return self.server.server_address[1]
 
+    def configure_replay(self, path: str | None, cooldown: int = 0):
+        if path is not None:
+            if not path.startswith("/") or "?" in path or "#" in path:
+                raise ValueError("replay path must start with / and contain no query or fragment")
+            if path == self.server.path:
+                raise ValueError("replay path must differ from the main DiveCalc HTTP path")
+            if not 1 <= cooldown <= 60:
+                raise ValueError("replay cooldown must be between 1 and 60 seconds")
+        with self.server.publish_lock:
+            if self.server.replay_path != path:
+                self.server.pending_replay_request = None
+            self.server.replay_path = path
+            self.server.replay_cooldown = cooldown
+
+    def take_replay_request(self) -> bool:
+        with self.server.publish_lock:
+            pending = self.server.pending_replay_request
+            self.server.pending_replay_request = None
+            # Never start a replay late if the macro was paused or not running.
+            return (self.server.active and pending is not None
+                    and monotonic() - pending < REPLAY_TRIGGER_MAX_AGE)
+
     def stop(self):
         with self.server.publish_lock:
             self.server.active = False
+            self.server.pending_replay_request = None
         self.server.mailbox.new_token()
         self.server.shutdown()
         self.server.server_close()

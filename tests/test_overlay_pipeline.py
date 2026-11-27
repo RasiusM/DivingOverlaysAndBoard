@@ -173,9 +173,10 @@ class ScriptPropertiesTests(unittest.TestCase):
 
         settings = {"scoring_source": "divecalc", "divecalc_port": 9000,
                     "divecalc_path": "/custom", "divecalc_allowed_ip": "127.0.0.1",
-                    "udp_polling_enabled": False}
+                    "udp_polling_enabled": False, "divecalc_replay_enabled": False}
         original_settings = settings.copy()
         with patch.object(diving_overlays, "selected_scoring_source", "divecalc"), \
+             patch.object(diving_overlays, "replay_enabled", False), \
              patch.object(diving_overlays, "dvov_script_properties"), \
              patch.multiple(
                  diving_overlays.obs,
@@ -188,6 +189,7 @@ class ScriptPropertiesTests(unittest.TestCase):
                  obs_properties_get=MagicMock(side_effect=lambda parent, name: properties[name]),
                  obs_property_set_visible=MagicMock(side_effect=lambda prop, visible: visibility.update({prop: visible})),
                  obs_data_get_string=MagicMock(side_effect=lambda data, name: data[name]),
+                 obs_data_get_bool=MagicMock(side_effect=lambda data, name: data[name]),
              ):
             self.assertIs(diving_overlays.script_properties(), props)
             self.assertEqual(visibility, {
@@ -195,6 +197,9 @@ class ScriptPropertiesTests(unittest.TestCase):
                 "divecalc_port": True,
                 "divecalc_path": True,
                 "divecalc_allowed_ip": True,
+                "divecalc_replay_enabled": True,
+                "divecalc_replay_path": False,
+                "divecalc_replay_cooldown": False,
             })
             callback = callbacks["scoring_source"]
             for source in ("divecalc", "diverecorder", "", "divecalc"):
@@ -206,8 +211,20 @@ class ScriptPropertiesTests(unittest.TestCase):
                         "divecalc_port": source == "divecalc",
                         "divecalc_path": source == "divecalc",
                         "divecalc_allowed_ip": source == "divecalc",
+                        "divecalc_replay_enabled": source == "divecalc",
+                        "divecalc_replay_path": False,
+                        "divecalc_replay_cooldown": False,
                     })
             self.assertEqual(settings, original_settings)
+            settings["divecalc_replay_enabled"] = True
+            self.assertTrue(callbacks["divecalc_replay_enabled"](props, properties["divecalc_replay_enabled"], settings))
+            self.assertTrue(visibility["divecalc_replay_path"])
+            self.assertTrue(visibility["divecalc_replay_cooldown"])
+            settings["scoring_source"] = "diverecorder"
+            callback(props, properties["scoring_source"], settings)
+            self.assertFalse(visibility["divecalc_replay_path"])
+            self.assertFalse(visibility["divecalc_replay_cooldown"])
+            self.assertTrue(settings["divecalc_replay_enabled"])
 
 
 class AdapterTests(unittest.TestCase):
@@ -664,11 +681,16 @@ class TransportTests(unittest.TestCase):
     def test_load_starts_only_selected_divecalc_transport(self):
         settings = object()
         values = {"scoring_source": "divecalc", "divecalc_path": "/divecalc",
-                  "divecalc_allowed_ip": "", "rootDir": "."}
+                  "divecalc_allowed_ip": "", "rootDir": ".",
+                  "divecalc_replay_path": "/divecalc-replay"}
         fake_receiver = MagicMock()
+        settings_ints = {"divecalc_port": 8765, "divecalc_replay_cooldown": 5}
+        enabled = {"divecalc_replay_enabled": True}
         with patch.object(diving_overlays, "script_loaded", False), \
              patch.object(diving_overlays, "transport_config", None), \
              patch.object(diving_overlays, "scoring_source", "diverecorder"), \
+             patch.object(diving_overlays, "replay_enabled", False), \
+             patch.object(diving_overlays, "replay_trigger_signal", ""), \
              patch.object(diving_overlays, "receiver", None), \
              patch.object(diving_overlays, "udp_sock", None), \
              patch.object(diving_overlays, "dvov_script_load"), \
@@ -677,13 +699,43 @@ class TransportTests(unittest.TestCase):
              patch.object(diving_overlays, "DiveCalcReceiver", return_value=fake_receiver) as create_receiver, \
              patch.object(diving_overlays.socket, "socket") as create_udp, \
              patch.object(diving_overlays.obs, "obs_data_get_string", side_effect=lambda data, key: values[key]), \
-             patch.object(diving_overlays.obs, "obs_data_get_bool", return_value=True), \
-             patch.object(diving_overlays.obs, "obs_data_get_int", return_value=8765):
+             patch.object(diving_overlays.obs, "obs_data_get_bool", side_effect=lambda data, key: enabled.get(key, True)), \
+             patch.object(diving_overlays.obs, "obs_data_get_int", side_effect=lambda data, key: settings_ints[key]), \
+             patch.object(diving_overlays.obs, "calldata_string", return_value="replay-trigger"), \
+             patch.object(diving_overlays.obs, "proc_handler_call", return_value=True) as proc, \
+             patch.object(diving_overlays.obs, "signal_handler_connect") as connect, \
+             patch.object(diving_overlays.obs, "signal_handler_disconnect") as disconnect:
             diving_overlays.script_load(settings)
-            create_receiver.assert_called_once()
             create_udp.assert_not_called()
+            fake_receiver.configure_replay.assert_called_once_with("/divecalc-replay", 5)
+            self.assertEqual(proc.call_args.args[1], "advss_register_script_condition")
+            enabled["divecalc_replay_enabled"] = False
+            diving_overlays.script_update(settings)
+            fake_receiver.configure_replay.assert_called_with(None)
+            create_receiver.assert_called_once()
+            proc.assert_called_once()
+            disconnect.assert_not_called()
             diving_overlays.script_unload()
+            disconnect.assert_called_once_with(*connect.call_args.args)
+            self.assertEqual(proc.call_args.args[1], "advss_deregister_script_condition")
             fake_receiver.stop.assert_called_once()
+
+    def test_replay_condition_replies_with_matching_completion_id(self):
+        fake_receiver = MagicMock()
+        fake_receiver.take_replay_request.side_effect = [True, False]
+        obs = diving_overlays.obs
+        with patch.object(diving_overlays, "receiver", fake_receiver), \
+             patch.object(obs, "calldata_create", side_effect=lambda: {}), \
+             patch.object(obs, "calldata_int", side_effect=lambda data, key: data[key]), \
+             patch.object(obs, "calldata_string", side_effect=lambda data, key: data[key]), \
+             patch.object(obs, "calldata_set_int", side_effect=lambda data, key, value: data.update({key: value})), \
+             patch.object(obs, "calldata_set_bool", side_effect=lambda data, key, value: data.update({key: value})), \
+             patch.object(obs, "signal_handler_signal") as signal:
+            for completion_id, expected in ((1, True), (2, False)):
+                diving_overlays._check_replay_condition({
+                    "completion_id": completion_id, "completion_signal_name": "done",
+                })
+                self.assertEqual(signal.call_args.args[1:], ("done", {"completion_id": completion_id, "result": expected}))
 
 
 class RankingsTests(unittest.TestCase):

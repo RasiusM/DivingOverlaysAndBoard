@@ -39,6 +39,11 @@ selected_scoring_source = "diverecorder"
 receiver = None
 transport_config = None
 script_loaded = False
+replay_enabled = False
+replay_trigger_signal = ""
+REPLAY_CONDITION_NAME = "DiveCalc Request Awards received"
+DEFAULT_REPLAY_PATH = "/divecalc-replay"
+DEFAULT_REPLAY_COOLDOWN = 5
 # OBS can load the script before its scene sources. A saved provider different
 # from the default triggers a reset at startup, so defer that reset until ready.
 startup_reset_pending = False
@@ -385,20 +390,22 @@ def udp_timer_callback():
 
 # ---------- OBS script lifecycle ----------
 def script_description():
-    return "<center><h2>Diving Overlays v1.2.0 (beta)</h2></center><p>Display competition data from DiveRecorder or DiveCalc using the Diving Streaming and Board scene collection.</p>"
+    return "<center><h2>Diving Overlays v2.0.0 (beta.1)</h2></center><p>Display competition data from DiveRecorder or DiveCalc using the Diving Streaming and Board scene collection.</p>"
 
 
-def set_scoring_source_visibility(props, source):
+def set_scoring_source_visibility(props, source, enable_replay):
     """Show the selected source's settings without changing their saved values."""
     obs.obs_property_set_visible(obs.obs_properties_get(props, "udp_polling_enabled"), source == "diverecorder")
-    for name in ("divecalc_port", "divecalc_path", "divecalc_allowed_ip"):
+    for name in ("divecalc_port", "divecalc_path", "divecalc_allowed_ip", "divecalc_replay_enabled"):
         obs.obs_property_set_visible(obs.obs_properties_get(props, name), source == "divecalc")
+    for name in ("divecalc_replay_path", "divecalc_replay_cooldown"):
+        obs.obs_property_set_visible(obs.obs_properties_get(props, name), source == "divecalc" and enable_replay)
 
 
 def scoring_source_modified(props, property, settings):
     """Refresh property visibility when OBS changes the scoring source."""
     source = obs.obs_data_get_string(settings, "scoring_source") or "diverecorder"
-    set_scoring_source_visibility(props, source)
+    set_scoring_source_visibility(props, source, obs.obs_data_get_bool(settings, "divecalc_replay_enabled"))
     # Tell OBS to rebuild the property UI with the updated visibility.
     return True
 
@@ -418,9 +425,13 @@ def script_properties():
     obs.obs_properties_add_int(props, "divecalc_port", "DiveCalc HTTP port", 1024, 65535, 1)
     obs.obs_properties_add_text(props, "divecalc_path", "DiveCalc HTTP path", obs.OBS_TEXT_DEFAULT)
     obs.obs_properties_add_text(props, "divecalc_allowed_ip", "Allowed DiveCalc IPv4 address (optional)", obs.OBS_TEXT_DEFAULT)
+    replay = obs.obs_properties_add_bool(props, "divecalc_replay_enabled", "Enable replay control from DiveCalc")
+    obs.obs_properties_add_text(props, "divecalc_replay_path", "DiveCalc replay HTTP path", obs.OBS_TEXT_DEFAULT)
+    obs.obs_properties_add_int(props, "divecalc_replay_cooldown", "Replay request cooldown (seconds)", 1, 60, 1)
     obs.obs_property_set_modified_callback(source, scoring_source_modified)
+    obs.obs_property_set_modified_callback(replay, scoring_source_modified)
     # OBS can recreate the property list without applying modification callbacks.
-    set_scoring_source_visibility(props, selected_scoring_source)
+    set_scoring_source_visibility(props, selected_scoring_source, replay_enabled)
 
     return props
 
@@ -433,11 +444,15 @@ def script_defaults(settings):
     obs.obs_data_set_default_int(settings, "divecalc_port", 8765)
     obs.obs_data_set_default_string(settings, "divecalc_path", "/divecalc")
     obs.obs_data_set_default_string(settings, "divecalc_allowed_ip", "")
+    obs.obs_data_set_default_bool(settings, "divecalc_replay_enabled", False)
+    obs.obs_data_set_default_string(settings, "divecalc_replay_path", DEFAULT_REPLAY_PATH)
+    obs.obs_data_set_default_int(settings, "divecalc_replay_cooldown", DEFAULT_REPLAY_COOLDOWN)
 
     dvov_script_defaults(settings)
 
 def script_update(settings):
     global udp_polling_enabled, debug, rankings_enabled, descriptions, selected_scoring_source
+    global replay_enabled
     log_info_if_debug(debug, "------------------------------ script_update() called")
 
     dvov_script_update(settings)
@@ -448,6 +463,7 @@ def script_update(settings):
     udp_polling_enabled = obs.obs_data_get_bool(settings, "udp_polling_enabled")
     source = obs.obs_data_get_string(settings, "scoring_source") or "diverecorder"
     selected_scoring_source = source
+    replay_enabled = obs.obs_data_get_bool(settings, "divecalc_replay_enabled")
     path = obs.obs_data_get_string(settings, "divecalc_path") or "/divecalc"
     port = obs.obs_data_get_int(settings, "divecalc_port")
     allowed_ip = obs.obs_data_get_string(settings, "divecalc_allowed_ip").strip()
@@ -470,6 +486,69 @@ def script_update(settings):
         elif receiver:
             receiver.server.descriptions = descriptions
             receiver.server.debug = debug
+        if receiver:
+            if replay_enabled:
+                try:
+                    receiver.configure_replay(
+                        obs.obs_data_get_string(settings, "divecalc_replay_path").strip(),
+                        obs.obs_data_get_int(settings, "divecalc_replay_cooldown"),
+                    )
+                except ValueError as error:
+                    receiver.configure_replay(None)
+                    obs.script_log(obs.LOG_ERROR, f"DiveCalc replay control disabled: {error}")
+            else:
+                receiver.configure_replay(None)
+
+
+def _check_replay_condition(data):
+    current_receiver = receiver
+    pending = current_receiver is not None and current_receiver.take_replay_request()
+    reply = obs.calldata_create()
+    try:
+        obs.calldata_set_int(reply, "completion_id", obs.calldata_int(data, "completion_id"))
+        obs.calldata_set_bool(reply, "result", pending)
+        obs.signal_handler_signal(
+            obs.obs_get_signal_handler(), obs.calldata_string(data, "completion_signal_name"), reply
+        )
+    finally:
+        obs.calldata_destroy(reply)
+
+
+def _register_replay_condition():
+    global replay_trigger_signal
+    data = obs.calldata_create()
+    try:
+        obs.calldata_set_string(data, "name", REPLAY_CONDITION_NAME)
+        obs.calldata_set_ptr(data, "default_settings", None)
+        if (obs.proc_handler_call(obs.obs_get_proc_handler(), "advss_register_script_condition", data)
+                and obs.calldata_bool(data, "success")):
+            replay_trigger_signal = obs.calldata_string(data, "trigger_signal_name")
+            obs.signal_handler_connect(obs.obs_get_signal_handler(), replay_trigger_signal, _check_replay_condition)
+    finally:
+        obs.calldata_destroy(data)
+
+
+def _retry_replay_condition_registration():
+    obs.timer_remove(_retry_replay_condition_registration)
+    _register_replay_condition()
+    if not replay_trigger_signal:
+        obs.script_log(obs.LOG_WARNING, "Could not register the DiveCalc replay condition. Check Advanced Scene Switcher scripting support.")
+
+
+def _unregister_replay_condition():
+    global replay_trigger_signal
+    if not replay_trigger_signal:
+        return
+    obs.signal_handler_disconnect(obs.obs_get_signal_handler(), replay_trigger_signal, _check_replay_condition)
+    replay_trigger_signal = ""
+    data = obs.calldata_create()
+    try:
+        obs.calldata_set_string(data, "name", REPLAY_CONDITION_NAME)
+        if not (obs.proc_handler_call(obs.obs_get_proc_handler(), "advss_deregister_script_condition", data)
+                and obs.calldata_bool(data, "success")):
+            obs.script_log(obs.LOG_WARNING, "Could not deregister the DiveCalc replay condition.")
+    finally:
+        obs.calldata_destroy(data)
 
 
 def script_load(settings):
@@ -478,6 +557,9 @@ def script_load(settings):
 
     dvov_script_load(settings)
 
+    _register_replay_condition()
+    if not replay_trigger_signal:
+        obs.timer_add(_retry_replay_condition_registration, 1000)
     script_loaded = True
     script_update(settings)
     init()
@@ -546,12 +628,14 @@ def script_unload():
     # Stop consumers and invalidate publishers before clearing shared state.
     # Common cleanup also removes timers registered by the helper modules.
     obs.timer_remove(udp_timer_callback)
+    obs.timer_remove(_retry_replay_condition_registration)
     script_loaded = False
     transport_config = None
     startup_reset_pending = False
     if receiver:
         receiver.stop()
         receiver = None
+    _unregister_replay_condition()
     transport_generation = mailbox.new_token()
     dvov_script_unload()
     if udp_sock:

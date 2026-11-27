@@ -1,7 +1,7 @@
 {
     "name": "Diving_Streaming_and_Board",
     "DesktopAudioDevice1": {
-        "prev_ver": 553648129,
+        "prev_ver": 553648131,
         "name": "Desktop Audio",
         "uuid": "99160be6-63cc-49f2-b88e-e698f73467a3",
         "id": "wasapi_output_capture",
@@ -35,7 +35,7 @@
         "private_settings": {}
     },
     "AuxAudioDevice1": {
-        "prev_ver": 553648129,
+        "prev_ver": 553648131,
         "name": "Mic/Aux",
         "uuid": "038b762d-6b78-4adf-9999-8371f334d874",
         "id": "wasapi_input_capture",
@@ -70,7 +70,7 @@
     },
     "groups": [
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopLeft",
             "uuid": "7c63edb9-ebfa-4337-b6d1-de5f4b0caf31",
             "id": "group",
@@ -275,7 +275,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TVBanner",
             "uuid": "9da357cb-0073-4fcd-9f35-357936f86a9d",
             "id": "group",
@@ -883,7 +883,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "AwardsCommon",
             "uuid": "4a19102b-c49d-4050-acd6-1a0b7c568481",
             "id": "group",
@@ -1233,7 +1233,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopRight",
             "uuid": "ccc74192-0ecd-42de-a632-5446f8d134cf",
             "id": "group",
@@ -1438,7 +1438,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ReShowOvrl",
             "uuid": "09f82782-7f51-4768-bc51-737996848018",
             "id": "group",
@@ -1643,7 +1643,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "DisableOvrl",
             "uuid": "37ba4dd5-35d6-4c21-a6bd-57c02b27cd9e",
             "id": "group",
@@ -1905,7 +1905,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "AutoHide",
             "uuid": "a10fe804-ba53-4549-a26c-0698614e0f5d",
             "id": "group",
@@ -2167,7 +2167,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventInfo",
             "uuid": "ca8e1a16-eb3b-41a1-b4ce-d876e2546ffd",
             "id": "group",
@@ -2430,7 +2430,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ShowOvrl",
             "uuid": "cb7e1691-4864-4cab-9c5a-519e3e86ae90",
             "id": "group",
@@ -2635,7 +2635,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "HideOvrl",
             "uuid": "5a43b3b0-4d41-4c29-9406-a78e4550e8ce",
             "id": "group",
@@ -2840,7 +2840,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopOvrlPos",
             "uuid": "28040028-dc4a-44c9-9c81-01556d3d68d8",
             "id": "group",
@@ -3159,7 +3159,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Next Event Group",
             "uuid": "33a36587-c19e-41d9-8a9a-d1a96e91503a",
             "id": "group",
@@ -3478,7 +3478,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Header",
             "uuid": "02c33caa-2d35-4ec8-ae45-6a825c88380c",
             "id": "group",
@@ -3740,7 +3740,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Schedule Header",
             "uuid": "067a329e-716d-4b82-afbc-fd7c0fea4039",
             "id": "group",
@@ -3888,7 +3888,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Schedule",
             "uuid": "3c89d7ab-5601-4fcb-92dc-c31e91e437bf",
             "id": "group",
@@ -4036,7 +4036,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "DiveInfo",
             "uuid": "7bae2478-c2ed-45ef-87dc-2742b9cf5752",
             "id": "group",
@@ -4526,7 +4526,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "DiveInfoBoard",
             "uuid": "e543ee24-2818-43c2-837c-03413e127eef",
             "id": "group",
@@ -5016,7 +5016,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JudgeAwardsBoard",
             "uuid": "615166cd-e583-4a3d-a233-6d455743bbc9",
             "id": "group",
@@ -5985,7 +5985,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "MainBoard",
             "uuid": "6566441a-5ebb-4174-879e-e6ad8a566eaa",
             "id": "group",
@@ -6760,7 +6760,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "SynchroLabelsBoard",
             "uuid": "3ef59938-28d0-4323-89af-4716297dbf48",
             "id": "group",
@@ -6965,7 +6965,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "SynchroAwards11",
             "uuid": "9a592fca-b70b-4d38-82f9-ca3cafe547e2",
             "id": "group",
@@ -7911,7 +7911,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PreEvent",
             "uuid": "eb51ff12-dbf2-4a3a-8af6-39272af67f16",
             "id": "group",
@@ -8173,7 +8173,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "InProgr",
             "uuid": "b8e7dfd1-0b22-4ee1-8701-fb666814e33b",
             "id": "group",
@@ -8435,7 +8435,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PostEvent",
             "uuid": "ffb86b92-a517-4f39-abb0-3189a95522d6",
             "id": "group",
@@ -8754,7 +8754,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 10",
             "uuid": "318ae49c-258a-40e5-8e19-10a86008922a",
             "id": "group",
@@ -9130,7 +9130,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 9",
             "uuid": "c531b2bb-a0de-44ca-84cd-fc3f4a9917af",
             "id": "group",
@@ -9506,7 +9506,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 8",
             "uuid": "99d19b8f-72e8-4f1b-a5a0-d0b47d452f39",
             "id": "group",
@@ -9939,7 +9939,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 7",
             "uuid": "686b725e-60b3-4fb9-ac6f-0053fde25295",
             "id": "group",
@@ -10372,7 +10372,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 6",
             "uuid": "2cd43469-66b5-4ee6-971c-8b4cb3f82274",
             "id": "group",
@@ -10805,7 +10805,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 5",
             "uuid": "c71a1fd9-62f0-4d59-96d3-39e11271656f",
             "id": "group",
@@ -11238,7 +11238,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 4",
             "uuid": "905c5e66-2de8-4fe3-88c7-c0c4152a53b4",
             "id": "group",
@@ -11671,7 +11671,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 3",
             "uuid": "e6a81ce7-4413-4edd-9468-38349a72af2a",
             "id": "group",
@@ -12104,7 +12104,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 2",
             "uuid": "ff8b8cf8-50ac-44f1-8ab6-dab47713e630",
             "id": "group",
@@ -12537,7 +12537,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ListLine 1",
             "uuid": "eafdfdc7-a8fb-436f-881e-cbf8532cf80a",
             "id": "group",
@@ -12970,7 +12970,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rec",
             "uuid": "2e52a56d-26e8-429f-ab18-bae0b1f4a20c",
             "id": "group",
@@ -13232,7 +13232,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 1",
             "uuid": "c31d755d-7d22-4972-bdcc-d1697476069f",
             "id": "group",
@@ -13551,7 +13551,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 2",
             "uuid": "2e0eb506-4019-45db-a801-bad6f0c8be7a",
             "id": "group",
@@ -13870,7 +13870,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 3",
             "uuid": "71afc5f0-7841-4877-9a78-a0b045aa6d86",
             "id": "group",
@@ -14189,7 +14189,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 4",
             "uuid": "af223ad0-e207-4d90-a63a-657fe28e5067",
             "id": "group",
@@ -14508,7 +14508,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 5",
             "uuid": "2f762a3c-e4e9-478c-86dc-6021f622b9cb",
             "id": "group",
@@ -14827,7 +14827,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 6",
             "uuid": "ed5f6271-0d8c-4395-ba23-15f7503a0ef4",
             "id": "group",
@@ -15146,7 +15146,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 7",
             "uuid": "2e961bce-4590-491d-852a-d2a26ce5c41f",
             "id": "group",
@@ -15465,7 +15465,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 8",
             "uuid": "24dbfc8a-16fb-4d47-8631-f20e33e0f8b8",
             "id": "group",
@@ -15784,7 +15784,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventAB",
             "uuid": "c5d128cf-983d-42b4-a203-f23684e8a7da",
             "id": "group",
@@ -16160,7 +16160,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "OnAir",
             "uuid": "0d606468-ad6b-4869-9f70-8ba07f83268f",
             "id": "group",
@@ -16365,7 +16365,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "IndividualAwards7",
             "uuid": "76761d81-ff8b-4685-be7a-0f19507157a4",
             "id": "group",
@@ -16855,7 +16855,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "IndividualAwards5",
             "uuid": "3ef05dbf-9d60-4421-877a-4d4d817515fa",
             "id": "group",
@@ -17231,7 +17231,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "IndividualAwards3",
             "uuid": "5942bda4-b40a-4561-a368-2e2654348bf3",
             "id": "group",
@@ -17493,7 +17493,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "SynchroAwards9",
             "uuid": "7db0ee16-1fb9-4be6-916c-0b758caa8b1a",
             "id": "group",
@@ -18325,7 +18325,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "SynchroAwards7",
             "uuid": "5205746a-c88a-4645-bc29-289e1fe25c89",
             "id": "group",
@@ -19043,7 +19043,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "SynchroAwards5",
             "uuid": "f9c8ef3b-c1b2-4269-b5ce-1f56393ea5d5",
             "id": "group",
@@ -19647,7 +19647,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "CurrentCam",
             "uuid": "931d096e-3a23-42d6-9741-d55fb404cea9",
             "id": "group",
@@ -19881,7 +19881,7 @@
                     {
                         "name": "Cam1_Active",
                         "source_uuid": "d0f39ec8-a79a-48fc-a846-14c6257286e4",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -20137,7 +20137,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "SynchroLabels",
             "uuid": "58573151-83c0-4e7b-b47f-08f930e9a84c",
             "id": "group",
@@ -20570,7 +20570,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 9",
             "uuid": "5b383561-3920-4ebb-9d9b-0374e31798ae",
             "id": "group",
@@ -20889,7 +20889,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardListLine 10",
             "uuid": "40faf1fc-814a-476b-9174-43b7052c8423",
             "id": "group",
@@ -21208,7 +21208,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Header Group",
             "uuid": "46975446-b151-47a7-b872-1d43b21ebeb3",
             "id": "group",
@@ -21470,7 +21470,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "CountdownHeader",
             "uuid": "02e6fbe8-7223-47ac-97e3-1cf4adae81a0",
             "id": "group",
@@ -21618,7 +21618,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Countdown Overlays",
             "uuid": "5b69401d-1a62-43c6-ada2-8714a1911f4d",
             "id": "group",
@@ -21766,7 +21766,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "List Overlays",
             "uuid": "f0382266-f7eb-49f4-a268-5f00c35121b8",
             "id": "group",
@@ -22142,7 +22142,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Event Overlays",
             "uuid": "580d6307-2de5-4fbe-a35d-bd3815e0fa73",
             "id": "group",
@@ -22951,8 +22951,8 @@
             "name": "Status"
         }
     ],
-    "current_scene": "LiveStream",
-    "current_program_scene": "LiveStream",
+    "current_scene": "----------------------------- Customizable Graphics",
+    "current_program_scene": "----------------------------- Customizable Graphics",
     "canvases": [],
     "current_transition": "Fade",
     "transition_duration": 300,
@@ -22997,7 +22997,7 @@
     "saved_projectors": [],
     "preview_locked": false,
     "scaling_enabled": false,
-    "scaling_level": -6,
+    "scaling_level": -7,
     "scaling_off_x": 0.0,
     "scaling_off_y": 0.0,
     "modules": {
@@ -24043,7 +24043,7 @@
                             },
                             "filter": {
                                 "type": 0,
-                                "name": "BO: Replay Video Source"
+                                "name": ""
                             },
                             "condition": 0,
                             "settings": "",
@@ -24078,7 +24078,7 @@
                             },
                             "filter": {
                                 "type": 0,
-                                "name": "BO: Replay Video Source"
+                                "name": ""
                             },
                             "action": 1,
                             "inputMethod": 0,
@@ -28953,14 +28953,14 @@
                     "group": true,
                     "groupData": {
                         "collapsed": false,
-                        "size": 15
+                        "size": 21
                     }
                 },
                 {
                     "name": "Start Rec for Instant Replay",
                     "group": false,
                     "pauseSaveBehavior": 0,
-                    "pause": false,
+                    "pause": true,
                     "parallel": false,
                     "checkConditionsInParallel": false,
                     "actionTriggerMode": 1,
@@ -28994,15 +28994,15 @@
                     },
                     "macroActionConditionSplitterPosition": [
                         {
-                            "pos": 374
+                            "pos": 486
                         },
                         {
-                            "pos": 371
+                            "pos": 482
                         }
                     ],
                     "macroElseActionSplitterPosition": [
                         {
-                            "pos": 339
+                            "pos": 450
                         },
                         {
                             "pos": 0
@@ -29075,11 +29075,7 @@
                                 }
                             },
                             "desc": "Start Recording for Replay",
-                            "keyBind": [
-                                {
-                                    "key": "OBS_KEY_NUM0"
-                                }
-                            ],
+                            "keyBind": [],
                             "checkPressed": true
                         }
                     ],
@@ -29101,7 +29097,7 @@
                             },
                             "filter": {
                                 "type": 0,
-                                "name": "BO: Replay Video Source"
+                                "name": ""
                             },
                             "action": 0,
                             "inputMethod": 0,
@@ -29132,7 +29128,7 @@
                     "name": "Stop Rec for Instant Replay (auto start IRS)",
                     "group": false,
                     "pauseSaveBehavior": 0,
-                    "pause": false,
+                    "pause": true,
                     "parallel": false,
                     "checkConditionsInParallel": false,
                     "actionTriggerMode": 1,
@@ -29166,15 +29162,15 @@
                     },
                     "macroActionConditionSplitterPosition": [
                         {
-                            "pos": 374
+                            "pos": 486
                         },
                         {
-                            "pos": 371
+                            "pos": 482
                         }
                     ],
                     "macroElseActionSplitterPosition": [
                         {
-                            "pos": 339
+                            "pos": 450
                         },
                         {
                             "pos": 0
@@ -29274,7 +29270,7 @@
                             },
                             "filter": {
                                 "type": 0,
-                                "name": "BO: Replay Video Source"
+                                "name": ""
                             },
                             "action": 1,
                             "inputMethod": 0,
@@ -29296,6 +29292,1027 @@
                                 "description": ""
                             },
                             "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "wait",
+                            "waitType": 0,
+                            "version": 1,
+                            "duration": {
+                                "value": {
+                                    "value": 1.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            },
+                            "duration2": {
+                                "value": {
+                                    "value": 0.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            },
+                            "condition": 0,
+                            "strValue": "",
+                            "numValue": {
+                                "value": 0.0,
+                                "type": 0
+                            },
+                            "regexConfig": {
+                                "enable": false,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "useTimeout": false,
+                            "conditionTimeout": {
+                                "value": {
+                                    "value": 0.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            }
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "scene_visibility",
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "sceneItemSelection": {
+                                "type": 0,
+                                "idxType": 0,
+                                "idx": 0,
+                                "item": "Instant Replay Scene"
+                            },
+                            "updateTransition": false,
+                            "transitionType": 0,
+                            "transition": "",
+                            "updateDuration": false,
+                            "duration": {
+                                "value": {
+                                    "value": 0.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            },
+                            "action": 0,
+                            "blockUntilTransitionDone": false
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "BO Replay Buffer Toggle",
+                    "group": true,
+                    "groupData": {
+                        "collapsed": false,
+                        "size": 2
+                    }
+                },
+                {
+                    "name": "BO Replay Buffer ON",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "actionTriggerMode": 1,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-90811e54-7ac0-4e59-b1f4-6f85c5cd1cd4",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 484
+                        },
+                        {
+                            "pos": 484
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 452
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": [
+                                    {
+                                        "tempVar": {
+                                            "type": 0,
+                                            "idx": -1,
+                                            "id": "",
+                                            "version": 1
+                                        }
+                                    }
+                                ]
+                            },
+                            "id": "scene",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "type": 10,
+                            "pattern": ".*Scene.*",
+                            "useTransitionTargetScene": false,
+                            "regexConfig": {
+                                "enable": true,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "version": 1
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "filter",
+                            "source": {
+                                "type": 0,
+                                "name": "Video Source for Replay"
+                            },
+                            "filter": {
+                                "type": 0,
+                                "name": "BO: Replay Video Source"
+                            },
+                            "action": 0,
+                            "inputMethod": 0,
+                            "sourceSetting": {
+                                "id": "streaming_description",
+                                "type": 4,
+                                "description": "[Streaming] Configure independent streaming outputs to RTMP/SRT servers (up to 8 simultaneous streams). (Text)"
+                            },
+                            "manualSettingValue": "",
+                            "tempVar": {
+                                "type": 0,
+                                "idx": -1,
+                                "id": "",
+                                "version": 1
+                            },
+                            "settings": "",
+                            "sourceSettingButton": {
+                                "id": "",
+                                "description": ""
+                            },
+                            "version": 1
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "BO Replay Buffer OFF",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "actionTriggerMode": 1,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-e9566adc-dcf3-42fe-a800-d8c91184ced1",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 484
+                        },
+                        {
+                            "pos": 484
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 452
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": [
+                                    {
+                                        "tempVar": {
+                                            "type": 0,
+                                            "idx": -1,
+                                            "id": "",
+                                            "version": 1
+                                        }
+                                    }
+                                ]
+                            },
+                            "id": "scene",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "type": 20,
+                            "pattern": ".*Scene.*",
+                            "useTransitionTargetScene": false,
+                            "regexConfig": {
+                                "enable": true,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "version": 1
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "filter",
+                            "source": {
+                                "type": 0,
+                                "name": "Video Source for Replay"
+                            },
+                            "filter": {
+                                "type": 0,
+                                "name": "BO: Replay Video Source"
+                            },
+                            "action": 1,
+                            "inputMethod": 0,
+                            "sourceSetting": {
+                                "id": "streaming_description",
+                                "type": 4,
+                                "description": "[Streaming] Configure independent streaming outputs to RTMP/SRT servers (up to 8 simultaneous streams). (Text)"
+                            },
+                            "manualSettingValue": "",
+                            "tempVar": {
+                                "type": 0,
+                                "idx": -1,
+                                "id": "",
+                                "version": 1
+                            },
+                            "settings": "",
+                            "sourceSettingButton": {
+                                "id": "",
+                                "description": ""
+                            },
+                            "version": 1
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "Trigger Replay 1",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "actionTriggerMode": 1,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-1b8c5a67-02ca-481a-a0d8-58a03c5e0b89",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 486
+                        },
+                        {
+                            "pos": 482
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 450
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "scene",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "type": 10,
+                            "pattern": ".*Scene.*",
+                            "useTransitionTargetScene": false,
+                            "regexConfig": {
+                                "enable": true,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "hotkey",
+                            "logic": 101,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "desc": "Stop Recording for Replay",
+                            "keyBind": [
+                                {
+                                    "control": true,
+                                    "key": "OBS_KEY_NUM0"
+                                }
+                            ],
+                            "checkPressed": true
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "macro",
+                            "action": 11,
+                            "macro": "Action: Save Replay Buffer, Auto start IRS",
+                            "actionSelectionType": 0,
+                            "actionIndex": {
+                                "value": 1,
+                                "type": 0
+                            },
+                            "label": "Custom label",
+                            "actionId": "",
+                            "regexConfig": {
+                                "enable": false,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "runOptions": {
+                                "logic": 0,
+                                "reevaluateConditionState": false,
+                                "runElseActions": false,
+                                "skipWhenPaused": true,
+                                "setInputs": false,
+                                "inputs": []
+                            },
+                            "nestedMacro": {
+                                "name": "",
+                                "group": false,
+                                "pauseSaveBehavior": 0,
+                                "pause": false,
+                                "parallel": false,
+                                "checkConditionsInParallel": false,
+                                "actionTriggerMode": 1,
+                                "skipExecOnStart": false,
+                                "stopActionsIfNotDone": false,
+                                "useShortCircuitEvaluation": false,
+                                "useCustomConditionCheckInterval": false,
+                                "customConditionCheckInterval": {
+                                    "value": {
+                                        "value": 0.3,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                },
+                                "dockSettings": {
+                                    "register": false,
+                                    "standaloneDock": true,
+                                    "dockWindow": "Dock",
+                                    "hasRunButton": true,
+                                    "hasPauseButton": true,
+                                    "hasStatusLabel": false,
+                                    "highlightIfConditionsTrue": false,
+                                    "runButtonText": "Run",
+                                    "pauseButtonText": "Pause",
+                                    "unpauseButtonText": "Unpause",
+                                    "conditionsTrueStatusText": "Conditions are true.",
+                                    "conditionsFalseStatusText": "Conditions are false.",
+                                    "dockId": "advss-macro-dock-2690cd2a-1edc-4108-887f-0e50d707fe47",
+                                    "version": 1
+                                },
+                                "macroActionConditionSplitterPosition": [
+                                    {
+                                        "pos": 89
+                                    },
+                                    {
+                                        "pos": 208
+                                    }
+                                ],
+                                "macroElseActionSplitterPosition": [
+                                    {
+                                        "pos": 88
+                                    },
+                                    {
+                                        "pos": 88
+                                    }
+                                ],
+                                "registerHotkeys": false,
+                                "pauseHotkey": [],
+                                "unpauseHotkey": [],
+                                "togglePauseHotkey": [],
+                                "conditions": [],
+                                "actions": [],
+                                "elseActions": [],
+                                "inputVariables": []
+                            },
+                            "customWidgetHeight": 600
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "Trigger Replay 2",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": false,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "actionTriggerMode": 1,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-84825853-8ce6-4863-a0d8-d92774b31214",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 486
+                        },
+                        {
+                            "pos": 482
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 450
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "scene",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "type": 10,
+                            "pattern": ".*Scene.*",
+                            "useTransitionTargetScene": false,
+                            "regexConfig": {
+                                "enable": true,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "script_DiveCalc Request Awards received",
+                            "logic": 101,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "settings": {},
+                            "duration": {
+                                "value": {
+                                    "value": 1.0,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            }
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "macro",
+                            "action": 11,
+                            "macro": "Action: Save Replay Buffer, Auto start IRS",
+                            "actionSelectionType": 0,
+                            "actionIndex": {
+                                "value": 1,
+                                "type": 0
+                            },
+                            "label": "Custom label",
+                            "actionId": "",
+                            "regexConfig": {
+                                "enable": false,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "runOptions": {
+                                "logic": 0,
+                                "reevaluateConditionState": false,
+                                "runElseActions": false,
+                                "skipWhenPaused": true,
+                                "setInputs": false,
+                                "inputs": []
+                            },
+                            "nestedMacro": {
+                                "name": "",
+                                "group": false,
+                                "pauseSaveBehavior": 0,
+                                "pause": false,
+                                "parallel": false,
+                                "checkConditionsInParallel": false,
+                                "actionTriggerMode": 1,
+                                "skipExecOnStart": false,
+                                "stopActionsIfNotDone": false,
+                                "useShortCircuitEvaluation": false,
+                                "useCustomConditionCheckInterval": false,
+                                "customConditionCheckInterval": {
+                                    "value": {
+                                        "value": 0.3,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                },
+                                "dockSettings": {
+                                    "register": false,
+                                    "standaloneDock": true,
+                                    "dockWindow": "Dock",
+                                    "hasRunButton": true,
+                                    "hasPauseButton": true,
+                                    "hasStatusLabel": false,
+                                    "highlightIfConditionsTrue": false,
+                                    "runButtonText": "Run",
+                                    "pauseButtonText": "Pause",
+                                    "unpauseButtonText": "Unpause",
+                                    "conditionsTrueStatusText": "Conditions are true.",
+                                    "conditionsFalseStatusText": "Conditions are false.",
+                                    "dockId": "advss-macro-dock-2690cd2a-1edc-4108-887f-0e50d707fe47",
+                                    "version": 1
+                                },
+                                "macroActionConditionSplitterPosition": [
+                                    {
+                                        "pos": 89
+                                    },
+                                    {
+                                        "pos": 208
+                                    }
+                                ],
+                                "macroElseActionSplitterPosition": [
+                                    {
+                                        "pos": 88
+                                    },
+                                    {
+                                        "pos": 88
+                                    }
+                                ],
+                                "registerHotkeys": false,
+                                "pauseHotkey": [],
+                                "unpauseHotkey": [],
+                                "togglePauseHotkey": [],
+                                "conditions": [],
+                                "actions": [],
+                                "elseActions": [],
+                                "inputVariables": []
+                            },
+                            "customWidgetHeight": 600
+                        }
+                    ],
+                    "elseActions": [],
+                    "inputVariables": []
+                },
+                {
+                    "name": "Action: Save Replay Buffer, Auto start IRS",
+                    "group": false,
+                    "pauseSaveBehavior": 0,
+                    "pause": true,
+                    "parallel": false,
+                    "checkConditionsInParallel": false,
+                    "actionTriggerMode": 1,
+                    "skipExecOnStart": false,
+                    "stopActionsIfNotDone": false,
+                    "useShortCircuitEvaluation": false,
+                    "useCustomConditionCheckInterval": false,
+                    "customConditionCheckInterval": {
+                        "value": {
+                            "value": 0.3,
+                            "type": 0
+                        },
+                        "unit": 0,
+                        "version": 1
+                    },
+                    "dockSettings": {
+                        "register": false,
+                        "standaloneDock": true,
+                        "dockWindow": "Dock",
+                        "hasRunButton": true,
+                        "hasPauseButton": true,
+                        "hasStatusLabel": false,
+                        "highlightIfConditionsTrue": false,
+                        "runButtonText": "Run",
+                        "pauseButtonText": "Pause",
+                        "unpauseButtonText": "Unpause",
+                        "conditionsTrueStatusText": "Conditions are true.",
+                        "conditionsFalseStatusText": "Conditions are false.",
+                        "dockId": "advss-macro-dock-e4865739-29cd-40ea-84fd-0b77b63c6b94",
+                        "version": 1
+                    },
+                    "macroActionConditionSplitterPosition": [
+                        {
+                            "pos": 486
+                        },
+                        {
+                            "pos": 482
+                        }
+                    ],
+                    "macroElseActionSplitterPosition": [
+                        {
+                            "pos": 450
+                        },
+                        {
+                            "pos": 0
+                        }
+                    ],
+                    "registerHotkeys": false,
+                    "pauseHotkey": [],
+                    "unpauseHotkey": [],
+                    "togglePauseHotkey": [],
+                    "conditions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "scene",
+                            "logic": 0,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "sceneSelection": {
+                                "type": 0,
+                                "name": "LiveStream",
+                                "canvasSelection": "Main"
+                            },
+                            "type": 10,
+                            "pattern": ".*Scene.*",
+                            "useTransitionTargetScene": false,
+                            "regexConfig": {
+                                "enable": true,
+                                "partial": false,
+                                "options": 0
+                            },
+                            "version": 1
+                        },
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "hotkey",
+                            "logic": 101,
+                            "durationModifier": {
+                                "time_constraint": 0,
+                                "seconds": {
+                                    "value": {
+                                        "value": 0.0,
+                                        "type": 0
+                                    },
+                                    "unit": 0,
+                                    "version": 1
+                                }
+                            },
+                            "desc": "Stop Recording for Replay",
+                            "keyBind": [
+                                {
+                                    "control": true,
+                                    "key": "OBS_KEY_NUM0"
+                                }
+                            ],
+                            "checkPressed": true
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "segmentSettings": {
+                                "collapsed": false,
+                                "varMappingExpanded": false,
+                                "useCustomLabel": false,
+                                "customLabel": "My label",
+                                "enabled": true,
+                                "version": 2,
+                                "varMappings": []
+                            },
+                            "id": "hotkey",
+                            "action": 0,
+                            "hotkeyType": 0,
+                            "hotkeyName": "SaveReplayBufferAllBranchOutputsHotkey",
+                            "key": 0,
+                            "left_shift": false,
+                            "right_shift": false,
+                            "left_ctrl": false,
+                            "right_ctrl": false,
+                            "left_alt": false,
+                            "right_alt": false,
+                            "left_meta": false,
+                            "right_meta": false,
+                            "duration": {
+                                "value": {
+                                    "value": 0.3,
+                                    "type": 0
+                                },
+                                "unit": 0,
+                                "version": 1
+                            },
+                            "onlyOBS": false,
+                            "version": 2
                         },
                         {
                             "segmentSettings": {
@@ -29811,7 +30828,7 @@
                     "name": "Activate Instant Replay on show",
                     "group": true,
                     "groupData": {
-                        "collapsed": false,
+                        "collapsed": true,
                         "size": 3
                     }
                 },
@@ -31829,7 +32846,7 @@
                             },
                             "filter": {
                                 "type": 0,
-                                "name": "BO: Replay Video Source"
+                                "name": ""
                             },
                             "condition": 0,
                             "settings": "",
@@ -31974,7 +32991,7 @@
                             },
                             "filter": {
                                 "type": 0,
-                                "name": "BO: Replay Video Source"
+                                "name": ""
                             },
                             "condition": 1,
                             "settings": "",
@@ -33044,8 +34061,8 @@
                 }
             ],
             "saveWindowGeo": true,
-            "windowPosX": 327,
-            "windowPosY": 44,
+            "windowPosX": 608,
+            "windowPosY": 85,
             "windowWidth": 1767,
             "windowHeight": 1177,
             "macroListMacroEditSplitterPosition": [
@@ -33130,7 +34147,15 @@
             "autoStartRecordTimer": false,
             "pauseRecordTimer": true
         },
-        "scripts-tool": [],
+        "scripts-tool": [
+            {
+                "path": "U:/_Personal/OBS/Packages/DivingOverlays/diving_overlays.py",
+                "settings": {
+                    "scoring_source": "divecalc",
+                    "divecalc_replay_enabled": true
+                }
+            }
+        ],
         "source-dock": {
             "docks": [
                 {
@@ -33150,7 +34175,7 @@
                     "properties": false,
                     "filters": false,
                     "textinput": false,
-                    "geometry": "AdnQywADAAAAAAAAAAAAFQAAAxQAAAHgAAAAAAAAAAD//////////wAAAAAAAAAACgAAAAAAAAAAFQAAAxQAAAHg",
+                    "geometry": "AdnQywADAAAAAAAAAAAAFQAAAxIAAAIUAAAAAAAAAAD//////////wAAAAEAAAAACgAAAAAAAAAAFQAAAxIAAAIU",
                     "split": "AAAA/wAAAAEAAAABAAAAHgD/////AQAAAAIA",
                     "window": "",
                     "dockarea": 8,
@@ -33174,7 +34199,7 @@
     "version": 2,
     "sources": [
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "----------------------------- Board Elements",
             "uuid": "6e97d659-7aee-4299-afbb-67a5c541a60d",
             "id": "scene",
@@ -33206,7 +34231,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "----------------------------- Board subscenes",
             "uuid": "ccdf3c3b-6338-4021-b616-f990e811f274",
             "id": "scene",
@@ -33238,7 +34263,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "----------------------------- Customizable Graphics",
             "uuid": "fc1483f9-8612-4a49-9ae9-dbf6b9a2c84c",
             "id": "scene",
@@ -33270,7 +34295,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "----------------------------- Misc",
             "uuid": "3dd02e16-0764-4a13-8fd7-7679338e77bd",
             "id": "scene",
@@ -33302,7 +34327,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "----------------------------- Overlays",
             "uuid": "92534779-21c7-4e69-920c-5757fa953b9e",
             "id": "scene",
@@ -33334,7 +34359,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "----------------------------- Scoreboard Main Scene",
             "uuid": "2ca98bf5-42e1-48ca-b62b-a1619dac94cf",
             "id": "scene",
@@ -33366,7 +34391,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "----------------------------- Stream Scenes",
             "uuid": "cd2a4f1d-b303-436e-b3e5-8edb74c8b631",
             "id": "scene",
@@ -33398,7 +34423,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "----------------------------- Video and Replay",
             "uuid": "8acd03cc-ac78-4919-ae21-e445f920b6a6",
             "id": "scene",
@@ -33430,7 +34455,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Active Video Source",
             "uuid": "eca4b1ce-8878-41c8-a909-df383d8b7063",
             "id": "scene",
@@ -33568,7 +34593,7 @@
                     {
                         "name": "Camera1",
                         "source_uuid": "9f47c5c9-a92d-4ca1-ae69-72862774b986",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -33631,7 +34656,7 @@
                     {
                         "name": "Play Repeats Scene",
                         "source_uuid": "86298232-cf3a-4870-b022-55d8ca533ce5",
-                        "visible": true,
+                        "visible": false,
                         "locked": true,
                         "rot": 0.0,
                         "scale_ref": {
@@ -33734,7 +34759,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "AutoHide_Background_Disabled",
             "uuid": "f043dc0d-289a-444d-a3bd-ad1c54509c1b",
             "id": "color_source",
@@ -33763,7 +34788,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "AutoHide_Function_Key",
             "uuid": "b3cb1963-5709-4d79-b521-bf5577944bca",
             "id": "text_gdiplus",
@@ -33797,7 +34822,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "AutoHide_Status",
             "uuid": "fc76bd3e-b361-4a85-9e0f-09e23157e03a",
             "id": "text_gdiplus",
@@ -33830,7 +34855,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Board Lists Design",
             "uuid": "96655686-b06e-43bb-a779-7ce316ba9fa2",
             "id": "scene",
@@ -33920,7 +34945,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardCountdown",
             "uuid": "4f7aa197-5e73-4307-bc7e-fe4ffd24fbe7",
             "id": "scene",
@@ -34238,7 +35263,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardEdge",
             "uuid": "694b4014-3c66-4cec-9b07-0d712ac6bcb9",
             "id": "text_gdiplus",
@@ -34266,7 +35291,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardEvent",
             "uuid": "7524b047-57d7-46e2-80fe-9d6407fd1269",
             "id": "scene",
@@ -36782,7 +37807,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardPenalty",
             "uuid": "ed51851c-2193-43ad-9694-b20d20bde551",
             "id": "text_gdiplus",
@@ -36825,7 +37850,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardPointsLabel",
             "uuid": "75692187-9cf4-44d0-980f-00bc454cfaa2",
             "id": "text_gdiplus",
@@ -36883,7 +37908,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardRank",
             "uuid": "b5ffacfa-caeb-438b-a2f3-99d8cd35e4e8",
             "id": "text_gdiplus",
@@ -36927,7 +37952,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardRankings",
             "uuid": "92794cdb-7da8-4cd9-8000-18d199384251",
             "id": "scene",
@@ -40308,7 +41333,7 @@
                             "duration": 0
                         },
                         "private_settings": {
-                            "collapsed": false
+                            "collapsed": true
                         }
                     },
                     {
@@ -40528,7 +41553,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardRankLabel",
             "uuid": "9e9fe61c-82a4-42cb-b400-43a183657e92",
             "id": "text_gdiplus",
@@ -40586,7 +41611,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardSchedule",
             "uuid": "168c510b-ec8f-4278-aae8-32fa36bc8c82",
             "id": "scene",
@@ -40790,7 +41815,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BoardTotalLabel",
             "uuid": "cede24aa-9515-48e0-9f91-194d23900445",
             "id": "text_gdiplus",
@@ -40848,7 +41873,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BottomOverlayGradient",
             "uuid": "ca9756ad-8470-44cd-be2e-2e2963932985",
             "id": "gradient_source",
@@ -40882,7 +41907,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "BottomOverlayImage",
             "uuid": "ce412af4-2a53-4a5e-b34b-5e2ba4b72675",
             "id": "image_source",
@@ -40909,7 +41934,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "Opacity",
                     "uuid": "fd509a00-c5f9-408b-8147-75439c0a6429",
                     "id": "color_key_filter",
@@ -40938,7 +41963,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Cam1",
             "uuid": "1a67d826-b042-4e1c-aadd-0814242eb60e",
             "id": "text_gdiplus",
@@ -40975,7 +42000,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Cam1_Active",
             "uuid": "d0f39ec8-a79a-48fc-a846-14c6257286e4",
             "id": "color_source",
@@ -41004,7 +42029,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Cam2",
             "uuid": "5ffabf51-a0de-41c3-a555-428cdef233db",
             "id": "text_gdiplus",
@@ -41041,7 +42066,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Cam2_Active",
             "uuid": "db9b75ec-e5c2-43c3-bee6-6b1b3d4b8aef",
             "id": "color_source",
@@ -41070,7 +42095,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Cam3",
             "uuid": "b27c4b6d-e848-4093-b660-df51eaef436a",
             "id": "text_gdiplus",
@@ -41107,7 +42132,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Cam3_Active",
             "uuid": "b8023d2f-67b9-4209-b6ab-f115db9a1b68",
             "id": "color_source",
@@ -41136,7 +42161,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Camera1",
             "uuid": "9f47c5c9-a92d-4ca1-ae69-72862774b986",
             "id": "scene",
@@ -41148,7 +42173,7 @@
                     {
                         "name": "VideoNotAvailable",
                         "source_uuid": "964cafdf-c360-4bea-b1ad-05292b0fc0d0",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -41258,7 +42283,7 @@
                     {
                         "name": "Main",
                         "source_uuid": "338932b9-d311-4cda-a4cf-319bb163b3ec",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -41340,7 +42365,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Camera2",
             "uuid": "c7039301-8443-4f9f-bfc7-cefcd3dbba64",
             "id": "scene",
@@ -41487,7 +42512,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Camera3",
             "uuid": "a3683749-7df4-4e53-9a3b-004490cff57d",
             "id": "scene",
@@ -41691,7 +42716,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "CountdownGradient",
             "uuid": "0bff4639-d1f4-468a-9496-14911830f04c",
             "id": "gradient_source",
@@ -41725,7 +42750,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "CountdownHeaderGradient",
             "uuid": "1c12291a-441c-4504-b8d9-5bcc36a8b674",
             "id": "gradient_source",
@@ -41759,14 +42784,13 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "CurrentlyPlaying",
             "uuid": "96cb033e-cab8-4be9-b839-1b128a12d73d",
             "id": "text_gdiplus",
             "versioned_id": "text_gdiplus_v2",
             "settings": {
                 "extents": true,
-                "text": "...Repeats...",
                 "font": {
                     "face": "Monofonto",
                     "flags": 0,
@@ -41775,7 +42799,8 @@
                 },
                 "align": "center",
                 "extents_cx": 550,
-                "extents_cy": 65
+                "extents_cy": 65,
+                "text": "...Instant Replay..."
             },
             "mixers": 0,
             "sync": 0,
@@ -41796,7 +42821,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Delay Video for Training - incomplete",
             "uuid": "b825cf9c-3746-47dc-8a3b-7b0b627db5e8",
             "id": "scene",
@@ -41943,7 +42968,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "DisableOvrl_Background_Disabled",
             "uuid": "342196c7-e1bb-4182-a321-70a53add0f67",
             "id": "color_source",
@@ -41972,7 +42997,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "DisableOvrl_Function_Key",
             "uuid": "65db6637-9019-4452-8a5b-40bb89de303e",
             "id": "text_gdiplus",
@@ -42006,7 +43031,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "DisableOvrl_Status",
             "uuid": "d41e4c36-b1f7-4a32-bec4-09f1ac4b565e",
             "id": "text_gdiplus",
@@ -42039,7 +43064,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Diver",
             "uuid": "26da7cc4-6e97-4e1f-b20e-1c339c5e1611",
             "id": "text_gdiplus",
@@ -42082,7 +43107,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Diver1",
             "uuid": "01d469d5-560f-432e-ad05-262f5a6fce37",
             "id": "text_gdiplus",
@@ -42125,7 +43150,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Diver2",
             "uuid": "97a4b830-5eb9-46f4-b98a-7759bb32ca20",
             "id": "text_gdiplus",
@@ -42168,7 +43193,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Dive_Board",
             "uuid": "a258ddaa-fa01-4ce0-b759-ff9f732b1969",
             "id": "text_gdiplus",
@@ -42207,7 +43232,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "invisible",
                     "uuid": "9590b921-ab16-438d-ac14-b7fb83396c6f",
                     "id": "color_filter",
@@ -42236,7 +43261,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Dive_Board_Label",
             "uuid": "804c0926-9849-4092-b19c-799870ba9c17",
             "id": "text_gdiplus",
@@ -42294,7 +43319,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Dive_Description",
             "uuid": "ddb44afd-310f-45a3-a473-922baeac023a",
             "id": "text_gdiplus",
@@ -42333,7 +43358,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "invisible",
                     "uuid": "d9b37fc1-1546-49c2-95d2-316c9a04696c",
                     "id": "color_filter",
@@ -42362,7 +43387,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Dive_Difficulty",
             "uuid": "dd82c2dd-6647-495b-b514-b6d7f04f8dc9",
             "id": "text_gdiplus",
@@ -42401,7 +43426,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "invisible",
                     "uuid": "0991eda4-1bc1-4bd9-ae2c-2eefa6ff0af5",
                     "id": "color_filter",
@@ -42430,7 +43455,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Dive_Difficulty_Label",
             "uuid": "7cebab8c-9cb4-4c44-9885-5206a6844788",
             "id": "text_gdiplus",
@@ -42489,7 +43514,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Dive_Number",
             "uuid": "b375843f-1f51-46b7-b8c8-87a893e98dc5",
             "id": "text_gdiplus",
@@ -42528,7 +43553,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "invisible",
                     "uuid": "39a90575-9b66-48fa-852b-28c898df056b",
                     "id": "color_filter",
@@ -42557,7 +43582,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Dive_Number_Label",
             "uuid": "01a4004f-8113-47e0-899f-d5c200e00bab",
             "id": "text_gdiplus",
@@ -42615,7 +43640,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Diving Art for projector",
             "uuid": "9638658d-8253-4738-8a05-ba3b95dfcb4d",
             "id": "image_source",
@@ -42642,7 +43667,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "DivingVideo",
             "uuid": "e8d6bfbb-29da-4280-9f36-94194a9702f0",
             "id": "ffmpeg_source",
@@ -42682,7 +43707,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventAB_A_Label",
             "uuid": "752c9678-3184-4018-9150-49d175cdd10e",
             "id": "text_gdiplus",
@@ -42715,7 +43740,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventAB_Background",
             "uuid": "4e88f961-b7f8-499e-a010-f8218c248781",
             "id": "color_source",
@@ -42744,7 +43769,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventAB_Background_A_Active",
             "uuid": "0a40ba33-dcad-4a52-818e-a43f8130e92a",
             "id": "color_source",
@@ -42773,7 +43798,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventAB_Background_B_Active",
             "uuid": "b8a9772f-7b71-482f-8901-8e9d207ec00f",
             "id": "color_source",
@@ -42802,7 +43827,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventAB_B_Label",
             "uuid": "d6ba8a1b-1d1b-4e1a-b130-61664400c020",
             "id": "text_gdiplus",
@@ -42835,7 +43860,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventAB_Function_Key",
             "uuid": "74734150-315d-40eb-b4a0-7fa4a1f162a7",
             "id": "text_gdiplus",
@@ -42869,7 +43894,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventData",
             "uuid": "ea6391eb-1683-4e80-9f7a-9184c3f075f3",
             "id": "text_gdiplus",
@@ -42913,7 +43938,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventDiverNo",
             "uuid": "6df58dd8-6cfc-4e0e-a787-4495b9e730f4",
             "id": "text_gdiplus",
@@ -42957,7 +43982,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventInfo_Background_Individual",
             "uuid": "1afc2b55-33a4-47b3-8ad9-46e1a5f63e45",
             "id": "color_source",
@@ -42986,7 +44011,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventInfo_Background_Synchro",
             "uuid": "23aa4c61-cc4a-4b14-815c-dd606257c767",
             "id": "color_source",
@@ -43015,7 +44040,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventRoundNo",
             "uuid": "d3df27bf-8033-4efb-8bed-ffec080b14da",
             "id": "text_gdiplus",
@@ -43059,7 +44084,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventStartCountdown",
             "uuid": "d311fcec-7a0d-4bc1-9a6c-dfd0ea31df89",
             "id": "browser_source",
@@ -43099,7 +44124,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "EventTitle",
             "uuid": "61f6ff85-ebfc-4629-bc89-f339abaf038e",
             "id": "text_gdiplus",
@@ -43143,7 +44168,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Event_Type",
             "uuid": "3de747ec-776f-4544-8159-e094238681e9",
             "id": "text_gdiplus",
@@ -43176,7 +44201,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ExecutionScoresBackground",
             "uuid": "aa8c9462-eb68-4af9-b707-8b0b0388620b",
             "id": "color_source",
@@ -43205,7 +44230,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ExecutionScoresImage",
             "uuid": "82b31389-5cee-4c63-adff-3e3a799feaf5",
             "id": "image_source",
@@ -43232,7 +44257,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Execution_Label",
             "uuid": "44affdb9-df63-479a-9199-1bbb6bd108a5",
             "id": "text_gdiplus",
@@ -43290,7 +44315,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Execution_Label_Board",
             "uuid": "25b976c9-f2cc-47cd-8471-876f20325ac2",
             "id": "text_gdiplus",
@@ -43348,7 +44373,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Fake Camera",
             "uuid": "491e3efb-1b9a-4f09-b03a-c29cbda99463",
             "id": "ffmpeg_source",
@@ -43387,7 +44412,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Flag",
             "uuid": "cf5d42cb-417a-4bbc-82c9-fe7f4e7c581c",
             "id": "image_source",
@@ -43415,7 +44440,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Flag1",
             "uuid": "e048df52-289d-4e5c-b277-ff7d6b807ac5",
             "id": "image_source",
@@ -43443,7 +44468,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Flag2",
             "uuid": "98efa989-6f81-4242-a84c-40855a39528c",
             "id": "image_source",
@@ -43471,7 +44496,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "GradientBoard",
             "uuid": "4b8054d7-d53b-48bd-a844-d0180eccfa6b",
             "id": "gradient_source",
@@ -43505,7 +44530,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "GroupShapeHolder",
             "uuid": "f19d3455-e483-4682-a643-b5f4490eb15b",
             "id": "gradient_source",
@@ -43539,7 +44564,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Head",
             "uuid": "1c7d0cec-0c3e-490d-88f8-7014e94c4cae",
             "id": "text_gdiplus",
@@ -43567,7 +44592,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "HeaderArt",
             "uuid": "7ac1f12b-5d98-4666-ab09-a30efca1d429",
             "id": "image_source",
@@ -43594,7 +44619,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "HeaderGradient1",
             "uuid": "e65cf02d-a4b7-49ce-87ed-9d64f3bfd2dc",
             "id": "gradient_source",
@@ -43627,7 +44652,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "HeaderGradient2",
             "uuid": "c29bb11f-e12c-4b3c-899b-98f2e9f00d30",
             "id": "gradient_source",
@@ -43660,7 +44685,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "HeaderLogo",
             "uuid": "3b35f467-6ac5-4a74-b2ff-5ff4a07f2983",
             "id": "image_source",
@@ -43687,7 +44712,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "HideOvrl_Function_Key",
             "uuid": "7ec550d5-e087-4df5-ac74-afbc2573bf57",
             "id": "text_gdiplus",
@@ -43720,7 +44745,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "HideOvrl_Label",
             "uuid": "ad13439b-c595-496c-83c9-5f275fc4e8ed",
             "id": "text_gdiplus",
@@ -43753,7 +44778,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Image",
             "uuid": "a937784b-4e48-4249-ad70-07caea478d89",
             "id": "image_source",
@@ -43780,7 +44805,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "Color Correction",
                     "uuid": "ee744d5b-505b-4fd0-84e6-680ac2983c03",
                     "id": "color_filter",
@@ -43810,7 +44835,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "InProgr_Background",
             "uuid": "1dd514b8-2503-412f-8cbf-e72f373f33ce",
             "id": "color_source",
@@ -43839,7 +44864,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "InProgr_Background_Active",
             "uuid": "c3703ef5-a17b-4242-8e6e-41573caeeae2",
             "id": "color_source",
@@ -43868,7 +44893,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "InProgr_Function_Key",
             "uuid": "25f495e3-472c-47c3-943e-b13a4e3bce3f",
             "id": "text_gdiplus",
@@ -43902,7 +44927,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "InProgr_Label",
             "uuid": "965ec911-e8dc-4505-9d0a-982db6f22925",
             "id": "text_gdiplus",
@@ -43935,7 +44960,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Instant Replay Scene",
             "uuid": "9c94fcb1-1bef-455b-bb36-baf88eff38ff",
             "id": "scene",
@@ -44142,7 +45167,7 @@
             }
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Iriun Camera 2",
             "uuid": "2c2dcbaf-65af-49e7-b695-dbbe2fe47a98",
             "id": "dshow_input",
@@ -44184,7 +45209,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Iriun Camera 3",
             "uuid": "ec46566c-d751-437f-9d10-3c56d20d6912",
             "id": "dshow_input",
@@ -44223,7 +45248,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Iriun Camera Main",
             "uuid": "1aa1732f-096a-45e9-9e24-ab004a3c5478",
             "id": "dshow_input",
@@ -44268,7 +45293,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JE1",
             "uuid": "0b82d3e9-dcea-4da3-8adc-98345054b735",
             "id": "text_gdiplus",
@@ -44326,7 +45351,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JE2",
             "uuid": "0729223d-4e6d-4268-b7ae-9098eb5e5888",
             "id": "text_gdiplus",
@@ -44384,7 +45409,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JE3",
             "uuid": "cf1bcf43-27d1-4f24-8aba-f4dc717acf32",
             "id": "text_gdiplus",
@@ -44443,7 +45468,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JE4",
             "uuid": "0e2cd2a7-2c0c-4b21-b1e1-74e422df6e29",
             "id": "text_gdiplus",
@@ -44502,7 +45527,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JE5",
             "uuid": "703b6305-d4e4-4cb3-abc2-695e1b445fbe",
             "id": "text_gdiplus",
@@ -44560,7 +45585,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JE6",
             "uuid": "0936f23f-b9ed-427f-8b99-e8a0354f2be4",
             "id": "text_gdiplus",
@@ -44618,7 +45643,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JE7",
             "uuid": "05ff34dc-a0f5-48db-a7f2-6906313146a9",
             "id": "text_gdiplus",
@@ -44677,7 +45702,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOE1",
             "uuid": "b48fb589-26a0-4b8c-b584-d851dc1596f9",
             "id": "text_gdiplus",
@@ -44737,7 +45762,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOE2",
             "uuid": "94c0387a-8a60-474a-a52d-6cd89ba7c51e",
             "id": "text_gdiplus",
@@ -44797,7 +45822,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOE3",
             "uuid": "24c16c0f-1394-4b47-b4b5-2b2b36ef7792",
             "id": "text_gdiplus",
@@ -44857,7 +45882,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOE4",
             "uuid": "d8399f11-9324-4de2-ab90-dfaf2c262907",
             "id": "text_gdiplus",
@@ -44917,7 +45942,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOE5",
             "uuid": "8d602145-6d35-40e8-8396-3105a7b1c068",
             "id": "text_gdiplus",
@@ -44977,7 +46002,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOE6",
             "uuid": "bc137927-d3aa-45a1-bc32-8a37fd3017f6",
             "id": "text_gdiplus",
@@ -45037,7 +46062,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOE7",
             "uuid": "29db23ed-0287-417e-a61d-8d2e18a5f561",
             "id": "text_gdiplus",
@@ -45097,7 +46122,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOS1",
             "uuid": "f5064a40-0667-44a4-97ad-0d58f9550c44",
             "id": "text_gdiplus",
@@ -45157,7 +46182,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOS2",
             "uuid": "2905ace6-6d9d-4ef1-a4ce-37220280d931",
             "id": "text_gdiplus",
@@ -45217,7 +46242,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOS3",
             "uuid": "5658e94e-4bed-45d4-bc82-6134e649bd8b",
             "id": "text_gdiplus",
@@ -45277,7 +46302,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOS4",
             "uuid": "ebdb22d6-2242-45ea-8fa9-a37db9096fa0",
             "id": "text_gdiplus",
@@ -45337,7 +46362,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JOS5",
             "uuid": "07b424fa-7dbf-4b0f-a209-a942c01bd4ce",
             "id": "text_gdiplus",
@@ -45397,7 +46422,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JS1",
             "uuid": "b209d5be-5243-4377-b114-6c633e06c7c9",
             "id": "text_gdiplus",
@@ -45455,7 +46480,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JS2",
             "uuid": "d57f89bb-3ac8-46f4-abec-448b4aab404b",
             "id": "text_gdiplus",
@@ -45513,7 +46538,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JS3",
             "uuid": "cb26f87c-6f73-44c3-9ad7-db691be15e91",
             "id": "text_gdiplus",
@@ -45571,7 +46596,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JS4",
             "uuid": "de89bd36-3232-45ba-991d-925eaef9f74f",
             "id": "text_gdiplus",
@@ -45629,7 +46654,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "JS5",
             "uuid": "9e59d296-6191-4410-bc65-00fafb84350d",
             "id": "text_gdiplus",
@@ -45687,7 +46712,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Line",
             "uuid": "120e663c-0f39-4f5d-af5b-63a505957b20",
             "id": "color_source",
@@ -45716,7 +46741,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "LineBoard",
             "uuid": "4abd7835-c027-45ef-9831-d77fea9eae32",
             "id": "color_source",
@@ -45745,7 +46770,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "LiveStream",
             "uuid": "7041de5a-cf2e-4511-83f9-cd1de7170350",
             "id": "scene",
@@ -45812,7 +46837,7 @@
                     {
                         "name": "Instant Replay Scene",
                         "source_uuid": "9c94fcb1-1bef-455b-bb36-baf88eff38ff",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -45957,7 +46982,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "LiveStream - Rankings",
             "uuid": "f68c498c-7064-4683-9459-1e0006a90e7a",
             "id": "scene",
@@ -46114,7 +47139,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "LiveStream - Rankings - Clean",
             "uuid": "91b59dd7-cfe4-464f-aafd-ede050ffdb70",
             "id": "scene",
@@ -46208,7 +47233,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "LiveStream - Waiting for Event - Clean",
             "uuid": "7bf21d81-f42b-432c-a8df-a214aa828d61",
             "id": "scene",
@@ -46302,7 +47327,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "LiveStream - Waiting for Event - Countdown",
             "uuid": "b64234e0-aeae-405d-82a3-635fa88d9baa",
             "id": "scene",
@@ -46461,7 +47486,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "LiveStream - Waiting for Event - Schedule",
             "uuid": "5aa17b56-62df-41ff-836f-0a64e6b6b3d3",
             "id": "scene",
@@ -46620,7 +47645,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "LiveStream - Waiting for Event - Start List",
             "uuid": "8e162dc3-13a1-4feb-96d8-f959a60406b4",
             "id": "scene",
@@ -46779,7 +47804,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Livestream Elements Design",
             "uuid": "664008db-d6fd-4c39-9c78-df8f55978f95",
             "id": "scene",
@@ -48042,7 +49067,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Livestream Lists Header Design",
             "uuid": "f2c5e449-f503-4ef4-9764-369881b5b870",
             "id": "scene",
@@ -48354,7 +49379,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Main",
             "uuid": "338932b9-d311-4cda-a4cf-319bb163b3ec",
             "id": "dshow_input",
@@ -48389,7 +49414,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Next Event Countdown",
             "uuid": "a5268eb1-f21a-4eeb-bc0b-6e293c349af8",
             "id": "text_gdiplus",
@@ -48431,7 +49456,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Next Event Title",
             "uuid": "f8583300-e5c1-42d8-8e3f-7bbbd6af8f88",
             "id": "text_gdiplus",
@@ -48476,7 +49501,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "No_Of_Judges",
             "uuid": "e10adb45-e883-4010-926f-9f7bbaad6320",
             "id": "text_gdiplus",
@@ -48509,7 +49534,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "OnAir_Background",
             "uuid": "b3df67ef-c400-41f3-9b87-893db5b4a3b0",
             "id": "color_source",
@@ -48538,7 +49563,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "OnAir_Background_Active",
             "uuid": "f24731ed-defc-4e63-92cd-61df01774822",
             "id": "color_source",
@@ -48567,7 +49592,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "OnAir_Status",
             "uuid": "bd00c2f0-2fc8-4438-9ea6-0bc10e02f027",
             "id": "text_gdiplus",
@@ -48600,7 +49625,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Osmuo",
             "uuid": "c9794f77-8645-45ff-9a7c-0178b212f425",
             "id": "dshow_input",
@@ -48636,7 +49661,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "OverlayCountdown",
             "uuid": "cf472746-3f88-4e49-ade9-6c8a7607c7c8",
             "id": "scene",
@@ -49182,7 +50207,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "OverlayEvent",
             "uuid": "9ebbc7a5-c039-48ac-b658-0823e51e7112",
             "id": "scene",
@@ -55962,7 +56987,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "OverlayRankings",
             "uuid": "b4e710cc-fce5-46bf-be2e-900634923e80",
             "id": "scene",
@@ -56245,7 +57270,7 @@
                             "duration": 0
                         },
                         "private_settings": {
-                            "collapsed": true
+                            "collapsed": false
                         }
                     },
                     {
@@ -56644,7 +57669,7 @@
                             "duration": 300
                         },
                         "private_settings": {
-                            "collapsed": false
+                            "collapsed": true
                         }
                     },
                     {
@@ -60612,7 +61637,7 @@
                     {
                         "name": "ListLine 1",
                         "source_uuid": "eafdfdc7-a8fb-436f-881e-cbf8532cf80a",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -60724,7 +61749,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "OverlaySchedule",
             "uuid": "36d7754a-b179-4027-986a-4662262d5107",
             "id": "scene",
@@ -61095,7 +62120,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Penalty",
             "uuid": "867fdd20-21f9-40c2-94bc-719d390b2f12",
             "id": "text_gdiplus",
@@ -61138,7 +62163,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Play Repeats",
             "uuid": "4f1aca02-2b65-4664-94f9-dc4a234257e0",
             "id": "vlc_source",
@@ -61183,7 +62208,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Play Repeats Scene",
             "uuid": "86298232-cf3a-4870-b022-55d8ca533ce5",
             "id": "scene",
@@ -61330,7 +62355,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PlayLatestRecording",
             "uuid": "95fe9a6f-91a5-4b9b-93ea-d5faa07994fc",
             "id": "ffmpeg_source",
@@ -61345,7 +62370,7 @@
                         "value": "C:\\_Personal\\OBSStudioData\\Replay\\FakeForReplay (15).mkv"
                     }
                 ],
-                "local_file": "U:\\_Personal\\OBS\\Packages\\DivingOverlays\\Replay/ForReplay (443).mp4",
+                "local_file": "U:\\_Personal\\OBS\\Packages\\DivingOverlays\\Replay/ReplayBufferOutput.mkv",
                 "is_local_file": true,
                 "looping": false,
                 "clear_on_media_end": false,
@@ -61370,11 +62395,7 @@
                 "libobs.monitor-off": [],
                 "libobs.push-to-mute": [],
                 "libobs.push-to-talk": [],
-                "MediaSource.Restart": [
-                    {
-                        "key": "OBS_KEY_R"
-                    }
-                ],
+                "MediaSource.Restart": [],
                 "MediaSource.Play": [],
                 "MediaSource.Pause": [],
                 "MediaSource.Stop": [],
@@ -61389,7 +62410,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "Set Latest from dir",
                     "uuid": "f147bcdf-8482-458e-bc9e-975fe1546087",
                     "id": "dir_watch_media",
@@ -61421,7 +62442,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Points",
             "uuid": "cdca90ea-3ce2-42ea-8afc-9ede8c3cf97e",
             "id": "text_gdiplus",
@@ -61464,7 +62485,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Points_Background",
             "uuid": "4bda08bf-9b35-43e3-ba4b-8dc4a1965b75",
             "id": "color_source",
@@ -61493,7 +62514,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Points_Label",
             "uuid": "9a541957-d26d-4c97-ab49-310f5791e756",
             "id": "text_gdiplus",
@@ -61551,7 +62572,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Position_Rank",
             "uuid": "974aa6b5-1456-442f-90a7-7a562296d430",
             "id": "text_gdiplus",
@@ -61595,7 +62616,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PostEvent_Background",
             "uuid": "deaeb6e7-4242-4b7e-8e5c-b946d3b814f5",
             "id": "color_source",
@@ -61624,7 +62645,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PostEvent_Background_Active",
             "uuid": "17d0af00-7804-4ab5-ae79-7dd02f243a89",
             "id": "color_source",
@@ -61653,7 +62674,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PostEvent_Event_Completed",
             "uuid": "a5448519-0ec8-496c-837d-b6e7da459de4",
             "id": "color_source",
@@ -61682,7 +62703,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PostEvent_Function_Key",
             "uuid": "9bbaa5dc-4f3c-4e18-b6f6-195180e229a8",
             "id": "text_gdiplus",
@@ -61716,7 +62737,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PostEvent_Label",
             "uuid": "7d3a798d-b35c-47c2-8de7-fb963ea4cbcd",
             "id": "text_gdiplus",
@@ -61749,7 +62770,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PreEvent_Background",
             "uuid": "d0e3d105-49b6-4fb1-b82e-f735e6ee69c4",
             "id": "color_source",
@@ -61778,7 +62799,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PreEvent_Background_Active",
             "uuid": "5318cf3e-27ab-4fad-bf90-44ae7ee925e3",
             "id": "color_source",
@@ -61807,7 +62828,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PreEvent_Function_Key",
             "uuid": "87580db0-ae3a-471f-a0aa-67d359fb871e",
             "id": "text_gdiplus",
@@ -61841,7 +62862,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "PreEvent_Label",
             "uuid": "219154c0-8bca-4d38-be53-b9b6ee062a64",
             "id": "text_gdiplus",
@@ -61874,7 +62895,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Projector Screen - Rankings",
             "uuid": "2108623e-a3a1-4a58-9e7a-bb3cda0ffc65",
             "id": "scene",
@@ -62135,7 +63156,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ProjectorScreen",
             "uuid": "f8236e39-811b-4269-b750-884e4a075614",
             "id": "scene",
@@ -62225,7 +63246,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ProjectorScreen - Waiting for Event",
             "uuid": "89a3cd0b-b001-4934-810a-de1efea3cf9d",
             "id": "scene",
@@ -62410,7 +63431,7 @@
                     {
                         "name": "BoardRankings",
                         "source_uuid": "92794cdb-7da8-4cd9-8000-18d199384251",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -62542,16 +63563,8 @@
                 "OBSBasic.SelectScene": [],
                 "libobs.show_scene_item.3": [],
                 "libobs.hide_scene_item.3": [],
-                "libobs.show_scene_item.2": [
-                    {
-                        "key": "OBS_KEY_NUMASTERISK"
-                    }
-                ],
-                "libobs.hide_scene_item.2": [
-                    {
-                        "key": "OBS_KEY_NUMASTERISK"
-                    }
-                ],
+                "libobs.show_scene_item.2": [],
+                "libobs.hide_scene_item.2": [],
                 "libobs.show_scene_item.7": [],
                 "libobs.hide_scene_item.7": [],
                 "libobs.show_scene_item.6": [],
@@ -62567,7 +63580,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ProjectorScreen Composite",
             "uuid": "520c80cc-b913-4aed-9e19-978250046afd",
             "id": "scene",
@@ -62579,7 +63592,7 @@
                     {
                         "name": "Play Repeats Scene",
                         "source_uuid": "86298232-cf3a-4870-b022-55d8ca533ce5",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -62634,7 +63647,7 @@
                     {
                         "name": "Projector Screen - Rankings",
                         "source_uuid": "2108623e-a3a1-4a58-9e7a-bb3cda0ffc65",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -62697,7 +63710,7 @@
                     {
                         "name": "ProjectorScreen",
                         "source_uuid": "f8236e39-811b-4269-b750-884e4a075614",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -62823,7 +63836,7 @@
                     {
                         "name": "Instant Replay Scene",
                         "source_uuid": "9c94fcb1-1bef-455b-bb36-baf88eff38ff",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -62921,7 +63934,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rec_Background_Active",
             "uuid": "3c1414d8-fe80-400e-9e51-7bb3f40b7646",
             "id": "color_source",
@@ -62950,7 +63963,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rec_Function_Key",
             "uuid": "8bd09c11-2be6-4fa8-9dfc-9418a998551a",
             "id": "text_gdiplus",
@@ -62984,7 +63997,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rec_Status",
             "uuid": "5e03d04b-5549-46be-a32c-84200199c09c",
             "id": "text_gdiplus",
@@ -63017,7 +64030,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Reference",
             "uuid": "0c4b55a0-907a-4dbd-b7c7-8c75f7cdbf98",
             "id": "text_gdiplus",
@@ -63045,7 +64058,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Replay Indicator",
             "uuid": "7dbbb595-3b94-412b-9b79-1abcc3a3e979",
             "id": "image_source",
@@ -63072,7 +64085,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "Color Key",
                     "uuid": "8ac5f77f-e59c-49fc-9ffd-73aecbfc5136",
                     "id": "color_key_filter",
@@ -63104,7 +64117,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Replay Scene 1",
             "uuid": "449c3046-7cef-4dfb-bd2f-33ba9d7d97fd",
             "id": "scene",
@@ -63246,12 +64259,12 @@
             "push-to-talk-delay": 0,
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
-                "RS1: HideVideo on Finish": [],
-                "RS1: HideVideo on Finish Hold": [],
                 "libobs.show_scene_item.1": [],
                 "libobs.hide_scene_item.1": [],
                 "libobs.show_scene_item.2": [],
-                "libobs.hide_scene_item.2": []
+                "libobs.hide_scene_item.2": [],
+                "RS1: HideVideo on Finish": [],
+                "RS1: HideVideo on Finish Hold": []
             },
             "deinterlace_mode": 0,
             "deinterlace_field_order": 0,
@@ -63264,7 +64277,7 @@
             },
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "RS1: HideVideo on Finish",
                     "uuid": "31dbfff4-34ba-4742-bb0c-59c07701a947",
                     "id": "move_source_filter",
@@ -63304,7 +64317,7 @@
                         "simultaneous_move": "",
                         "source": "PlayLatestRecording",
                         "start_trigger": 12,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 0.000 y 0.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 bounds: x 0.000 y 0.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 0,
                         "transform": false
                     },
@@ -63329,7 +64342,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Replay Scene 2",
             "uuid": "464d0783-8e02-4075-b43e-c3ba3bbb5f2c",
             "id": "scene",
@@ -63487,10 +64500,10 @@
             "push-to-talk-delay": 0,
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
-                "RS2: HideVideo on Finish": [],
-                "RS2: HideVideo on Finish Hold": [],
                 "libobs.show_scene_item.1": [],
                 "libobs.hide_scene_item.1": [],
+                "RS2: HideVideo on Finish": [],
+                "RS2: HideVideo on Finish Hold": [],
                 "libobs.show_scene_item.2": [],
                 "libobs.hide_scene_item.2": []
             },
@@ -63502,7 +64515,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "RS2: HideVideo on Finish",
                     "uuid": "c49aa2b8-11c0-4dfc-8203-6fa1c4864738",
                     "id": "move_source_filter",
@@ -63541,7 +64554,7 @@
                         },
                         "source": "PlayLatestRecording",
                         "start_trigger": 12,
-                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 bounds: x 0.000 y 0.000 crop: l 0 t 0 r 0 b 0",
+                        "transform_text": "pos: x 0.0 y 0.0 rot: 0.0 scale: x 1.000 y 1.000 crop: l 0 t 0 r 0 b 0",
                         "duration": 0,
                         "transform": false
                     },
@@ -63566,7 +64579,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Replay Scene 3",
             "uuid": "24697f9d-4ec0-4ceb-a2bf-96808bb0251b",
             "id": "scene",
@@ -63578,7 +64591,7 @@
                     {
                         "name": "PlayLatestRecording",
                         "source_uuid": "95fe9a6f-91a5-4b9b-93ea-d5faa07994fc",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -63651,7 +64664,7 @@
                     {
                         "name": "ReplaySign",
                         "source_uuid": "8ac73844-f196-43cc-8576-f781a870f68b",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -63741,7 +64754,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "RS3: HideVideo on Finish",
                     "uuid": "c9ec89b6-68fa-4529-86b0-2e770218fab0",
                     "id": "move_source_filter",
@@ -63806,7 +64819,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ReplaySign",
             "uuid": "8ac73844-f196-43cc-8576-f781a870f68b",
             "id": "image_source",
@@ -63833,7 +64846,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "Chroma Key",
                     "uuid": "bbd50fd9-314e-46fb-9aad-3dcf02909436",
                     "id": "chroma_key_filter",
@@ -63864,7 +64877,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ReShowOvrl_Function_Key",
             "uuid": "48effb40-ac18-4ff4-a300-33186f4947a2",
             "id": "text_gdiplus",
@@ -63897,7 +64910,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ReShowOvrl_Label",
             "uuid": "5ebf0326-e130-4441-b778-021710d1dc86",
             "id": "text_gdiplus",
@@ -63930,7 +64943,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_EventTitle",
             "uuid": "63d4f052-28e7-4761-9bae-ab4667835b45",
             "id": "text_gdiplus",
@@ -63973,7 +64986,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Gradient",
             "uuid": "008b2202-0fd8-4c1f-a087-9c2175f8f966",
             "id": "gradient_source",
@@ -64007,7 +65020,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_LineImage",
             "uuid": "ee88c790-71be-45b6-a104-eae22fc201c6",
             "id": "image_source",
@@ -64034,7 +65047,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "Opacity",
                     "uuid": "c7754b1e-ed70-4a12-8966-2ac3a6d26ed1",
                     "id": "color_key_filter",
@@ -64063,7 +65076,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_LineShapeHolder",
             "uuid": "44942a2e-d026-44ab-ad10-8b5eb6b4e526",
             "id": "gradient_source",
@@ -64097,14 +65110,13 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_ListType",
             "uuid": "9b4ded8e-3de6-407f-a308-b9c78bd01d49",
             "id": "text_gdiplus",
             "versioned_id": "text_gdiplus_v3",
             "settings": {
                 "extents": false,
-                "text": " ",
                 "font": {
                     "face": "DejaVu Sans Condensed",
                     "style": "Bold",
@@ -64119,7 +65131,8 @@
                 "bk_opacity": 0,
                 "extents_wrap": false,
                 "extents_cx": 1300,
-                "extents_cy": 70
+                "extents_cy": 70,
+                "text": " "
             },
             "mixers": 0,
             "sync": 0,
@@ -64140,7 +65153,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_MeetTitle",
             "uuid": "fd8301ec-a3f8-402b-b532-adc0e70f2ade",
             "id": "text_gdiplus",
@@ -64183,7 +65196,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 1",
             "uuid": "ebec8773-538b-477f-9baf-a3cf0007237b",
             "id": "text_gdiplus",
@@ -64226,7 +65239,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 10",
             "uuid": "7a8bf89a-e2e5-4b3e-ac4a-855a08a030b8",
             "id": "text_gdiplus",
@@ -64269,7 +65282,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 2",
             "uuid": "cd0b0d0c-3650-4951-a970-1b641e0ef67a",
             "id": "text_gdiplus",
@@ -64312,7 +65325,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 3",
             "uuid": "5298bb1d-9a52-450a-9608-730fdade0691",
             "id": "text_gdiplus",
@@ -64355,7 +65368,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 4",
             "uuid": "b17f0669-409c-4c6a-858e-577f26cbd294",
             "id": "text_gdiplus",
@@ -64398,7 +65411,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 5",
             "uuid": "0e2dceba-4bd0-475e-82a0-57aefc2deef4",
             "id": "text_gdiplus",
@@ -64441,7 +65454,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 6",
             "uuid": "c13fdcf4-fef9-408c-a20b-355e46498618",
             "id": "text_gdiplus",
@@ -64484,7 +65497,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 7",
             "uuid": "789f7055-2be1-4fd3-adc1-2d7a18f5db1e",
             "id": "text_gdiplus",
@@ -64527,7 +65540,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 8",
             "uuid": "0996ddf9-d73b-444d-bfbc-ea2cba7bcd58",
             "id": "text_gdiplus",
@@ -64570,7 +65583,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Name 9",
             "uuid": "f353d034-d124-421d-b242-5e8cb00902d7",
             "id": "text_gdiplus",
@@ -64613,7 +65626,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 1",
             "uuid": "0ed083ce-47c7-4447-8d82-90e1b8d87dce",
             "id": "text_gdiplus",
@@ -64659,7 +65672,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 10",
             "uuid": "b321ea05-5f3b-4ee7-9748-2bf4f2987cfb",
             "id": "text_gdiplus",
@@ -64702,7 +65715,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 2",
             "uuid": "4f65a92e-a30e-47e7-bba0-76c2e9d52ad9",
             "id": "text_gdiplus",
@@ -64745,7 +65758,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 3",
             "uuid": "59c06ea2-7266-4248-b60e-d092e6d66a77",
             "id": "text_gdiplus",
@@ -64788,7 +65801,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 4",
             "uuid": "a4dd9d55-343e-4677-bc76-10e5cf2e7269",
             "id": "text_gdiplus",
@@ -64831,7 +65844,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 5",
             "uuid": "4591163a-9bd0-4b76-8024-94102c1f17bc",
             "id": "text_gdiplus",
@@ -64874,7 +65887,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 6",
             "uuid": "5243dbcd-4fa7-4cb5-ba48-cd6f71d1552c",
             "id": "text_gdiplus",
@@ -64917,7 +65930,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 7",
             "uuid": "d012bf38-5b46-4cd7-b59a-ca070f6356f2",
             "id": "text_gdiplus",
@@ -64960,7 +65973,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 8",
             "uuid": "613d70ed-f100-4862-9098-495b0609eb2d",
             "id": "text_gdiplus",
@@ -65003,7 +66016,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Rank 9",
             "uuid": "02e9aef9-2343-42d0-b1fe-9f8b36d56080",
             "id": "text_gdiplus",
@@ -65046,7 +66059,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 1",
             "uuid": "7fac83bd-13f4-4fd4-b3d7-9a7686ab25f7",
             "id": "text_gdiplus",
@@ -65088,7 +66101,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 10",
             "uuid": "e3530357-c8c6-4d7f-bedf-b36a0da5ecd2",
             "id": "text_gdiplus",
@@ -65130,7 +66143,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 2",
             "uuid": "84c20efe-12db-481a-ac34-cd7c3989f4c2",
             "id": "text_gdiplus",
@@ -65172,7 +66185,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 3",
             "uuid": "e317366c-c2e8-4688-b964-9aa172b6be0f",
             "id": "text_gdiplus",
@@ -65214,7 +66227,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 4",
             "uuid": "a9221578-1c05-4448-bf1f-55ac0e7d9284",
             "id": "text_gdiplus",
@@ -65256,7 +66269,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 5",
             "uuid": "1da29e67-97f6-422d-9c02-90ae807c4897",
             "id": "text_gdiplus",
@@ -65298,7 +66311,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 6",
             "uuid": "d6c2cb71-11c4-48a1-b849-b1598dc18fba",
             "id": "text_gdiplus",
@@ -65340,7 +66353,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 7",
             "uuid": "bd69656d-429d-43ae-9b85-8db2ff95e127",
             "id": "text_gdiplus",
@@ -65382,7 +66395,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 8",
             "uuid": "8f984a42-6f36-4298-b4bf-b2314cdfaf73",
             "id": "text_gdiplus",
@@ -65424,7 +66437,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Score 9",
             "uuid": "4f0493aa-5cf2-41c1-905f-407128a72354",
             "id": "text_gdiplus",
@@ -65466,7 +66479,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_ScoreBackground",
             "uuid": "6cddca70-4bef-42d2-8eab-1c55d8c76340",
             "id": "color_source",
@@ -65495,7 +66508,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 1",
             "uuid": "b8207af7-bd54-4f8a-80b6-acd2684d974a",
             "id": "text_gdiplus",
@@ -65538,7 +66551,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 10",
             "uuid": "d1f00b1b-a120-4dce-b36d-3faa0d4817cb",
             "id": "text_gdiplus",
@@ -65581,7 +66594,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 2",
             "uuid": "bca7574c-39cd-445d-bb39-13efda296f20",
             "id": "text_gdiplus",
@@ -65624,7 +66637,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 3",
             "uuid": "1dc306f3-b2d4-4c9c-8eb9-acc025cb2ad8",
             "id": "text_gdiplus",
@@ -65667,7 +66680,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 4",
             "uuid": "5cecc74f-95c8-48e2-b7f0-41c2ab16c98c",
             "id": "text_gdiplus",
@@ -65710,7 +66723,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 5",
             "uuid": "9de8b3aa-a605-40c9-928e-54b545a9cb38",
             "id": "text_gdiplus",
@@ -65753,7 +66766,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 6",
             "uuid": "a9935213-0608-42b3-bae5-f5db49114b4f",
             "id": "text_gdiplus",
@@ -65796,7 +66809,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 7",
             "uuid": "60cb5938-141d-444d-8765-d7a2752e1444",
             "id": "text_gdiplus",
@@ -65839,7 +66852,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 8",
             "uuid": "d1ef7684-9879-424b-82e9-96a1cc0f72f4",
             "id": "text_gdiplus",
@@ -65882,7 +66895,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Rnk_Team 9",
             "uuid": "a1a13dc1-4161-48ff-9b16-f8e1b82c8a00",
             "id": "text_gdiplus",
@@ -65925,7 +66938,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Schedule Design",
             "uuid": "1c252a9c-8dfd-4ecf-854d-1faf3da1de39",
             "id": "scene",
@@ -66015,7 +67028,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ScheduleGradient",
             "uuid": "e572d25f-e5d0-482d-be60-7a9f8297460b",
             "id": "gradient_source",
@@ -66050,7 +67063,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ScheduleText",
             "uuid": "a168a66b-a1a4-4e89-aeaa-d3e307ec12c7",
             "id": "text_gdiplus",
@@ -66095,7 +67108,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ShowOvrl_Function_Key",
             "uuid": "e2e85254-44bd-4e02-b19a-5b3c310ba17f",
             "id": "text_gdiplus",
@@ -66128,7 +67141,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "ShowOvrl_Label",
             "uuid": "38d8d2a2-787d-4abb-b4e0-75ef404d180f",
             "id": "text_gdiplus",
@@ -66161,7 +67174,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Status",
             "uuid": "4671ca46-3873-4568-b1e7-d54b1f6cb356",
             "id": "scene",
@@ -66393,7 +67406,7 @@
                     {
                         "name": "Cam1_Active",
                         "source_uuid": "d0f39ec8-a79a-48fc-a846-14c6257286e4",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -70320,7 +71333,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Status_Background_ShapeHolder",
             "uuid": "95600fa9-b6d7-440e-8f14-0c2e2c2427ab",
             "id": "color_source",
@@ -70349,7 +71362,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Status_Background_Smallish",
             "uuid": "3345131d-ce5d-4c78-a7e7-af01e859bc4b",
             "id": "color_source",
@@ -70378,7 +71391,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "StreamOnHold",
             "uuid": "381c4ad0-bc8e-4107-9aec-78aeaaccc5c4",
             "id": "scene",
@@ -70468,7 +71481,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "SynchroScoresBackground",
             "uuid": "0d794d64-2ce4-4914-bd7c-53749f577bad",
             "id": "color_source",
@@ -70497,7 +71510,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "SynchroScoresImage",
             "uuid": "32e6558c-7d1a-45bd-9dd0-1bce7ca030c4",
             "id": "image_source",
@@ -70524,7 +71537,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Synchro_Label",
             "uuid": "f3b1ea0b-18c1-4b65-b3d0-0d80d6e6d202",
             "id": "text_gdiplus",
@@ -70582,7 +71595,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Synchro_Label_Board",
             "uuid": "806ea27f-2f3f-48bb-aa95-5e6dc83c4854",
             "id": "text_gdiplus",
@@ -70640,7 +71653,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "test card",
             "uuid": "c77e5f53-8f64-46af-8172-3f5294703461",
             "id": "browser_source",
@@ -70677,7 +71690,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Test Card",
             "uuid": "be2aa9f1-3ee2-4d54-a34d-0fb7e5ac6fa6",
             "id": "scene",
@@ -70825,7 +71838,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Text (GDI+)",
             "uuid": "c7f1d767-1aae-49db-9a3b-9f8d2fbad6b0",
             "id": "text_gdiplus",
@@ -70857,7 +71870,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopOverlayGradient",
             "uuid": "ecd0e8fb-8ce6-48c7-927f-76077bf0680e",
             "id": "gradient_source",
@@ -70891,7 +71904,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopOverlayImage",
             "uuid": "8df5f835-e8c0-4c08-845b-57f5ba8ea198",
             "id": "image_source",
@@ -70918,7 +71931,7 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "Opacity",
                     "uuid": "6451398a-812c-49c2-a631-2e38b25f19c8",
                     "id": "color_key_filter",
@@ -70947,7 +71960,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopOvrlPos_Function_Key",
             "uuid": "0af524f7-0ed1-4787-ba79-1d81487a1082",
             "id": "text_gdiplus",
@@ -70980,7 +71993,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopOvrlPos_Label",
             "uuid": "dcb20c65-88a5-4ceb-aa2d-622ecd11839c",
             "id": "text_gdiplus",
@@ -71013,7 +72026,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopOvrlPos_Left",
             "uuid": "5b3f28bb-0a44-42e0-8db6-9978b5ec9f5c",
             "id": "color_source",
@@ -71044,7 +72057,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TopOvrlPos_Right",
             "uuid": "bc63a23e-3318-4953-9c63-1cda5b318ef8",
             "id": "color_source",
@@ -71075,7 +72088,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Total",
             "uuid": "8298e4fd-7268-4bb8-a6c8-31229c8372db",
             "id": "text_gdiplus",
@@ -71118,7 +72131,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Total_Background",
             "uuid": "b605a88e-96c4-4eb9-b69f-69d3b734a540",
             "id": "color_source",
@@ -71147,7 +72160,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Total_Label",
             "uuid": "305df59b-4720-436f-b111-b2c4b135cd02",
             "id": "text_gdiplus",
@@ -71205,7 +72218,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "TVBanner_ShapeHolder",
             "uuid": "71f2aca5-d40d-4582-ba24-aadbd8573f2e",
             "id": "gradient_source",
@@ -71239,7 +72252,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "VAR",
             "uuid": "15f11fc8-8e7e-4ce8-9a20-2e42dc9d3eae",
             "id": "scene",
@@ -71557,7 +72570,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "Video Source for Replay",
             "uuid": "8dc83999-6e61-4ca3-8a6f-f4d1dc8c52ad",
             "id": "scene",
@@ -71569,7 +72582,7 @@
                     {
                         "name": "Camera3",
                         "source_uuid": "a3683749-7df4-4e53-9a3b-004490cff57d",
-                        "visible": true,
+                        "visible": false,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -71734,7 +72747,7 @@
                     {
                         "name": "Active Video Source",
                         "source_uuid": "eca4b1ce-8878-41c8-a909-df383d8b7063",
-                        "visible": false,
+                        "visible": true,
                         "locked": false,
                         "rot": 0.0,
                         "scale_ref": {
@@ -71801,20 +72814,11 @@
             "push-to-talk-delay": 0,
             "hotkeys": {
                 "OBSBasic.SelectScene": [],
-                "EnableFilter.27287477-33f1-4584-a37d-89281a36c551": [],
-                "DisableFilter.27287477-33f1-4584-a37d-89281a36c551": [
-                    {
-                        "control": true,
-                        "alt": true,
-                        "key": "OBS_KEY_NUM0"
-                    }
-                ],
-                "SplitRecordingFile.27287477-33f1-4584-a37d-89281a36c551": [],
-                "PauseRecording.27287477-33f1-4584-a37d-89281a36c551": [],
-                "UnpauseRecording.27287477-33f1-4584-a37d-89281a36c551": [],
-                "AddChapterToRecordingFile.27287477-33f1-4584-a37d-89281a36c551": [],
-                "EnableRecordingIndividual.27287477-33f1-4584-a37d-89281a36c551": [],
-                "DisableRecordingIndividual.27287477-33f1-4584-a37d-89281a36c551": [],
+                "EnableFilter.db84c573-eee2-4d47-be75-f147d5ba5c8f": [],
+                "DisableFilter.db84c573-eee2-4d47-be75-f147d5ba5c8f": [],
+                "SaveReplayBuffer.db84c573-eee2-4d47-be75-f147d5ba5c8f": [],
+                "EnableReplayBufferIndividual.db84c573-eee2-4d47-be75-f147d5ba5c8f": [],
+                "DisableReplayBufferIndividual.db84c573-eee2-4d47-be75-f147d5ba5c8f": [],
                 "libobs.show_scene_item.11": [],
                 "libobs.hide_scene_item.11": [],
                 "libobs.show_scene_item.10": [],
@@ -71832,38 +72836,34 @@
             "private_settings": {},
             "filters": [
                 {
-                    "prev_ver": 553648129,
+                    "prev_ver": 553648131,
                     "name": "BO: Replay Video Source",
-                    "uuid": "27287477-33f1-4584-a37d-89281a36c551",
+                    "uuid": "db84c573-eee2-4d47-be75-f147d5ba5c8f",
                     "id": "osi_branch_output",
                     "versioned_id": "osi_branch_output",
                     "settings": {
                         "Save Path": "C:\\_Personal\\OBSStudioData\\Packages\\New Diving Overlays\\Replay",
                         "resolution": "custom",
                         "service_count": 1,
-                        "hotkey_bindings": {
-                            "DisableFilter.27287477-33f1-4584-a37d-89281a36c551": [
-                                {
-                                    "control": true,
-                                    "alt": true,
-                                    "key": "OBS_KEY_NUM0"
-                                }
-                            ]
-                        },
+                        "hotkey_bindings": {},
                         "preview_crop_rect_rel": false,
                         "preview_crop_rect_abs": false,
                         "replay_buffer_estimate": false,
-                        "rate_control": "CBR",
                         "audio_encoder": "ffmpeg_aac",
                         "video_encoder": "obs_nvenc_h264_tex",
                         "audio_bitrate": 64,
                         "streaming_enabled": false,
-                        "stream_recording": true,
+                        "stream_recording": false,
                         "use_profile_recording_path": false,
                         "custom_width": 1920,
                         "custom_height": 1080,
                         "path": "U:\\_Personal\\OBS\\Packages\\DivingOverlays\\Replay",
                         "filename_formatting": "ForReplay",
+                        "replay_buffer": true,
+                        "replay_buffer_duration": 6,
+                        "replay_buffer_path": "U:/_Personal/OBS/Packages/DivingOverlays/Replay",
+                        "replay_buffer_filename_formatting": "Replay %YY-%MM-%DD %hh-%mm-%ss",
+                        "replay_buffer_format": "mkv",
                         "streaming_output_enabled_0": true,
                         "streaming_output_enabled_1": true,
                         "streaming_output_enabled_2": true,
@@ -71873,14 +72873,19 @@
                         "streaming_output_enabled_6": true,
                         "streaming_output_enabled_7": true,
                         "recording_output_enabled": true,
-                        "replay_buffer_output_enabled": true
+                        "replay_buffer_output_enabled": true,
+                        "bitrate": 15000,
+                        "keyint_sec": 1,
+                        "rate_control": "CBR",
+                        "preset": "p4",
+                        "multipass": "disabled"
                     },
                     "mixers": 0,
                     "sync": 0,
                     "flags": 0,
                     "volume": 1.0,
                     "balance": 0.5,
-                    "enabled": false,
+                    "enabled": true,
                     "muted": false,
                     "push-to-mute": false,
                     "push-to-mute-delay": 0,
@@ -71896,7 +72901,7 @@
             ]
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "VideoNotAvailable",
             "uuid": "964cafdf-c360-4bea-b1ad-05292b0fc0d0",
             "id": "image_source",
@@ -71924,7 +72929,7 @@
             "private_settings": {}
         },
         {
-            "prev_ver": 553648129,
+            "prev_ver": 553648131,
             "name": "WaitingScreen",
             "uuid": "5f9b10a6-3cfe-4e5f-8d71-8d349a17010c",
             "id": "image_source",

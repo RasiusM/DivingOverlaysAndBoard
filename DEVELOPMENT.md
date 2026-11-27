@@ -138,6 +138,15 @@ other URL options and the fragment. An equivalent existing target is not reloade
 Missing starts are ignored; invalid supplied starts are logged without rejecting
 otherwise usable overlay data.
 
+Replay control optionally enables a separate POST path on the same listener,
+with the same source-IP restriction. Only the `judges` action on that path is
+treated as Request Awards; it never enters the overlay mailbox. A monotonic
+cooldown suppresses repeats from the last accepted request. At most one trigger
+is pending, and it expires after two seconds to prevent late playback actions.
+The Advanced Scene Switcher script condition consumes this trigger under the
+receiver's publish lock. Its registration follows the script lifecycle, not
+the replay checkbox.
+
 ### Rankings And Result Status
 
 `RankingEntry.status` separates explicit unranked/result statuses from rank and

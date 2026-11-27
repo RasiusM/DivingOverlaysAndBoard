@@ -6,10 +6,12 @@ Supported diving software: [DiveRecorder 7.0.7.6](https://diverecorder.co.uk) an
 
 ## Updates
 
-### Version 1.2.0: What's new?
+### Version 2.0.0 (beta.1): What's new?
 
 - [DiveCalc](http://divecalc.net) integration
 - Switched to variable-width fonts
+- Switched to Branch Output Replay Buffer for Replays
+- Option to map DiveCalc "Request Awards" messge to start replay
 - Added VisualPresets utility to provide easy way to switch between visual presets
 - Added Competition Pacing utility for DiveCalc (not really related to Overlays)
 
@@ -25,7 +27,7 @@ At least 32.1.2 required
     - Synchro
     - Team (DiveCalc; DiveRecorder - when its bugs are resolved)
 
-- Event modes:
+- Event scenes:
     - Waiting for event displays
         - Countdown to next event
         - Event schedule
@@ -80,7 +82,7 @@ Python 3.12 (latest supported by OBS). Set the path in OBS script settings.
 3. Import Scene Collection (Scenes/Diving_Streaming_and_Board.json). You will get "missing files" dialog, press "Search folder" and point it to the folder from step 2.
 4. Import Profile (Profile/DivingStreamingAndBoard)
 5. Open Tools/Scripts, add `diving_overlays.py` and `Utils/VisualPresets/visual_presets.py`\
-   **Note:** You don't need to copy the script file(s) to OBS script folder.
+   **Note:** You don't need to copy the script file(s) to OBS script folder, as in old days.
 6. Restart OBS.
 7. Cycle all F* hotkeys several times. Do the same if you remove and re-install the script.
 
@@ -92,7 +94,7 @@ See [the visual preset utility guide](Utils/VisualPresets/README.md) for the inc
 ### Notes when upgrading
 
 - v1.2 scripts are **incompatible** with v1.1 scene collection, therefore you will have to import included scene collection
-- remove the old *dive_recorder_overlays.py* script in OBS and add *diving_overlays.py*. Re-enter settings including the root directory and rankings options, and re-bind the rankings start stop hotkeys. The script restores the F1-F10 defaults.
+- remove the old *dive_recorder_overlays.py* script in OBS and add *diving_overlays.py*. Re-enter settings including the root directory and rankings options. The script restores the F1-F10 defaults.
 - Replacing scenes json with 1.2 version will replace **ALL** customizations that you did. This involves additional graphics you added or moved/removed, color/text changes etc.
 
 #### Suggested upgrade path
@@ -135,6 +137,11 @@ Team events are supported with one dive per round and 3, 5 or 7 judges scoring t
 Multiple dives per round and separate execution and synchronization judging panels are not supported for team events.\
 The banner shows the diver or pair performing the current dive.
 
+#### Optional: trigger replay from Request Awards
+
+1. In **Tools > Scripts**, select DiveCalc and check **Enable replay control from DiveCalc**. The cooldown defaults to **5 seconds**: if the operator aborts a request and quickly requests awards again, the second press won't trigger another replay.
+2. In DiveCalc, add a **second** Result Feed device for JSON over HTTP. Point it to `http://<OBS-PC-IP>:8765/divecalc-replay`, using the same port as the main feed and the **DiveCalc replay HTTP path** shown in OBS. Assign **Present Judges** to **Request Awards**, and leave the other actions set to **None** on this device. Connect both devices. Don't use **Present Judges** manually on the replay device during the event: it also triggers replay.
+
 ### DiveCalc display behavior
 
 - Synchro and team displays use abbreviated names where available.
@@ -146,6 +153,7 @@ Competitors marked Aborted or Disqualified appear last, with `DNF` or `DQ` inste
 - For an aborted or disqualified competitor, the banner shows `DNF` or `DQ` instead of a running total. Individual dive points and judge marks remain visible.
 
 TODO: Handle **Present Event** to set meet/event titles.
+TODO: Fix display all as G when no ranking is present yet.
 
 
 ### DiveRecorder setup/operation
@@ -155,22 +163,22 @@ No special network setup required for DiveRecorder (it broadcasts public UDP mes
 #### Pre-Event
 
 Start list will be populated only if you start Recording in Dive Recorder (and choose Use Scoreboards from menu). Start list will be populated automatically.\
-To show start list you need to be in Waiting for Event mode, otherwise ranking list will be shown even if you switch to *LiveStream - Waiting for Event - Start List* scene.\
+To show start list you need to be in Waiting for Event mode, otherwise ranking list will be shown even if you switch to `LiveStream - Waiting for Event - Start List scene.\
 If there's more than one page in start list, it will scroll automatically (time each page is shown is managed in script settings)
 
-Use *LiveStream - Waiting for Event - \** scenes.
+Use `LiveStream - Waiting for Event - \*` scenes.
 
 Scoreboard will switch to corresponding scene automatically.
 
 #### Event
 
-Once you start recording in Dive Recorder (do not forget to press **Use Scoreboards** in DR menu - otherwise overlays will not receive data!), switch to Event in Progress mode and *LiveStream* scene. You can manage overlay visibility/etc with **F5-9** keys.\
-In this scene/mode you can use hotkeys to record clips for Instant Replay
+Once you start recording in Dive Recorder (do not forget to press **Use Scoreboards** in DR menu - otherwise overlays will not receive data!), switch to Event in Progress mode and `LiveStream` scene. You can manage overlay visibility/etc with **F5-9** keys.\
+In this scene/mode you can use hotkeys to trigger Replay Buffer save and replay to main scenes.
 
 #### Event Completed
 
 Once Event is completed, red square in "Event Completed" status board will show up (but you will have to switch to Event Completed mode manually).\
-Use *LiveStream - Rankings \** scenes.\
+Use `LiveStream - Rankings \*` scenes.\
 In Dive Recorder you can go to *Results* menu, choose corresponding event and press Display to send results to OBS. Rankings list will be filled.
 
 ### Camera setup
@@ -178,35 +186,33 @@ In Dive Recorder you can go to *Results* menu, choose corresponding event and pr
 Most likely you will need to add and use your specific camera source(s).\
 Up to 3 simultanous cameras are supported "out of the box" - to add more, you will need to change/add Advanced Scene Switcher macros.
 
-Add your camera source to one of *Camera1..2* scenes. Scene can contain multiple cameras, the one that is set to visible (or is "on top") will be shown when you select that camera number.
+Add your camera source to one of `Camera1..3` scenes. Scene can contain multiple cameras, the one that is set to visible (or is "on top") will be shown when you select that camera number.
 
 One of Camera scenes contain Fake Camera media source, that you can point to, e.g. video recording of actual competition, enable it and use it to test and learn operations (Instant Replay will work too)
 
 ### Instant replay setup
 
 To use currently active camera as a source for Instant Replay:
-    - Set *Video Source for Replay/Active Video Source* to visible, and hide *Video Source for Replay/Camera1..3* sources.
+    - Set `Video Source for Replay/Active Video Source` to visible, and hide `Video Source for Replay/Camera1..3` sources.
 To use specific camera:
-    - Set corresponding source *Video Source for Replay/Camera1..3* to visible, hide other sources.
+    - Set corresponding source `Video Source for Replay/Camera1..3` to visible, hide other sources.
 
 This is convenient if you would like to stream dive in real time switching between various cameras, but always show dive repeat from specific camera. E.g some dives look good from the back, but side camera is more "technical".
 
-You can setup and switch between multiple Instant Replay transitions..
-
-**How to switch between Instant Replay transitions:**
-- in *Instant Replay Scene* make corresponding Replay Scene visible and hide others
+You can setup multiple Instant Replay transitions in `Replay Scene 1..3` and switch between them by making corresponding subscene visible in `Instant Replay Scene` and hiding the others.
 
 I've included DaVinci Resolve project for creating Stinger transitions video, but I think it stores absolute paths, so you will have to relink media if you want to use it.
 
 **Notes:**
-- Replay clips are placed in Replay folder.  This folder is not cleaned-up - take care of it! Next time you start OBS after cleanup, you might get error about missing replay file. Ignore it.
-- Why not use "Native" OBS studio Replay buffer? It records the main stream, which might include overlays, camera switches, etd. Not good for replay. I will have to investigate "Branch Output" Replay buffers.
-- I also noticed that sometimes Media Source refuses to play. OBS restart usually helps.
-- There's some lag between hotkey press and recording. Get some practice, use Fake Camera!
-- Replay clips are limited to 10s - recording will stop automatically. Some divers take their time on the board, and if you realize that that's the case, cut recording short without triggering replay and start again (see hotkeys).
+- Replay clips are placed in Replay folder. This folder is not cleaned-up - take care of it! Next time you start OBS after cleanup, you might get error about missing replay file. Ignore it.
+- Replay clips are now saved from Branch Output Replay Buffer (on `Video Source For Replays` scene). Recommended settings, if you use NVEC (default settings produced inconsistent length clips):
+    - Keyframe: 1s
+    - CBR
+    - Bitrate: 15000 Kbps
+    - Tuning: High quality
+    - Multipass Mode: Single pass
+- Replay
 - Replay is played both in LiveStream and on Scoreboard scenes (beware if your Scoreboard is low res - but you will have to modify scenes to fit it anyway).
-
-TODO: investigate branch output replay buffers and if setting keyframes to 1s helps with replay buffer length unpredictability
 
 ### Media
 
@@ -218,8 +224,8 @@ It, however, does not enable quick switching between various layout designs.
 
 ### Scenes
 
-- use *LiveStream \** scenes for streaming.
-- use *ProjectorScreen Composite* for HD Video scoreboard (1920x1080): Right click on scene->Open Scene Projector->Select scoreboard display.
+- use `LiveStream \*` scenes for streaming.
+- use `ProjectorScreen Composite` for HD Video scoreboard (1920x1080): Right click on scene->Open Scene Projector->Select scoreboard display.
 
 ### Countdown
 

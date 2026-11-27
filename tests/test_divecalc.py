@@ -391,6 +391,47 @@ class ReceiverTests(unittest.TestCase):
         self.assertEqual(dropped, 0)
         self.assertEqual([updates[0].phase, updates[2].phase], [DivePhase.Awards, DivePhase.Upcoming])
 
+    def test_replay_route_is_opt_in_and_does_not_publish_overlays(self):
+        path = "/divecalc-replay"
+        payload = snapshot("judges")
+        payload["event"]["startTime"] = 1795634400000
+        body = json.dumps(payload).encode()
+        self.assertEqual(self.request(path=path, body=body)[0], 404)
+        with self.assertRaises(ValueError):
+            self.receiver.configure_replay("/divecalc", 5)
+        self.receiver.configure_replay(path, 5)
+        self.assertEqual(self.request(path=path, body=b'{"action":"awards"}')[0], 400)
+        self.assertEqual(self.request(body=body)[0], 200)
+        self.assertFalse(self.receiver.take_replay_request())
+        self.assertEqual(len(self.mailbox.drain()[0]), 1)
+        self.assertEqual(self.request(path=path, body=body)[0], 200)
+        self.assertTrue(self.receiver.take_replay_request())
+        self.assertFalse(self.receiver.take_replay_request())
+        self.assertEqual(self.mailbox.drain(), ([], 0))
+        self.receiver.server.allowed_ip = "192.0.2.1"
+        self.assertEqual(self.request(path=path, body=body)[0], 403)
+
+    def test_replay_cooldown_drops_repeats_without_extending_window(self):
+        path = "/divecalc-replay"
+        self.receiver.configure_replay(path, 5)
+        with patch("divecalc_receiver.monotonic", return_value=100) as clock:
+            body = b'{"action":"judges"}'
+            for now, expected in ((100, True), (104.9, False), (105, True)):
+                clock.return_value = now
+                self.assertEqual(self.request(path=path, body=body)[0], 200)
+                self.assertIs(self.receiver.take_replay_request(), expected)
+
+            clock.return_value = 110
+            self.assertEqual(self.request(path=path, body=body)[0], 200)
+            clock.return_value = 112
+            self.assertFalse(self.receiver.take_replay_request())
+
+            clock.return_value = 115
+            self.assertEqual(self.request(path=path, body=body)[0], 200)
+            self.receiver.configure_replay(None)
+            self.assertFalse(self.receiver.take_replay_request())
+            self.assertEqual(self.request(path=path, body=body)[0], 404)
+
     def test_event_start_is_published_from_any_action_independently_of_overlay_support(self):
         expected = datetime(2026, 11, 16, 20, 20, tzinfo=timezone.utc)
         for action in ("event", "judges", "dive", "awards", "startlist", "results", "other"):
